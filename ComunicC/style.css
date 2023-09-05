@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+}
+
+header {
+    background-color: #ffdede;
+    color: rgb(47, 47, 47);
+    text-align: center;
+   
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+
+
+
+button {
+   
+    margin: 0.5rem;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+}
+
+/* ... Estilos anteriores ... */
+
+
+.categorias img{
+    text-align: center;
+    padding: 0%;
+    background-color: #ffdede;
+    width:180px; /* Establecemos un ancho fijo para el contenedor */
+    height: 75px; /* Establecemos una altura fija para el contenedor */
+}
+
+.categorias button {
+    padding:0%;
+    margin: 0.5rem;
+    color: rgb(255, 255, 255);
+    border: none;
+    cursor: pointer;
+}
+
+.imagenes-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Auto-fill en lugar de auto-fit */
+    gap: 1rem;
+    justify-items: center;
+    align-items: start;
+    margin-top: 1rem;
+}
+.imagen-container {
+    text-align: center;
+    border: 1px solid #ffffff;
+    padding: 0.5rem;
+    background-color: white;
+    width:180px; /* Establecemos un ancho fijo para el contenedor */
+    height: 75px; /* Establecemos una altura fija para el contenedor */
+}
+
+.imagen-container img {
+    width: 100%; /* Establecemos el ancho al 100% para que todas las imágenes tengan el mismo ancho */
+    height: 100%; /* Establecemos la altura al 100% para que las imágenes mantengan la misma proporción */
+    cursor: pointer;
+}
+
+/* ... Otros estilos ... */

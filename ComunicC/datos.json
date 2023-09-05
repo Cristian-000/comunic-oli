@@ -1,0 +1,205 @@
+{
+    "categorias": [
+      {
+        "nombre": "Números",
+        "src": "imagenes/numerosmain.png",
+        "imagenes": [
+          {
+            "nombre": "1",
+            "src": "num1.png",
+            "texto": "uno"
+          },
+          {
+            "nombre": "2",
+            "src": "num2.png",
+            "texto": "dos"
+          },
+          {
+            "nombre": "3",
+            "src": "num3.png",
+            "texto": "tres"
+          },
+          {
+            "nombre": "4",
+            "src": "num4.png",
+            "texto": "cuatro"
+          },
+          {
+            "nombre": "5",
+            "src": "num5.png",
+            "texto": "cinco"
+          },
+          {
+            "nombre": "6",
+            "src": "num6.png",
+            "texto": "seis"
+          },
+          {
+            "nombre": "7",
+            "src": "num7.png",
+            "texto": "siete"
+          },
+          {
+            "nombre": "8",
+            "src": "num8.png",
+            "texto": "ocho"
+          },
+          {
+            "nombre": "9",
+            "src": "num9.png",
+            "texto": "nueve"
+          },
+          {
+            "nombre": "10",
+            "src": "num10.png",
+            "texto": "diez"
+          }
+        ]
+      },
+      {
+        "nombre": "Letras",
+        "src":"imagenes/abcmain.png",
+        "imagenes": [
+          {
+            "nombre": "a",
+            "src": "a.png",
+            "texto": "a"
+          },
+          {
+            "nombre": "b",
+            "src": "b.png",
+            "texto": "b"
+          },
+          {
+            "nombre": "c",
+            "src": "c.png",
+            "texto": "c"
+          },
+          {
+            "nombre": "d",
+            "src": "d.png",
+            "texto": "d"
+          },
+          {
+            "nombre": "e",
+            "src": "e.png",
+            "texto": "e"
+          },
+          {
+            "nombre": "f",
+            "src": "f.png",
+            "texto": "f"
+          },
+          {
+            "nombre": "g",
+            "src": "g.png",
+            "texto": "g"
+          },
+          {
+            "nombre": "h",
+            "src": "h.png",
+            "texto": "h"
+          },
+          {
+            "nombre": "i",
+            "src": "i.png",
+            "texto": "i"
+          },
+          {
+            "nombre": "j",
+            "src": "j.png",
+            "texto": "j"
+          },
+          {
+            "nombre": "k",
+            "src": "k.png",
+            "texto": "k"
+          },
+          {
+            "nombre": "l",
+            "src": "l.png",
+            "texto": "l"
+          },
+          {
+            "nombre": "m",
+            "src": "m.png",
+            "texto": "m"
+          },
+          {
+            "nombre": "n",
+            "src": "n.png",
+            "texto": "n"
+          },
+          {
+            "nombre": "enie",
+            "src": "enie.png",
+            "texto": "enie"
+          },
+          {
+            "nombre": "o",
+            "src": "o.png",
+            "texto": "o"
+          },
+          {
+            "nombre": "p",
+            "src": "p.png",
+            "texto": "p"
+          },
+          {
+            "nombre": "q",
+            "src": "q.png",
+            "texto": "q"
+          },
+          {
+            "nombre": "r",
+            "src": "r.png",
+            "texto": "r"
+          },
+          {
+            "nombre": "s",
+            "src": "s.png",
+            "texto": "s"
+          },
+          {
+            "nombre": "t",
+            "src": "t.png",
+            "texto": "t"
+          },
+          {
+            "nombre": "u",
+            "src": "u.png",
+            "texto": "u"
+          },
+          {
+            "nombre": "v",
+            "src": "v.png",
+            "texto": "v"
+          },
+          {
+            "nombre": "w",
+            "src": "w.png",
+            "texto": "w"
+          },
+          {
+            "nombre": "x",
+            "src": "x.png",
+            "texto": "x"
+          },
+          {
+            "nombre": "y",
+            "src": "y.png",
+            "texto": "y"
+          },
+          {
+            "nombre": "z",
+            "src": "z.png",
+            "texto": "z"
+          }
+     
+     
+        ]
+      }
+      
+    ]
+  }
+  
