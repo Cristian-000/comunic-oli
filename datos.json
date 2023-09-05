@@ -1,152 +1,59 @@
 {
     "categorias": [
       {
-        "nombre": "Comidas",
-        "src": "imagenes/btnfrutasmain.png",
+        "nombre": "Quiero",
+        "src": "imagenes/numerosmain.png",
         "imagenes": [
-        
           {
-            "nombre": "agua",
-            "src": "bebagua.png",
-            "texto": "agua"
+            "nombre": "jugar afuera",
+            "src": "jugarafuera.png",
+            "texto": "jugar afuera"
           },
           {
-            "nombre": "jugo",
-            "src": "bebjugonaranja.png",
-            "texto": "jugo"
+            "nombre": "2",
+            "src": "num2.png",
+            "texto": "dos"
           },
           {
-            "nombre": "leche",
-            "src": "bebleche.png",
-            "texto": "leche"
+            "nombre": "3",
+            "src": "num3.png",
+            "texto": "tres"
           },
           {
-            "nombre": "licuado",
-            "src": "beblicuado.png",
-            "texto": "licuado"
+            "nombre": "4",
+            "src": "num4.png",
+            "texto": "cuatro"
           },
           {
-            "nombre": "refresco",
-            "src": "bebrefresco.png",
-            "texto": "refresco"
+            "nombre": "5",
+            "src": "num5.png",
+            "texto": "cinco"
           },
           {
-            "nombre": "te",
-            "src": "bebte.png",
-            "texto": "té"
+            "nombre": "6",
+            "src": "num6.png",
+            "texto": "seis"
           },
           {
-            "separador": true
+            "nombre": "7",
+            "src": "num7.png",
+            "texto": "siete"
           },
           {
-            "nombre": "manzana",
-            "src": "manzana.png",
-            "texto": "manzana"
+            "nombre": "8",
+            "src": "num8.png",
+            "texto": "ocho"
           },
           {
-            "nombre": "banana",
-            "src": "bananas.png",
-            "texto": "banana"
+            "nombre": "9",
+            "src": "num9.png",
+            "texto": "nueve"
           },
           {
-            "nombre": "durazno",
-            "src": "durazno.png",
-            "texto": "durazno"
-          },
-          {
-            "nombre": "frutilla",
-            "src": "frutilla.png",
-            "texto": "frutilla"
-          },
-          {
-            "nombre": "kiwi",
-            "src": "kiwi.png",
-            "texto": "kiwi"
-          },
-          {
-            "nombre": "naranja",
-            "src": "naranga.png",
-            "texto": "naranja"
-          },
-          {
-            "nombre": "sandia",
-            "src": "sandia.png",
-            "texto": "sandía"
-          },
-          {
-            "nombre": "pera",
-            "src": "pera.png",
-            "texto": "pera"
-          },
-          {
-            "nombre": "manzanaVerde",
-            "src": "manzanaverde.png",
-            "texto": "manzana verde"
-          },
-          {
-            "separador": true
-          },
-          {
-            "nombre": "asado",
-            "src": "comasado.png",
-            "texto": "asado"
-          },
-          {
-            "nombre": "ensalada",
-            "src": "comensalada.png",
-            "texto": "ensalada"
-          },
-          {
-            "nombre": "fideos",
-            "src": "comfideos.png",
-            "texto": "fideos"
-          },
-          {
-            "nombre": "guiso",
-            "src": "comguiso.png",
-            "texto": "guiso"
-          },
-          {
-            "nombre": "hamburguesa",
-            "src": "comhamburg.png",
-            "texto": "hamburguesa"
-          },
-          {
-            "nombre": "huevos",
-            "src": "comhuevos.png",
-            "texto": "huevo frito"
-          },
-          {
-            "nombre": "pancho",
-            "src": "compancho.png",
-            "texto": "pancho"
-          },
-          {
-            "nombre": "papas fritas",
-            "src": "compapasfritas.png",
-            "texto": "papa frita"
-          },
-          {
-            "nombre": "pizza",
-            "src": "compiza.png",
-            "texto": "pizza"
-          },
-          {
-            "nombre": "pollo",
-            "src": "compolllo.png",
-            "texto": "pollo"
-          },
-          {
-            "nombre": "ravioles",
-            "src": "comravioles.png",
-            "texto": "ravioles"
-          },
-          {
-            "nombre": "tacos",
-            "src": "comtacos.png",
-            "texto": "tacos"
+            "nombre": "10",
+            "src": "num10.png",
+            "texto": "diez"
           }
-
         ]
       },
       {
@@ -402,6 +309,155 @@
           }
      
      
+        ]
+      },
+      {
+        "nombre": "Comidas",
+        "src": "imagenes/btnfrutasmain.png",
+        "imagenes": [
+        
+          {
+            "nombre": "agua",
+            "src": "bebagua.png",
+            "texto": "agua"
+          },
+          {
+            "nombre": "jugo",
+            "src": "bebjugonaranja.png",
+            "texto": "jugo"
+          },
+          {
+            "nombre": "leche",
+            "src": "bebleche.png",
+            "texto": "leche"
+          },
+          {
+            "nombre": "licuado",
+            "src": "beblicuado.png",
+            "texto": "licuado"
+          },
+          {
+            "nombre": "refresco",
+            "src": "bebrefresco.png",
+            "texto": "refresco"
+          },
+          {
+            "nombre": "te",
+            "src": "bebte.png",
+            "texto": "té"
+          },
+          {
+            "separador": true
+          },
+          {
+            "nombre": "manzana",
+            "src": "manzana.png",
+            "texto": "manzana"
+          },
+          {
+            "nombre": "banana",
+            "src": "bananas.png",
+            "texto": "banana"
+          },
+          {
+            "nombre": "durazno",
+            "src": "durazno.png",
+            "texto": "durazno"
+          },
+          {
+            "nombre": "frutilla",
+            "src": "frutilla.png",
+            "texto": "frutilla"
+          },
+          {
+            "nombre": "kiwi",
+            "src": "kiwi.png",
+            "texto": "kiwi"
+          },
+          {
+            "nombre": "naranja",
+            "src": "naranga.png",
+            "texto": "naranja"
+          },
+          {
+            "nombre": "sandia",
+            "src": "sandia.png",
+            "texto": "sandía"
+          },
+          {
+            "nombre": "pera",
+            "src": "pera.png",
+            "texto": "pera"
+          },
+          {
+            "nombre": "manzanaVerde",
+            "src": "manzanaverde.png",
+            "texto": "manzana verde"
+          },
+          {
+            "separador": true
+          },
+          {
+            "nombre": "asado",
+            "src": "comasado.png",
+            "texto": "asado"
+          },
+          {
+            "nombre": "ensalada",
+            "src": "comensalada.png",
+            "texto": "ensalada"
+          },
+          {
+            "nombre": "fideos",
+            "src": "comfideos.png",
+            "texto": "fideos"
+          },
+          {
+            "nombre": "guiso",
+            "src": "comguiso.png",
+            "texto": "guiso"
+          },
+          {
+            "nombre": "hamburguesa",
+            "src": "comhamburg.png",
+            "texto": "hamburguesa"
+          },
+          {
+            "nombre": "huevos",
+            "src": "comhuevos.png",
+            "texto": "huevo frito"
+          },
+          {
+            "nombre": "pancho",
+            "src": "compancho.png",
+            "texto": "pancho"
+          },
+          {
+            "nombre": "papas fritas",
+            "src": "compapasfritas.png",
+            "texto": "papa frita"
+          },
+          {
+            "nombre": "pizza",
+            "src": "compiza.png",
+            "texto": "pizza"
+          },
+          {
+            "nombre": "pollo",
+            "src": "compolllo.png",
+            "texto": "pollo"
+          },
+          {
+            "nombre": "ravioles",
+            "src": "comravioles.png",
+            "texto": "ravioles"
+          },
+          {
+            "nombre": "tacos",
+            "src": "comtacos.png",
+            "texto": "tacos"
+          }
+
         ]
       }
       
