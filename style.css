@@ -1,80 +1,73 @@
+/* Colores */
+:root {
+    --color-fondo: #ffffff;
+    --color-encabezado: #ffdede;
+    --color-texto: rgb(47, 47, 47);
+    --color-boton: rgb(255, 255, 255);
+}
+
+/* Estilos globales */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
+    background-color: var(--color-fondo);
 }
 
+/* Encabezado */
 header {
-    background-color: #ffdede;
-    color: rgb(47, 47, 47);
+    background-color: var(--color-encabezado);
+    color: var(--color-texto);
     text-align: center;
-
-}
-
-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     padding: 1rem;
 }
 
-
-
+/* Botones */
 button {
     margin: 0.5rem;
-    color: rgb(255, 255, 255);
+    color: var(--color-boton);
     border: none;
     cursor: pointer;
 }
 
-/* ... Estilos anteriores ... */
-
-
+/* Categorías */
 .categorias img {
     text-align: center;
     padding: 0%;
-    background-color: #ffdede;
+    background-color: var(--color-encabezado);
     width: 180px;
-    /* Establecemos un ancho fijo para el contenedor */
     height: 75px;
-    /* Establecemos una altura fija para el contenedor */
 }
 
 .categorias button {
     padding: 0%;
     margin: 0.5rem;
-    color: rgb(255, 255, 255);
+    color: var(--color-boton);
     border: none;
     cursor: pointer;
 }
 
+/* Grid de imágenes */
 .imagenes-grid {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(170px, 180px));
-    /* Auto-fill en lugar de auto-fit */
     gap: 0.3rem;
     justify-items: center;
     align-items: start;
-
 }
 
+/* Contenedor de imágenes */
 .imagen-container {
     text-align: center;
     padding: 0.1rem;
     background-color: white;
-    width: 100%;
-    /* Establecemos un ancho fijo para el contenedor */
-
+    width: 90%;
 }
 
+/* Imágenes */
 .imagen-container img {
     width: 100%;
-    /* Establecemos el ancho al 100% para que todas las imágenes tengan el mismo ancho */
     height: 100%;
-    /* Establecemos la altura al 100% para que las imágenes mantengan la misma proporción */
     cursor: pointer;
 }
-
-/* ... Otros estilos ... */

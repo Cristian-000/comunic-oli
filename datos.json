@@ -1,6 +1,62 @@
 {
     "categorias": [
       {
+        "nombre": "Colores",
+        "src": "imagenes/coloreslapicesmain.png",
+        "imagenes": [
+          {
+            "nombre": "rojo",
+            "src": "rojo.png",
+            "texto": "rojo"
+          },
+          {
+            "nombre": "azul",
+            "src": "azul.png",
+            "texto": "azul"
+          },
+          {
+            "nombre": "verde",
+            "src": "verde.png",
+            "texto": "verde"
+          },
+          {
+            "nombre": "amarillo",
+            "src": "amarillo.png",
+            "texto": "amarillo"
+          },
+          {
+            "nombre": "naranja",
+            "src": "naranja.png",
+            "texto": "naranja"
+          },
+          {
+            "nombre": "violeta",
+            "src": "violeta.png",
+            "texto": "violeta"
+          },
+          {
+            "nombre": "celeste",
+            "src": "celeste.png",
+            "texto": "celeste"
+          },
+          {
+            "nombre": "negro",
+            "src": "negro.png",
+            "texto": "negro"
+          },
+          {
+            "nombre": "blanco",
+            "src": "blanco.png",
+            "texto": "blanco"
+          },
+          {
+            "nombre": "rosa",
+            "src": "rosa.png",
+            "texto": "rosa"
+          }
+        ]
+      },
+      {
         "nombre": "Números",
         "src": "imagenes/numerosmain.png",
         "imagenes": [
