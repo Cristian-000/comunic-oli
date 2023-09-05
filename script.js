@@ -42,6 +42,7 @@ function cargarDatos() {
         .then(data => {
             // Iterar a través de las categorías y mostrar botones
             data.categorias.forEach(categoria => {
+                
                 const categoriaButton = document.createElement('button');
                // categoriaButton.textContent = categoria.nombre;
                 const imagen = document.createElement('img');
@@ -66,20 +67,29 @@ function mostrarImagenes(imagenes) {
     imagenesGrid.innerHTML = ''; // Limpiamos el grid antes de agregar nuevas imágenes
 
     imagenes.forEach(imagen => {
-        const imgContainer = document.createElement('div');
-        imgContainer.classList.add('imagen-container');
+        if (imagen.separador) {
+            // Agregar un elemento separador (por ejemplo, <hr>) al grid
+            const separador = document.createElement('hr');
+            separador.classList.add('separador');
+            imagenesGrid.appendChild(separador);
+        } else {
+            const imgContainer = document.createElement('div');
+            imgContainer.classList.add('imagen-container');
 
-        const imgElement = document.createElement('img');
-        imgElement.src = `imagenes/${imagen.src}`; // Ruta relativa a la carpeta "imagenes"
-        imgElement.alt = imagen.texto; // Agregamos el texto como atributo "alt"
-        imgElement.addEventListener('click', () => {
-            hablarTexto(imagen.texto);
-        });
+            const imgElement = document.createElement('img');
+            imgElement.src = `imagenes/${imagen.src}`; // Ruta relativa a la carpeta "imagenes"
+            imgElement.alt = imagen.texto; // Agregamos el texto como atributo "alt"
 
-        imgContainer.appendChild(imgElement);
-        imagenesGrid.appendChild(imgContainer);
+            imgElement.addEventListener('click', () => {
+                hablarTexto(imagen.texto);
+            });
+
+            imgContainer.appendChild(imgElement);
+            imagenesGrid.appendChild(imgContainer);
+        }
     });
 }
+
 
 // Cargar los datos cuando la página se cargue
 window.addEventListener('load', cargarDatos, mostrarImagenes);

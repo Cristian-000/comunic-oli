@@ -1,6 +1,155 @@
 {
     "categorias": [
       {
+        "nombre": "Comidas",
+        "src": "imagenes/btnfrutasmain.png",
+        "imagenes": [
+        
+          {
+            "nombre": "agua",
+            "src": "bebagua.png",
+            "texto": "agua"
+          },
+          {
+            "nombre": "jugo",
+            "src": "bebjugonaranja.png",
+            "texto": "jugo"
+          },
+          {
+            "nombre": "leche",
+            "src": "bebleche.png",
+            "texto": "leche"
+          },
+          {
+            "nombre": "licuado",
+            "src": "beblicuado.png",
+            "texto": "licuado"
+          },
+          {
+            "nombre": "refresco",
+            "src": "bebrefresco.png",
+            "texto": "refresco"
+          },
+          {
+            "nombre": "te",
+            "src": "bebte.png",
+            "texto": "té"
+          },
+          {
+            "separador": true
+          },
+          {
+            "nombre": "manzana",
+            "src": "manzana.png",
+            "texto": "manzana"
+          },
+          {
+            "nombre": "banana",
+            "src": "bananas.png",
+            "texto": "banana"
+          },
+          {
+            "nombre": "durazno",
+            "src": "durazno.png",
+            "texto": "durazno"
+          },
+          {
+            "nombre": "frutilla",
+            "src": "frutilla.png",
+            "texto": "frutilla"
+          },
+          {
+            "nombre": "kiwi",
+            "src": "kiwi.png",
+            "texto": "kiwi"
+          },
+          {
+            "nombre": "naranja",
+            "src": "naranga.png",
+            "texto": "naranja"
+          },
+          {
+            "nombre": "sandia",
+            "src": "sandia.png",
+            "texto": "sandía"
+          },
+          {
+            "nombre": "pera",
+            "src": "pera.png",
+            "texto": "pera"
+          },
+          {
+            "nombre": "manzanaVerde",
+            "src": "manzanaverde.png",
+            "texto": "manzana verde"
+          },
+          {
+            "separador": true
+          },
+          {
+            "nombre": "asado",
+            "src": "comasado.png",
+            "texto": "asado"
+          },
+          {
+            "nombre": "ensalada",
+            "src": "comensalada.png",
+            "texto": "ensalada"
+          },
+          {
+            "nombre": "fideos",
+            "src": "comfideos.png",
+            "texto": "fideos"
+          },
+          {
+            "nombre": "guiso",
+            "src": "comguiso.png",
+            "texto": "guiso"
+          },
+          {
+            "nombre": "hamburguesa",
+            "src": "comhamburg.png",
+            "texto": "hamburguesa"
+          },
+          {
+            "nombre": "huevos",
+            "src": "comhuevos.png",
+            "texto": "huevo frito"
+          },
+          {
+            "nombre": "pancho",
+            "src": "compancho.png",
+            "texto": "pancho"
+          },
+          {
+            "nombre": "papas fritas",
+            "src": "compapasfritas.png",
+            "texto": "papa frita"
+          },
+          {
+            "nombre": "pizza",
+            "src": "compiza.png",
+            "texto": "pizza"
+          },
+          {
+            "nombre": "pollo",
+            "src": "compolllo.png",
+            "texto": "pollo"
+          },
+          {
+            "nombre": "ravioles",
+            "src": "comravioles.png",
+            "texto": "ravioles"
+          },
+          {
+            "nombre": "tacos",
+            "src": "comtacos.png",
+            "texto": "tacos"
+          }
+
+        ]
+      },
+      {
         "nombre": "Colores",
         "src": "imagenes/coloreslapicesmain.png",
         "imagenes": [

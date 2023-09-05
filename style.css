@@ -71,3 +71,9 @@ button {
     height: 100%;
     cursor: pointer;
 }
+.separador {
+    color: rgb(146, 146, 146);
+    width: 100%; /* Ocupa todo el ancho del grid */
+    margin-bottom: 0.5rem; /* Espacio inferior opcional para separar los elementos */
+    grid-column: 1 / -1; /* Se extiende desde la primera columna hasta la última */
+}
