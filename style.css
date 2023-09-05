@@ -1,9 +1,10 @@
-/* Colores */
+/* Variables de colores */
 :root {
     --color-fondo: #ffffff;
     --color-encabezado: #ffdede;
     --color-texto: rgb(47, 47, 47);
     --color-boton: rgb(255, 255, 255);
+    --color-separador: rgb(146, 146, 146);
 }
 
 /* Estilos globales */
@@ -16,10 +17,12 @@ body {
 
 /* Encabezado */
 header {
+   
     background-color: var(--color-encabezado);
     color: var(--color-texto);
     text-align: center;
     padding: 1rem;
+    margin-bottom: 8px;
 }
 
 /* Botones */
@@ -37,12 +40,6 @@ button {
     background-color: var(--color-encabezado);
     width: 180px;
     height: 75px;
-}
-
-.categorias button {
-    padding: 0%;
-    margin: 0.5rem;
-    color: var(--color-boton);
     border: none;
     cursor: pointer;
 }
@@ -51,7 +48,7 @@ button {
 .imagenes-grid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 180px));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Ajustar el ancho mínimo y máximo */
     gap: 0.3rem;
     justify-items: center;
     align-items: start;
@@ -62,18 +59,28 @@ button {
     text-align: center;
     padding: 0.1rem;
     background-color: white;
-    width: 90%;
+    width: 100%; /* Ancho al 100% para llenar el espacio en el grid */
 }
 
 /* Imágenes */
 .imagen-container img {
-    width: 100%;
-    height: 100%;
+    max-width: 100%; /* Máximo ancho del 100% para ajustarse al contenedor */
+    height: auto; /* Mantener la proporción de aspecto */
     cursor: pointer;
 }
+.categoria-button {
+    padding: 0; /* Eliminar relleno */
+    border: none; /* Eliminar borde */
+    background: none; /* Eliminar fondo */
+}
+.categoria-button img {
+    border: none; /* Eliminar borde de la imagen */
+}
+
+/* Separador */
 .separador {
-    color: rgb(146, 146, 146);
-    width: 100%; /* Ocupa todo el ancho del grid */
-    margin-bottom: 0.5rem; /* Espacio inferior opcional para separar los elementos */
-    grid-column: 1 / -1; /* Se extiende desde la primera columna hasta la última */
+    color: var(--color-separador);
+    width: 100%;
+    margin-bottom: 0.5rem;
+    grid-column: 1 / -1;
 }

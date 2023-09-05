@@ -44,11 +44,11 @@ function cargarDatos() {
             data.categorias.forEach(categoria => {
                 
                 const categoriaButton = document.createElement('button');
+                categoriaButton.classList.add('categoria-button');
                // categoriaButton.textContent = categoria.nombre;
                 const imagen = document.createElement('img');
                 imagen.src = categoria.src;
                 categoriaButton.appendChild(imagen);
-
                 categoriaButton.addEventListener('click', () => {
                     mostrarImagenes(categoria.imagenes);
                 });
