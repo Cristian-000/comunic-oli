@@ -16,13 +16,12 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 
 
 button {
-
     margin: 0.5rem;
     color: rgb(255, 255, 255);
     border: none;
@@ -53,7 +52,7 @@ button {
 .imagenes-grid {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 180px));
     /* Auto-fill en lugar de auto-fit */
     gap: 0.3rem;
     justify-items: center;
@@ -63,8 +62,7 @@ button {
 
 .imagen-container {
     text-align: center;
-    border: 1px solid #ffffff;
-    padding: 0.2rem;
+    padding: 0.1rem;
     background-color: white;
     width: 100%;
     /* Establecemos un ancho fijo para el contenedor */
