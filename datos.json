@@ -2,57 +2,12 @@
     "categorias": [
       {
         "nombre": "Quiero",
-        "src": "imagenes/numerosmain.png",
+        "src": "imagenes/qcantar.png",
         "imagenes": [
           {
             "nombre": "jugar afuera",
             "src": "jugarafuera.png",
             "texto": "jugar afuera"
-          },
-          {
-            "nombre": "2",
-            "src": "num2.png",
-            "texto": "dos"
-          },
-          {
-            "nombre": "3",
-            "src": "num3.png",
-            "texto": "tres"
-          },
-          {
-            "nombre": "4",
-            "src": "num4.png",
-            "texto": "cuatro"
-          },
-          {
-            "nombre": "5",
-            "src": "num5.png",
-            "texto": "cinco"
-          },
-          {
-            "nombre": "6",
-            "src": "num6.png",
-            "texto": "seis"
-          },
-          {
-            "nombre": "7",
-            "src": "num7.png",
-            "texto": "siete"
-          },
-          {
-            "nombre": "8",
-            "src": "num8.png",
-            "texto": "ocho"
-          },
-          {
-            "nombre": "9",
-            "src": "num9.png",
-            "texto": "nueve"
-          },
-          {
-            "nombre": "10",
-            "src": "num10.png",
-            "texto": "diez"
           }
         ]
       },
