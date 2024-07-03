@@ -6,6 +6,19 @@
         "texto": "Quiero",
         "imagenes": [
           {
+            "nombre": "celular",
+            "src": "qtabletdos.png",
+            "texto": "celular"
+          },{
+            "nombre": "juguetes",
+            "src": "qjueguetes.png",
+            "texto": "juguetes"
+          },{
+            "nombre": "dibujar",
+            "src": "qdibujar.png",
+            "texto": "dibujar"
+          },
+          {
             "nombre": "jugar afuera",
             "src": "jugarafuera.png",
             "texto": "jugar afuera"
@@ -27,10 +40,6 @@
             "src": "qcambiarropa.png",
             "texto": "cambiar ropa"
           },{
-            "nombre": "dibujar",
-            "src": "qdibujar.png",
-            "texto": "dibujar"
-          },{
             "nombre": "ducha",
             "src": "qducha.png",
             "texto": "ducha"
@@ -42,10 +51,6 @@
             "nombre": "foto",
             "src": "qfoto.png",
             "texto": "foto"
-          },{
-            "nombre": "juguetes",
-            "src": "qjueguetes.png",
-            "texto": "juguetes"
           },{
             "nombre": "leer",
             "src": "qleer.png",
