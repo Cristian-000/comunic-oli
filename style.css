@@ -1,7 +1,7 @@
 /* Variables de colores */
 :root {
     --color-fondo: #ffffff;
-    --color-encabezado: #ffdede;
+    --color-encabezado: #ffffff;
     --color-texto: rgb(47, 47, 47);
     --color-boton: rgb(255, 255, 255);
     --color-separador: rgb(146, 146, 146);
@@ -23,6 +23,8 @@ header {
     text-align: center;
     padding: 1rem;
     margin-bottom: 8px;
+    border-bottom: 1px solid rgb(113, 113, 113);
+    
 }
 
 /* Botones */

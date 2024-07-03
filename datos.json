@@ -2,12 +2,54 @@
     "categorias": [
       {
         "nombre": "Quiero",
-        "src": "imagenes/qcantar.png",
+        "src": "imagenes/cantar.png",
+        "texto": "Quiero",
         "imagenes": [
           {
             "nombre": "jugar afuera",
             "src": "jugarafuera.png",
             "texto": "jugar afuera"
+          },
+          {
+            "nombre": "pasear",
+            "src": "qpasear.png",
+            "texto": "pasear"
+          },{
+            "nombre": "bailar",
+            "src": "qbailar.png",
+            "texto": "bailar"
+          },{
+            "nombre": "cantar",
+            "src": "qcantar.png",
+            "texto": "cantar"
+          },{
+            "nombre": "cambiar ropa",
+            "src": "qcambiarropa.png",
+            "texto": "cambiar ropa"
+          },{
+            "nombre": "dibujar",
+            "src": "qdibujar.png",
+            "texto": "dibujar"
+          },{
+            "nombre": "ducha",
+            "src": "qducha.png",
+            "texto": "ducha"
+          },{
+            "nombre": "estudiar",
+            "src": "qestudiar.png",
+            "texto": "estudiar"
+          },{
+            "nombre": "foto",
+            "src": "qfoto.png",
+            "texto": "foto"
+          },{
+            "nombre": "juguetes",
+            "src": "qjueguetes.png",
+            "texto": "juguetes"
+          },{
+            "nombre": "leer",
+            "src": "qleer.png",
+            "texto": "leer"
           }
         ]
       },
