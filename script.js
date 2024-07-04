@@ -20,9 +20,9 @@ function hablarTexto(texto) {
     const utterance = new SpeechSynthesisUtterance(texto);
 
     // Configurar opciones de síntesis de voz según sea necesario (velocidad, tono, idioma, etc.)
-    // utterance.rate = 1.0; // Velocidad normal
-    // utterance.pitch = 1.0; // Tono normal
-    // utterance.lang = 'es-ES'; // Establece el idioma, por ejemplo, español
+    utterance.rate = 0.6; // Velocidad normal
+    utterance.pitch = 1.1; // Tono normal
+  // utterance.lang = 'es-UY'; // Establece el idioma, por ejemplo, español
 
     // Manejar el evento 'end' para indicar que la síntesis ha terminado
     utterance.onend = () => {
