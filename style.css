@@ -209,7 +209,7 @@ header {
 }
 
 #leer-texto {
-    background-color: var(--color-boton);
+    background-color: #ccc;
     color: var(--color-texto);
     padding: 10px 20px;
     font-size: 16px;

@@ -103,6 +103,8 @@ function cargarHistorial() {
 
 // Función para agregar texto al historial y guardarlo en localStorage
 function agregarAlHistorial(texto) {
+    if (texto.trim() === "") return; // Verificación de texto vacío
+
     const historial = JSON.parse(localStorage.getItem('historial')) || [];
     historial.push(texto);
     localStorage.setItem('historial', JSON.stringify(historial));
