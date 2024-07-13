@@ -37,6 +37,8 @@ header {
     color: var(--color-boton);
     border: none;
     cursor: pointer;
+    background-color: var(--color-encabezado);
+ 
 }
 
 #back-button i, #back-button-escribir i {
