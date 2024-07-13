@@ -1,37 +1,21 @@
-
 let sintesisEnCurso = false;
-
-// Event listener para las imágenes (reproducir audio al hacer clic)
-const imagenes = document.querySelectorAll('.imagenes img');
-imagenes.forEach((imagen, index) => {
-    imagen.addEventListener('click', () => {
-        hablarTexto('Texto de la imagen en voz'); // Reemplaza con el texto de la imagen
-    });
-});
 
 // Función para hablar texto en voz
 function hablarTexto(texto) {
-    // Si ya hay una síntesis de voz en curso, cáncelala
     if (sintesisEnCurso) {
         window.speechSynthesis.cancel();
     }
 
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
+    utterance.rate = 0.6;
+    utterance.pitch = 1.1;
 
-    // Configurar opciones de síntesis de voz según sea necesario (velocidad, tono, idioma, etc.)
-    utterance.rate = 0.6; // Velocidad normal
-    utterance.pitch = 1.1; // Tono normal
-  // utterance.lang = 'es-UY'; // Establece el idioma, por ejemplo, español
-
-    // Manejar el evento 'end' para indicar que la síntesis ha terminado
     utterance.onend = () => {
         sintesisEnCurso = false;
     };
 
-    // Iniciar la síntesis de voz
     synth.speak(utterance);
-
     sintesisEnCurso = true;
 }
 
@@ -40,19 +24,31 @@ function cargarDatos() {
     fetch('datos.json')
         .then(response => response.json())
         .then(data => {
-            // Iterar a través de las categorías y mostrar botones
+            const categoriasGrid = document.querySelector('.categorias-grid');
+            const dropdownContent = document.querySelector('.dropdown-content');
             data.categorias.forEach(categoria => {
-                
                 const categoriaButton = document.createElement('button');
                 categoriaButton.classList.add('categoria-button');
-               // categoriaButton.textContent = categoria.nombre;
                 const imagen = document.createElement('img');
                 imagen.src = categoria.src;
                 categoriaButton.appendChild(imagen);
                 categoriaButton.addEventListener('click', () => {
                     mostrarImagenes(categoria.imagenes);
+                    document.querySelector('.categorias-grid').style.display = 'none';
+                    document.querySelector('.imagenes-grid').style.display = 'grid';
+                    document.querySelector('#back-button').classList.remove('hidden');
                 });
-                document.querySelector('.categorias').appendChild(categoriaButton);
+                categoriasGrid.appendChild(categoriaButton);
+
+                const dropdownButton = document.createElement('button');
+                dropdownButton.textContent = categoria.nombre;
+                dropdownButton.addEventListener('click', () => {
+                    mostrarImagenes(categoria.imagenes);
+                    document.querySelector('.categorias-grid').style.display = 'none';
+                    document.querySelector('.imagenes-grid').style.display = 'grid';
+                    document.querySelector('#back-button').classList.remove('hidden');
+                });
+                dropdownContent.appendChild(dropdownButton);
             });
         })
         .catch(error => {
@@ -61,14 +57,12 @@ function cargarDatos() {
 }
 
 // Función para mostrar imágenes y texto asociado en la categoría seleccionada
-
 function mostrarImagenes(imagenes) {
     const imagenesGrid = document.querySelector('.imagenes-grid');
-    imagenesGrid.innerHTML = ''; // Limpiamos el grid antes de agregar nuevas imágenes
+    imagenesGrid.innerHTML = '';
 
     imagenes.forEach(imagen => {
         if (imagen.separador) {
-            // Agregar un elemento separador (por ejemplo, <hr>) al grid
             const separador = document.createElement('hr');
             separador.classList.add('separador');
             imagenesGrid.appendChild(separador);
@@ -77,8 +71,8 @@ function mostrarImagenes(imagenes) {
             imgContainer.classList.add('imagen-container');
 
             const imgElement = document.createElement('img');
-            imgElement.src = `imagenes/${imagen.src}`; // Ruta relativa a la carpeta "imagenes"
-            imgElement.alt = imagen.texto; // Agregamos el texto como atributo "alt"
+            imgElement.src = `imagenes/${imagen.src}`;
+            imgElement.alt = imagen.texto;
 
             imgElement.addEventListener('click', () => {
                 hablarTexto(imagen.texto);
@@ -90,7 +84,57 @@ function mostrarImagenes(imagenes) {
     });
 }
 
+// Función para cargar y mostrar el historial de textos
+function cargarHistorial() {
+    const historialLista = document.getElementById('historial-lista');
+    historialLista.innerHTML = '';
+
+    const historial = JSON.parse(localStorage.getItem('historial')) || [];
+
+    historial.reverse().forEach(texto => {
+        const li = document.createElement('li');
+        li.textContent = texto;
+        li.addEventListener('click', () => {
+            hablarTexto(texto);
+        });
+        historialLista.appendChild(li);
+    });
+}
+
+// Función para agregar texto al historial y guardarlo en localStorage
+function agregarAlHistorial(texto) {
+    const historial = JSON.parse(localStorage.getItem('historial')) || [];
+    historial.push(texto);
+    localStorage.setItem('historial', JSON.stringify(historial));
+    cargarHistorial();
+}
+
+// Event listener para el botón de regresar en index.html
+const backButton = document.getElementById('back-button');
+if (backButton) {
+    backButton.addEventListener('click', () => {
+        document.querySelector('.categorias-grid').style.display = 'grid';
+        document.querySelector('.imagenes-grid').style.display = 'none';
+        backButton.classList.add('hidden');
+    });
+}
+
+// Event listener para el botón de regresar en escribir.html
+const backButtonEscribir = document.getElementById('back-button-escribir');
+if (backButtonEscribir) {
+    backButtonEscribir.addEventListener('click', () => {
+        window.history.back();
+    });
+
+    document.getElementById('leer-texto').addEventListener('click', () => {
+        const texto = document.getElementById('texto-escribir').value;
+        hablarTexto(texto);
+        agregarAlHistorial(texto);
+    });
+
+    // Cargar el historial al cargar la página
+    window.addEventListener('load', cargarHistorial);
+}
 
 // Cargar los datos cuando la página se cargue
-window.addEventListener('load', cargarDatos, mostrarImagenes);
-
+window.addEventListener('load', cargarDatos);

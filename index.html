@@ -5,19 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplicación de Categorías</title>
     <link rel="stylesheet" href="style.css">
-     <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
     <header>
-    <div class="categorias navegacion">
-    </div>
+        <nav class="navbar">
+            <button id="back-button" class="hidden"><i class="fas fa-arrow-left"></i>Regresar</button>
+            <div class="dropdown">
+                <button class="dropbtn">Categorías</button>
+                <div class="dropdown-content"></div>
+            </div>
+            <a href="escribir.html" class="escribir-link">Escribir para Leer</a>
+        </nav>
     </header>
     <main>
-       
-        <div class="imagenes-grid">
-           
-            <!-- Agrega más imágenes según sea necesario -->
-        </div>
-    </main>   
+        <div class="categorias-grid"></div>
+        <div class="imagenes-grid"></div>
+    </main>
 </body>
 </html>
