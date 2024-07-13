@@ -8,7 +8,7 @@ function hablarTexto(texto) {
 
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    utterance.rate = 0.6;
+    utterance.rate = 1;
     utterance.pitch = 1.1;
 
     utterance.onend = () => {
