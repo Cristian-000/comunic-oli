@@ -7,54 +7,42 @@
         "imagenes": [
           {
             "nombre": "bien",
-            "src": "imagenes/em",
-            "texto": "celular"
+            "src": "embien.png",
+            "texto": "bien"
           },{
-            "nombre": "juguetes",
-            "src": "qjueguetes.png",
-            "texto": "juguetes"
+            "nombre": "feliz",
+            "src": "emfeliz.png",
+            "texto": "feliz"
           },{
-            "nombre": "dibujar",
-            "src": "qdibujar.png",
-            "texto": "dibujar"
+            "nombre": "divertida",
+            "src": "emdivertida.png",
+            "texto": "divertida"
           },
           {
-            "nombre": "jugar afuera",
-            "src": "jugarafuera.png",
-            "texto": "jugar afuera"
+            "nombre": "amor",
+            "src": "embeso.png",
+            "texto": "amor"
+          },{
+            "nombre": "aburrida",
+            "src": "emaburrida.png",
+            "texto": "aburrida"
           },
           {
-            "nombre": "pasear",
-            "src": "qpasear.png",
-            "texto": "pasear"
+            "nombre": "enferma",
+            "src": "emenferma.png",
+            "texto": "enferma"
           },{
-            "nombre": "bailar",
-            "src": "qbailar.png",
-            "texto": "bailar"
+            "nombre": "mal",
+            "src": "emmal.png",
+            "texto": "mal"
           },{
-            "nombre": "cantar",
-            "src": "qcantar.png",
-            "texto": "cantar"
+            "nombre": "triste",
+            "src": "emtriste.png",
+            "texto": "triste"
           },{
-            "nombre": "cambiar ropa",
-            "src": "qcambiarropa.png",
-            "texto": "cambiar ropa"
-          },{
-            "nombre": "ducha",
-            "src": "qducha.png",
-            "texto": "ducha"
-          },{
-            "nombre": "estudiar",
-            "src": "qestudiar.png",
-            "texto": "estudiar"
-          },{
-            "nombre": "foto",
-            "src": "qfoto.png",
-            "texto": "foto"
-          },{
-            "nombre": "leer",
-            "src": "qleer.png",
-            "texto": "leer"
+            "nombre": "muy triste",
+            "src": "emllanto.png",
+            "texto": "muy triste"
           }
         ]
       },
