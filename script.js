@@ -137,6 +137,11 @@ function agregarAlHistorialEscuchar(texto) {
 
 // Función para manejar el reconocimiento de voz
 function empezarEscuchar() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert('Tu navegador no soporta la API de reconocimiento de voz');
+        return;
+    }
+
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     recognition.lang = 'es-ES';
     recognition.interimResults = false;
