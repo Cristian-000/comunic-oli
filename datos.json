@@ -1,5 +1,6 @@
 {
     "categorias": [
+     
       {
         "nombre": "Siento",
         "src": "imagenes/emojismain.png",
@@ -28,9 +29,9 @@
             "texto": "aburrida"
           },
           {
-            "nombre": "enferma",
+            "nombre": "cansada",
             "src": "emenferma.png",
-            "texto": "enferma"
+            "texto": "cansada"
           },{
             "nombre": "mal",
             "src": "emmal.png",
@@ -43,6 +44,22 @@
             "nombre": "muy triste",
             "src": "emllanto.png",
             "texto": "muy triste"
+          },{
+            "nombre": "sorprendida",
+            "src": "emsorprendida.png",
+            "texto": "sorprendida"
+          },{
+            "nombre": "enojada",
+            "src": "emenojada.png",
+            "texto": "enojada"
+          },{
+            "nombre": "confundida",
+            "src": "emconfundida.png",
+            "texto": "confundida"
+          },{
+            "nombre": "inteligente",
+            "src": "eminteligente.png",
+            "texto": "inteligente"
           }
         ]
       },
@@ -506,6 +523,82 @@
             "texto": "tacos"
           }
 
+        ]
+      },
+      {
+        "nombre": "Lugares",
+        "src": "imagenes/lugares.png",
+        "texto": "Lugares",
+        "imagenes": [
+          {
+            "nombre": "casa",
+            "src": "lucasa.png",
+            "texto": "casa"
+          },
+          {
+            "nombre": "casa de papa",
+            "src": "lucasadepapa.png",
+            "texto": "casa de papá"
+          },
+          {
+            "nombre": "escuela",
+            "src": "luescuela.png",
+            "texto": "escuela"
+          },
+          {
+            "nombre": "casa abuela",
+            "src": "lucasaabuela.png",
+            "texto": "parque"
+          },
+          {
+            "nombre": "trabajo papa",
+            "src": "lutrabajopapa.png",
+            "texto": "trabajo de papá"
+          }
+        ]
+      },
+      {
+        "nombre": "Actividades Diarias",
+        "src": "imagenes/actividades.png",
+        "texto": "Actividades Diarias",
+        "imagenes": [
+          {
+            "nombre": "ir al baño",
+            "src": "cacbaño.png",
+            "texto": "ir al baño"
+          },
+          {
+            "nombre": "cepillar",
+            "src": "accepillar.png",
+            "texto": "Cepillar los dientes"
+          },
+          {
+            "nombre": "descansar",
+            "src": "acdescansar.png",
+            "texto": "descansar"
+          },
+          {
+            "nombre": "dormir",
+            "src": "dormir.png",
+            "texto": "Dormir"
+          }
+        ]
+      },
+      {
+        "nombre": "Animales",
+        "src": "imagenes/animales.png",
+        "texto": "Animales",
+        "imagenes": [
+          {
+            "nombre": "perro",
+            "src": "perro.png",
+            "texto": "Perro"
+          },
+          {
+            "nombre": "gato",
+            "src": "gato.png",
+            "texto": "Gato"
+          }
         ]
       }
       

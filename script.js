@@ -87,18 +87,32 @@ function mostrarImagenes(imagenes) {
 // Función para cargar y mostrar el historial de textos
 function cargarHistorial() {
     const historialLista = document.getElementById('historial-lista');
-    historialLista.innerHTML = '';
-
-    const historial = JSON.parse(localStorage.getItem('historial')) || [];
-
-    historial.reverse().forEach(texto => {
-        const li = document.createElement('li');
-        li.textContent = texto;
-        li.addEventListener('click', () => {
-            hablarTexto(texto);
+    if (historialLista) {
+        historialLista.innerHTML = '';
+        const historial = JSON.parse(localStorage.getItem('historial')) || [];
+        historial.reverse().forEach(texto => {
+            const li = document.createElement('li');
+            li.textContent = texto;
+            li.addEventListener('click', () => {
+                hablarTexto(texto);
+            });
+            historialLista.appendChild(li);
         });
-        historialLista.appendChild(li);
-    });
+    }
+
+    const historialListaEscuchar = document.getElementById('historial-lista-escuchar');
+    if (historialListaEscuchar) {
+        historialListaEscuchar.innerHTML = '';
+        const historialEscuchar = JSON.parse(localStorage.getItem('historialEscuchar')) || [];
+        historialEscuchar.reverse().forEach(texto => {
+            const li = document.createElement('li');
+            li.textContent = texto;
+            li.addEventListener('click', () => {
+                hablarTexto(texto);
+            });
+            historialListaEscuchar.appendChild(li);
+        });
+    }
 }
 
 // Función para agregar texto al historial y guardarlo en localStorage
@@ -109,6 +123,40 @@ function agregarAlHistorial(texto) {
     historial.push(texto);
     localStorage.setItem('historial', JSON.stringify(historial));
     cargarHistorial();
+}
+
+// Función para agregar texto al historial de escuchar y guardarlo en localStorage
+function agregarAlHistorialEscuchar(texto) {
+    if (texto.trim() === "") return; // Verificación de texto vacío
+
+    const historialEscuchar = JSON.parse(localStorage.getItem('historialEscuchar')) || [];
+    historialEscuchar.push(texto);
+    localStorage.setItem('historialEscuchar', JSON.stringify(historialEscuchar));
+    cargarHistorial();
+}
+
+// Función para manejar el reconocimiento de voz
+function empezarEscuchar() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'es-ES';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+
+    recognition.onresult = (event) => {
+        const texto = event.results[0][0].transcript;
+        document.getElementById('texto-escuchado').textContent = texto;
+        agregarAlHistorialEscuchar(texto);
+    };
+
+    recognition.onspeechend = () => {
+        recognition.stop();
+    };
+
+    recognition.onerror = (event) => {
+        console.error('Error en el reconocimiento de voz: ', event.error);
+    };
 }
 
 // Event listener para el botón de regresar en index.html
@@ -133,6 +181,19 @@ if (backButtonEscribir) {
         hablarTexto(texto);
         agregarAlHistorial(texto);
     });
+
+    // Cargar el historial al cargar la página
+    window.addEventListener('load', cargarHistorial);
+}
+
+// Event listener para el botón de regresar en escuchar.html
+const backButtonEscuchar = document.getElementById('back-button-escuchar');
+if (backButtonEscuchar) {
+    backButtonEscuchar.addEventListener('click', () => {
+        window.history.back();
+    });
+
+    document.getElementById('empezar-escuchar').addEventListener('click', empezarEscuchar);
 
     // Cargar el historial al cargar la página
     window.addEventListener('load', cargarHistorial);
