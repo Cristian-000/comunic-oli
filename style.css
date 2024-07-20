@@ -166,7 +166,9 @@ header {
 }
 /* Estilos para el footer */
 footer {
-    align-items: space-between;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     text-align: center;
     padding: 10px;
     background-color: #f8f8f8;
@@ -178,7 +180,7 @@ footer {
 footer a {
     text-decoration: none;
     color: #000;
-    font-size: 1.2em;
+    font-size: 1rem;
 }
 
 /* Estilos para la sección de ajustes */
