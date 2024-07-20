@@ -182,6 +182,7 @@ if (backButton) {
         document.querySelector('.categorias-grid').style.display = 'grid';
         document.querySelector('.imagenes-grid').style.display = 'none';
         backButton.classList.add('hidden');
+        document.querySelect('footer').style.display = 'block';
     });
 }
 
