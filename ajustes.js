@@ -5,8 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const pitchValue = document.getElementById('pitch-value');
 
     // Cargar valores guardados de localStorage
-    const savedRate = localStorage.getItem('speechRate');
-    const savedPitch = localStorage.getItem('speechPitch');
+    const savedRate = localStorage.getItem('speechRate') || 1;
+    const savedPitch = localStorage.getItem('speechPitch') || 1;
 
     if (savedRate) {
         rateSlider.value = savedRate;
