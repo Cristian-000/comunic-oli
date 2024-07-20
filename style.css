@@ -30,7 +30,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 2.5rem;
+    min-height: 3rem;
 }
 
 #back-button, #back-button-escribir, ##back-button-escuchar {
@@ -54,7 +54,7 @@ header {
 .dropbtn {
     background-color: var(--color-encabezado);
     color: var(--color-texto);
-    padding: 16px;
+    padding: 8px;
     font-size: 16px;
     border: none;
     cursor: pointer;
