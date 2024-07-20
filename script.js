@@ -49,7 +49,7 @@ function cargarDatos() {
 
                 const dropdownButton = document.createElement('button');
 
-                dropdownButton.classList.add("dropcatbtn");
+              //  dropdownButton.classList.add("dropcatbtn");
                 dropdownButton.textContent = categoria.nombre;
                 dropdownButton.addEventListener('click', () => {
                     mostrarImagenes(categoria.imagenes);
