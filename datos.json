@@ -2,9 +2,9 @@
     "categorias": [
      
       {
-        "nombre": "Siento",
+        "nombre": "Emociones",
         "src": "imagenes/emojismain.png",
-        "texto": "Siento",
+        "texto": "emociones",
         "imagenes": [
           {
             "nombre": "bien",
