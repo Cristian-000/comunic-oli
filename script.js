@@ -8,8 +8,13 @@ function hablarTexto(texto) {
 
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(texto);
-    utterance.rate = 1;
-    utterance.pitch = 1.1;
+
+    // Cargar valores de configuración desde localStorage
+    const rate = localStorage.getItem('speechRate') || 1;
+    const pitch = localStorage.getItem('speechPitch') || 1;
+
+    utterance.rate = parseFloat(rate);
+    utterance.pitch = parseFloat(pitch);
 
     utterance.onend = () => {
         sintesisEnCurso = false;
