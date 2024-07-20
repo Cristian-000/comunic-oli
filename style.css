@@ -32,7 +32,7 @@ header {
     align-items: center;
 }
 
-#back-button, #back-button-escribir {
+#back-button, #back-button-escribir, ##back-button-escuchar {
     margin: 0.5rem;
     color: var(--color-boton);
     border: none;
@@ -41,7 +41,7 @@ header {
  
 }
 
-#back-button i, #back-button-escribir i {
+#back-button i, #back-button-escribir i, #back-button-escuchar i {
     margin-right: 0.5rem;
 }
 
