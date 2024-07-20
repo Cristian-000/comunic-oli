@@ -42,12 +42,14 @@ function cargarDatos() {
                     document.querySelector('.categorias-grid').style.display = 'none';
                     document.querySelector('.imagenes-grid').style.display = 'grid';
                     document.querySelector('#back-button').classList.remove('hidden');
+                    document.querySelector('footer').style.dysplay = 'none';
                 });
                 categoriasGrid.appendChild(categoriaButton);
 
                 const dropdownButton = document.createElement('button');
                 dropdownButton.textContent = categoria.nombre;
                 dropdownButton.addEventListener('click', () => {
+                    hablarTexto(categoria.nombre);
                     mostrarImagenes(categoria.imagenes);
                     document.querySelector('.categorias-grid').style.display = 'none';
                     document.querySelector('.imagenes-grid').style.display = 'grid';
