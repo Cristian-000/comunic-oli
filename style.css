@@ -34,7 +34,7 @@ header {
 }
 
 #back-button, #back-button-escribir, #back-button-escuchar, #back-button-ajustes {
-    margin: 0.5rem;
+    font-size: 16px;
     color: var(--color-boton);
     border: none;
     cursor: pointer;
