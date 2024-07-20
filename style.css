@@ -237,18 +237,19 @@ header {
     margin-bottom: 0.5rem;
 }
 
-#historial-lista {
+#historial-lista, #historial-lista-escuchar {
     list-style: none;
     padding: 0;
 }
 
-#historial-lista li {
+#historial-lista li, #historial-lista-escuchar li {
     background-color: #f0f0f0;
     padding: 10px;
     margin-bottom: 0.5rem;
     cursor: pointer;
 }
 
-#historial-lista li:hover {
+#historial-lista li:hover,
+#historial-lista-escuchar li:hover{
     background-color: #ddd;
 }
