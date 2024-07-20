@@ -33,7 +33,7 @@ header {
     min-height: 3.2rem;
 }
 
-#back-button, #back-button-escribir, #back-button-escuchar {
+#back-button, #back-button-escribir, #back-button-escuchar, #back-button-ajustes {
     margin: 0.5rem;
     color: var(--color-boton);
     border: none;
@@ -42,7 +42,7 @@ header {
  
 }
 
-#back-button i, #back-button-escribir i, #back-button-escuchar i {
+#back-button i, #back-button-escribir i, #back-button-escuchar i, #back-button-ajustes i {
     margin-right: 0.5rem;
 }
 
