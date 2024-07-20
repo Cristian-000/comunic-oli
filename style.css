@@ -166,6 +166,7 @@ header {
 }
 /* Estilos para el footer */
 footer {
+    align-items: space-between;
     text-align: center;
     padding: 10px;
     background-color: #f8f8f8;
