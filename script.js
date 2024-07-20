@@ -43,11 +43,13 @@ function cargarDatos() {
                     document.querySelector('.categorias-grid').style.display = 'none';
                     document.querySelector('.imagenes-grid').style.display = 'grid';
                     document.querySelector('#back-button').classList.remove('hidden');
-                    document.querySelector('footer').style.dysplay = 'none';
+                    document.querySelector('footer').style.display = 'none';
                 });
                 categoriasGrid.appendChild(categoriaButton);
 
                 const dropdownButton = document.createElement('button');
+
+                dropdownButton.addClassList = "dropcatbtn";
                 dropdownButton.textContent = categoria.nombre;
                 dropdownButton.addEventListener('click', () => {
                     mostrarImagenes(categoria.imagenes);
@@ -55,6 +57,7 @@ function cargarDatos() {
                     document.querySelector('.categorias-grid').style.display = 'none';
                     document.querySelector('.imagenes-grid').style.display = 'grid';
                     document.querySelector('#back-button').classList.remove('hidden');
+                    document.querySelector('.dropcatbtn').style.display = 'none';
                 });
                 dropdownContent.appendChild(dropdownButton);
             });
