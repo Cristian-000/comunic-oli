@@ -180,7 +180,7 @@ footer {
 }
 
 footer a {
-    
+    margin-right: 16px;
     text-decoration: none;
     color: #000;
     font-size: 1rem;
