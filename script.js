@@ -51,6 +51,7 @@ function cargarDatos() {
                 dropdownButton.textContent = categoria.nombre;
                 dropdownButton.addEventListener('click', () => {
                     mostrarImagenes(categoria.imagenes);
+                     hablarTexto(categoria.nombre);
                     document.querySelector('.categorias-grid').style.display = 'none';
                     document.querySelector('.imagenes-grid').style.display = 'grid';
                     document.querySelector('#back-button').classList.remove('hidden');
