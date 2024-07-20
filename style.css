@@ -254,3 +254,7 @@ header {
 #historial-lista-escuchar li:hover{
     background-color: #ddd;
 }
+#historial-lista li:focus,
+#historial-lista-escuchar li:focus{
+    background-color: rgb(101, 159, 59);
+}
