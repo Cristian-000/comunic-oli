@@ -181,8 +181,9 @@ if (backButton) {
     backButton.addEventListener('click', () => {
         document.querySelector('.categorias-grid').style.display = 'grid';
         document.querySelector('.imagenes-grid').style.display = 'none';
+        document.querySelector('footer').style.display = 'block';
         backButton.classList.add('hidden');
-        document.querySelect('footer').style.display = 'block';
+  
     });
 }
 
