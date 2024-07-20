@@ -58,6 +58,7 @@ function cargarDatos() {
                     document.querySelector('.imagenes-grid').style.display = 'grid';
                     document.querySelector('#back-button').classList.remove('hidden');
                     document.querySelector('.dropcatbtn').style.display = 'none';
+                    document.querySelector('footer').style.display = 'none';
                 });
                 dropdownContent.appendChild(dropdownButton);
             });
