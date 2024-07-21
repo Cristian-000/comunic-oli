@@ -73,6 +73,10 @@ header {
     z-index: 1;
 }
 
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 .dropdown-content button {
     color: var(--color-texto);
     padding: 12px 16px;
@@ -88,9 +92,6 @@ header {
     background-color: #ddd;
 }
 
-.dropdown:hover .dropdown-content {
-    display: block;
-}
 
 /* Enlace de Escribir para Leer */
 .escribir-link {
