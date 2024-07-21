@@ -109,11 +109,6 @@
 }
 
 
-.btn-link:hover {
-    color: var(--color-link-hover);
-    text-decoration: underline;
-}
-
 
 
 /* Variables de color (personalizar según tu tema) */
