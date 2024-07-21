@@ -6,10 +6,11 @@
     <title>Usuario</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleUsuario.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script defer src="usuario.js"></script>
+    <script src="usuario.js" defer></script>
 </head>
 <body>
     <header>
@@ -57,34 +58,12 @@
                 </select>
             </div>
             <div id="seccion-adultos"></div>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adultApprovalModal">
-                Guardar Datos
-            </button>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="check-acceso">
+                <label class="form-check-label" for="check-acceso">Soy un adulto y confirmo la información.</label>
+            </div>
+            <button type="button" class="btn btn-primary" id="save-button">Guardar Datos</button>
         </form>
     </section>
-
-    <!-- Modal -->
-    <div class="modal fade" id="adultApprovalModal" tabindex="-1" role="dialog" aria-labelledby="adultApprovalModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="adultApprovalModalLabel">Confirmación de Adulto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="check-acceso">
-                        <label class="form-check-label" for="check-acceso">Soy un adulto y confirmo la información.</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="modal-save-button">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
