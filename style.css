@@ -309,3 +309,7 @@ input[type="range"] {
 #historial-lista-escuchar li:focus{
     background-color: rgb(101, 159, 59);
 }
+
+.adulto-card {
+    margin-bottom: 20px;
+}
