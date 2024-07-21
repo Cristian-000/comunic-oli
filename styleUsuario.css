@@ -5,7 +5,7 @@
 }
 
 /* Mensaje inicial cuando no hay datos */
-#mensaje-inicial {
+#ficha-container p {
     font-size: 1.5rem;
     color: var(--color-texto);
     margin-bottom: 2rem;
@@ -56,50 +56,92 @@
 }
 
 .form-label {
-    display: block;
+    font-size: 1.2rem;
     margin-bottom: 0.5rem;
+    display: block;
 }
 
-.form-control, .form-control-file {
+.form-control {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
+}
+
+.form-control-file {
+    display: block;
+    width: 100%;
 }
 
 .form-check-input {
     margin-top: 0.3rem;
 }
 
-#modal-save-button {
-    display: block;
-    width: 100%;
-    padding: 0.75rem 1.5rem;
-    font-size: 1.2rem;
-    color: white;
-    background-color: var(--color-boton);
-    border: none;
+.form-check-label {
+    margin-left: 0.5rem;
+}
+
+/* Tarjetas de adultos */
+.adulto-form, .adulto-card {
+    margin-bottom: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.adulto-form .card-body, .adulto-card .card-body {
+    padding: 1rem;
+}
+
+.adulto-form .card-title, .adulto-card .card-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.adulto-form .form-group, .adulto-card .card-text {
+    margin-bottom: 0.75rem;
+}
+
+/* Botones */
+.btn {
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
     border-radius: 4px;
     cursor: pointer;
 }
 
-#seccion-adultos {
-    margin-top: 1rem;
-}
-
-/* Botón de regresar */
-#back-button-usuario {
-    font-size: 1rem;
-    color: var(--color-boton);
+.btn-primary {
+    background-color: var(--color-boton);
     border: none;
-    background: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+    color: white;
 }
 
-#back-button-usuario i {
-    margin-right: 0.5rem;
+.btn-primary:hover {
+    background-color: var(--color-boton-hover);
+}
+
+.btn-link {
+    color: var(--color-link);
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--color-navbar);
+    padding: 1rem;
+}
+
+/* Variables de color (personalizar según tu tema) */
+:root {
+    --color-texto: #333;
+    --color-boton: #007bff;
+    --color-boton-hover: #0056b3;
+    --color-link: #007bff;
+    --color-link-hover: #0056b3;
+    --color-navbar: #f8f9fa;
 }
