@@ -56,7 +56,7 @@ function cargarDatos() {
                     document.querySelector('.imagenes-grid').style.display = 'grid';
                     document.querySelector('#back-button').classList.remove('hidden');
                     document.querySelector('footer').style.display = 'none';
-                      dropdownContent.style.display = 'none'; // Ocultar el dropdown
+                    // Ocultar el dropdowndropdownContent.style.display = 'none'; // Ocultar el dropdown
                     
                 });
                 dropdownContent.appendChild(dropdownButton);
