@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuario</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="styleUsuario.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="usuario.js" defer></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script defer src="usuario.js"></script>
 </head>
 <body>
     <header>
@@ -15,37 +15,52 @@
             <button id="back-button-usuario"><i class="fas fa-arrow-left"></i> Regresar</button>
         </nav>
     </header>
-    <main>
-        <div id="ficha-container">
+    <main class="container mt-4">
+        <div id="ficha-container" class="mb-4">
             <h1>Usuario</h1>
-            <img id="foto-usuario" src="" alt="Foto de Usuario">
-            <h2 id="nombre-usuario">Nombre</h2>
-            <h2 id="apellido-usuario">Apellido</h2>
-            <h2 id="instituto-usuario">Escuela</h2>
-            <h2 id="adultos-a-cargo">Adultos a cargo</h2>
+            <img id="foto-usuario" src="#" alt="Foto del usuario" class="img-fluid mb-2">
+            <h2 id="nombre-usuario">Nombre: </h2>
+            <h2 id="apellido-usuario">Apellido: </h2>
+            <h2 id="instituto-usuario">Escuela/Instituto: </h2>
+            <h2 id="adultos-a-cargo">Adultos a cargo: </h2>
         </div>
+        <section id="ajustar-ficha">
+            <form id="formulario">
+                <div class="form-group">
+                    <label for="foto">Seleccionar Foto</label>
+                    <input type="file" class="form-control-file" id="foto">
+                </div>
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" class="form-control" id="nombre">
+                </div>
+                <div class="form-group">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" class="form-control" id="apellido">
+                </div>
+                <div class="form-group">
+                    <label for="instituto">Escuela / Instituto</label>
+                    <input type="text" class="form-control" id="instituto">
+                </div>
+                <div class="form-group">
+                    <label for="cant-adultos">Adultos a cargo</label>
+                    <input type="number" class="form-control" id="cant-adultos" value="1" min="1" max="5">
+                </div>
+                <div id="adultos-container">
+                    <div class="añadir-adulto form-group">
+                        <label for="nombre-adulto">Nombre</label>
+                        <input type="text" class="form-control" id="nombre-adulto">
+                        <label for="apellido-adulto">Apellido</label>
+                        <input type="text" class="form-control" id="apellido-adulto">
+                        <label for="numero-adulto">Número de contacto</label>
+                        <input type="text" class="form-control" id="numero-adulto">
+                        <label for="direccion-adulto">Dirección</label>
+                        <input type="text" class="form-control" id="direccion-adulto">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Guardar</button>
+            </form>
+        </section>
     </main>
-    <section id="ajustar-ficha">
-        <form id="formulario">
-            <label for="foto">Seleccionar Foto</label>
-            <input type="file" id="foto" accept="image/*">
-            <br>
-            <label for="nombre">Nombre</label>
-            <input id="nombre" type="text" value="nombre">
-            <br>
-            <label for="apellido">Apellido</label>
-            <input id="apellido" type="text" value="apellido">
-            <br>
-            <label for="instituto">Escuela / Instituto</label>
-            <input id="instituto" type="text" value="instituto">
-            <br>
-            <label for="cant-adultos">Adultos a cargo</label>
-            <input type="range" id="cant-adultos" min="0" max="5" value="1">
-            <div id="adultos-container">
-                <!-- Contenedores de adultos a cargo se generarán aquí -->
-            </div>
-            <button type="button" id="guardar">Guardar</button>
-        </form>
-    </section>
 </body>
 </html>
