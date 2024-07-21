@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mostrar mensaje si no hay datos guardados
     if (!usuario.nombre && !usuario.apellido && !usuario.institucion && !usuario.direccion) {
-        fichaContainer.innerHTML ="<p>Aún no se han añadido datos de usuario</p>" + formToggle;
+        fichaContainer.innerHTML ="<p>Aún no se han añadido datos de usuario</p>" + formToggle.outerHTML;
     } else {
         // Cargar datos del usuario
         if (usuario.nombre) {
