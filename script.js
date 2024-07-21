@@ -39,7 +39,7 @@ function cargarDatos() {
                 categoriaButton.appendChild(imagen);
                 categoriaButton.addEventListener('click', () => {
                     mostrarImagenes(categoria.imagenes);
-                     hablarTexto(categoria.nombre);
+                    hablarTexto(categoria.nombre);
                     document.querySelector('.categorias-grid').style.display = 'none';
                     document.querySelector('.imagenes-grid').style.display = 'grid';
                     document.querySelector('#back-button').classList.remove('hidden');
@@ -48,17 +48,15 @@ function cargarDatos() {
                 categoriasGrid.appendChild(categoriaButton);
 
                 const dropdownButton = document.createElement('button');
-
-              //  dropdownButton.classList.add("dropcatbtn");
                 dropdownButton.textContent = categoria.nombre;
                 dropdownButton.addEventListener('click', () => {
                     mostrarImagenes(categoria.imagenes);
-                     hablarTexto(categoria.nombre);
+                    hablarTexto(categoria.nombre);
                     document.querySelector('.categorias-grid').style.display = 'none';
                     document.querySelector('.imagenes-grid').style.display = 'grid';
                     document.querySelector('#back-button').classList.remove('hidden');
-                   // document.querySelector('.dropcatbtn').style.display = 'none';
                     document.querySelector('footer').style.display = 'none';
+                    dropdownContent.style.display = 'none'; // Ocultar el dropdown
                 });
                 dropdownContent.appendChild(dropdownButton);
             });
@@ -95,6 +93,9 @@ function mostrarImagenes(imagenes) {
         }
     });
 }
+
+// Cargar los datos cuando la página se cargue
+window.addEventListener('load', cargarDatos);
 
 // Función para cargar y mostrar el historial de textos
 function cargarHistorial() {
