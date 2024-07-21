@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cantAdultosInput = document.getElementById('cant-adultos');
     const formulario = document.getElementById('formulario');
     const checkAcceso = document.getElementById('check-acceso');
-    const modalSaveButton = document.getElementById('modal-save-button');
+    const saveButton = document.getElementById('save-button');
     const formToggle = document.getElementById('form-toggle');
     const backButton = document.getElementById('back-button-usuario');
     const fotoUsuarioInput = document.getElementById('foto-usuario');
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
         adultosContainer.appendChild(div);
     }
 
-    modalSaveButton.addEventListener('click', function(event) {
+    saveButton.addEventListener('click', function(event) {
         if (!checkAcceso.checked) {
             alert('Se requiere la supervisión de un adulto para guardar los datos.');
             return;
@@ -123,7 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         localStorage.setItem('adultos', JSON.stringify(adultos));
         alert('Datos guardados correctamente.');
-        $('#adultApprovalModal').modal('hide');
         location.reload();
     });
 
@@ -146,7 +145,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     formToggle.addEventListener('click', function() {
-        console.log('Botón "Ajustar Ficha" clickeado');
         formulario.classList.toggle('d-none');
     });
 
