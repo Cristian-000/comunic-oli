@@ -1,115 +1,87 @@
-// Event listener para el botón de regresar en escribir.html
-//const backButtonUsuario = document.getElementById('back-button-usuario');
-//if (backButtonUsuario) {
-//    backButtonUsuario.addEventListener('click', () => {
-//        window.history.back();
-//    });
-document.addEventListener('DOMContentLoaded', function() {
-    // Elementos del DOM
-    const nombreUsuario = document.getElementById('nombre-usuario');
-    const apellidoUsuario = document.getElementById('apellido-usuario');
-    const institutoUsuario = document.getElementById('instituto-usuario');
-    const adultosACargo = document.getElementById('adultos-a-cargo');
-    const fotoUsuario = document.getElementById('foto-usuario');
-
-    const nombreInput = document.getElementById('nombre');
-    const apellidoInput = document.getElementById('apellido');
-    const institutoInput = document.getElementById('instituto');
-    const cantAdultosInput = document.getElementById('cant-adultos');
-    const adultosContainer = document.getElementById('adultos-container');
-    const fotoInput = document.getElementById('foto');
-
-    // Cargar datos del localStorage
+document.addEventListener('DOMContentLoaded', () => {
+    // Función para cargar los datos del usuario desde localStorage
     function cargarDatosUsuario() {
-        const datosUsuario = JSON.parse(localStorage.getItem('datosUsuario'));
-        if (datosUsuario) {
-            nombreUsuario.textContent = datosUsuario.nombre || 'Nombre';
-            apellidoUsuario.textContent = datosUsuario.apellido || 'Apellido';
-            institutoUsuario.textContent = datosUsuario.instituto || 'Instituto';
-            fotoUsuario.src = datosUsuario.foto || '';
+        const nombre = localStorage.getItem('nombre') || '';
+        const apellido = localStorage.getItem('apellido') || '';
+        const instituto = localStorage.getItem('instituto') || '';
+        const adultos = JSON.parse(localStorage.getItem('adultos')) || [];
 
-            nombreInput.value = datosUsuario.nombre || '';
-            apellidoInput.value = datosUsuario.apellido || '';
-            institutoInput.value = datosUsuario.instituto || '';
-            cantAdultosInput.value = datosUsuario.cantAdultos || 1;
+        document.getElementById('nombre-usuario').textContent = nombre;
+        document.getElementById('apellido-usuario').textContent = apellido;
+        document.getElementById('instituto-usuario').textContent = instituto;
 
-            adultosContainer.innerHTML = '';
-            if (datosUsuario.adultos) {
-                datosUsuario.adultos.forEach(adulto => {
-                    agregarAdulto(adulto.nombre, adulto.apellido, adulto.numero, adulto.direccion);
-                });
-            }
-        }
+        const adultosContainer = document.getElementById('adultos-a-cargo');
+        adultosContainer.innerHTML = '';
+        adultos.forEach(adulto => {
+            const adultoDiv = document.createElement('div');
+            adultoDiv.innerHTML = `
+                <h3>Adulto:</h3>
+                <p>Nombre: ${adulto.nombre}</p>
+                <p>Apellido: ${adulto.apellido}</p>
+                <p>Número de contacto: ${adulto.numero}</p>
+                <p>Dirección: ${adulto.direccion}</p>
+            `;
+            adultosContainer.appendChild(adultoDiv);
+        });
     }
 
-    // Guardar datos en el localStorage
+    // Función para guardar los datos del formulario en localStorage
     function guardarDatosUsuario() {
+        const nombre = document.getElementById('nombre').value;
+        const apellido = document.getElementById('apellido').value;
+        const instituto = document.getElementById('instituto').value;
+        const cantidadAdultos = document.getElementById('cant-adultos').value;
+
         const adultos = [];
-        document.querySelectorAll('.adulto').forEach(adulto => {
-            adultos.push({
-                nombre: adulto.querySelector('.nombre-adulto').value,
-                apellido: adulto.querySelector('.apellido-adulto').value,
-                numero: adulto.querySelector('.numero-adulto').value,
-                direccion: adulto.querySelector('.direccion-adulto').value
-            });
-        });
+        for (let i = 1; i <= cantidadAdultos; i++) {
+            const adulto = {
+                nombre: document.getElementById(`nombre-adulto-${i}`).value,
+                apellido: document.getElementById(`apellido-adulto-${i}`).value,
+                numero: document.getElementById(`numero-adulto-${i}`).value,
+                direccion: document.getElementById(`direccion-adulto-${i}`).value
+            };
+            adultos.push(adulto);
+        }
 
-        const datosUsuario = {
-            nombre: nombreInput.value,
-            apellido: apellidoInput.value,
-            instituto: institutoInput.value,
-            foto: fotoUsuario.src,
-            cantAdultos: cantAdultosInput.value,
-            adultos: adultos
-        };
+        localStorage.setItem('nombre', nombre);
+        localStorage.setItem('apellido', apellido);
+        localStorage.setItem('instituto', instituto);
+        localStorage.setItem('adultos', JSON.stringify(adultos));
 
-        localStorage.setItem('datosUsuario', JSON.stringify(datosUsuario));
         cargarDatosUsuario();
     }
 
-    // Agregar campo de adulto
-    function agregarAdulto(nombre = '', apellido = '', numero = '', direccion = '') {
-        const div = document.createElement('div');
-        div.classList.add('adulto');
-        div.innerHTML = `
-            <label>Nombre</label>
-            <input type="text" class="nombre-adulto" value="${nombre}">
-            <br>
-            <label>Apellido</label>
-            <input type="text" class="apellido-adulto" value="${apellido}">
-            <br>
-            <label>Número de contacto</label>
-            <input type="text" class="numero-adulto" value="${numero}">
-            <br>
-            <label>Dirección</label>
-            <input type="text" class="direccion-adulto" value="${direccion}">
-            <br>
-        `;
-        adultosContainer.appendChild(div);
-    }
+    // Manejar el envío del formulario
+    const formulario = document.getElementById('formulario');
+    formulario.addEventListener('submit', (event) => {
+        event.preventDefault();
+        guardarDatosUsuario();
+    });
 
-    // Manejar cambios en el rango de adultos a cargo
-    cantAdultosInput.addEventListener('input', function() {
-        const cantidad = parseInt(cantAdultosInput.value);
+    // Manejar el cambio de la cantidad de adultos
+    const cantAdultosInput = document.getElementById('cant-adultos');
+    cantAdultosInput.addEventListener('input', () => {
+        const cantidadAdultos = cantAdultosInput.value;
+        const adultosContainer = document.querySelector('.añadir-adulto');
         adultosContainer.innerHTML = '';
-        for (let i = 0; i < cantidad; i++) {
-            agregarAdulto();
+
+        for (let i = 1; i <= cantidadAdultos; i++) {
+            const adultoDiv = document.createElement('div');
+            adultoDiv.classList.add('form-group', 'mb-3');
+            adultoDiv.innerHTML = `
+                <label for="nombre-adulto-${i}">Nombre</label>
+                <input type="text" class="form-control" id="nombre-adulto-${i}">
+                <label for="apellido-adulto-${i}">Apellido</label>
+                <input type="text" class="form-control" id="apellido-adulto-${i}">
+                <label for="numero-adulto-${i}">Número de contacto</label>
+                <input type="text" class="form-control" id="numero-adulto-${i}">
+                <label for="direccion-adulto-${i}">Dirección</label>
+                <input type="text" class="form-control" id="direccion-adulto-${i}">
+            `;
+            adultosContainer.appendChild(adultoDiv);
         }
     });
 
-    // Manejar carga de foto
-    fotoInput.addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            fotoUsuario.src = e.target.result;
-        }
-        reader.readAsDataURL(file);
-    });
-
-    // Manejar clic en el botón de guardar
-    document.getElementById('guardar').addEventListener('click', guardarDatosUsuario);
-
-    // Cargar datos iniciales
+    // Cargar los datos del usuario al iniciar
     cargarDatosUsuario();
 });
