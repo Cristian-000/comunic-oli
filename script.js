@@ -217,6 +217,12 @@ if (backButtonEscuchar) {
     // Cargar el historial al cargar la página
     window.addEventListener('load', cargarHistorial);
 }
+// Event listener para el botón de regresar en usuario.html
+const backButtonUsuario = document.getElementById('back-button-usuario');
+if (backButtonUsuario) {
+    backButtonUsuario.addEventListener('click', () => {
+        window.history.back();
+    });
 
 // Cargar los datos cuando la página se cargue
 window.addEventListener('load', cargarDatos);
