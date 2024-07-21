@@ -1,35 +1,112 @@
-body {
-    font-family: Arial, sans-serif;
-}
+/* Estilos para la página de usuario */
 
-#ficha-container {
-    margin-top: 50px;
-}
-
-.rounded-circle {
-    width: 100px;
-    height: 100px;
-}
-
-.adulto-card {
-    margin-bottom: 20px;
-}
-
-#ajustar-ficha {
-    margin-top: 50px;
-}
-
-#formulario {
-    display: none;
-}
-
-#form-toggle {
-    margin-top: 20px;
-}
-
-.text-center {
+/* Contenedor de usuario */
+#usuario-container {
+    padding: 2rem;
     text-align: center;
 }
-.d-none {
-    display: none;
+
+#mensaje-inicial {
+    font-size: 1.5rem;
+    color: var(--color-texto);
+}
+
+/* Información del usuario */
+#info-usuario {
+    margin-top: 1rem;
+}
+
+#datos-usuario h2 {
+    margin-bottom: 1rem;
+}
+
+#datos-usuario p {
+    margin: 0.5rem 0;
+}
+
+#foto-usuario-actual {
+    max-width: 100px;
+    height: auto;
+    border-radius: 50%;
+    margin-top: 1rem;
+}
+
+/* Botón de ajustar ficha */
+#form-toggle {
+    display: block;
+    margin: 1rem auto;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.2rem;
+    color: white;
+    background-color: var(--color-boton);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Formulario */
+#formulario {
+    margin-top: 2rem;
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-control, .form-control-file, .form-check-input {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-check-label {
+    margin-left: 0.5rem;
+}
+
+#modal-save-button {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.2rem;
+    color: white;
+    background-color: var(--color-boton);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#seccion-adultos {
+    margin-top: 1rem;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    background-color: #f8f8f8;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    padding-right: 16px;
+    padding-left: 8px;
+}
+
+footer a {
+    margin-right: 16px;
+    text-decoration: none;
+    color: #000;
+    font-size: 1rem;
 }
