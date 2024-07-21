@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalSaveButton = document.getElementById('modal-save-button');
     const formToggle = document.getElementById('form-toggle');
     const backButton = document.getElementById('back-button-usuario');
+    const fotoUsuarioInput = document.getElementById('foto-usuario');
+    const fotoUsuarioImg = document.getElementById('foto-usuario-img');
+
+    // Verificar que los elementos existen
+    console.log(formToggle, formulario);
 
     let adultos = JSON.parse(localStorage.getItem('adultos')) || [];
     let usuario = JSON.parse(localStorage.getItem('usuario')) || {};
@@ -128,9 +133,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Mostrar imagen del usuario
-    const fotoUsuarioInput = document.getElementById('foto-usuario');
-    const fotoUsuarioImg = document.getElementById('foto-usuario-img');
-
     fotoUsuarioInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
         const reader = new FileReader();
@@ -159,4 +161,3 @@ document.addEventListener('DOMContentLoaded', function() {
         history.back();
     });
 });
-            
