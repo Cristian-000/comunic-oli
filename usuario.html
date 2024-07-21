@@ -6,11 +6,11 @@
     <title>Usuario</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css"/>
-  
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleUsuario.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script defer src="usuario.js"></script>
+    <script src="usuario.js" defer></script>
 </head>
 <body>
     <header>
@@ -25,45 +25,42 @@
             <h2 id="nombre-usuario">Nombre</h2>
             <h2 id="apellido-usuario">Apellido</h2>
             <h2 id="institucion-usuario">Escuela</h2>
+            <h2 id="direccion-usuario">Dirección</h2>
             <div id="adultos-container" class="mt-4"></div>
+            <button id="form-toggle" class="btn btn-primary mt-3">Ajustar Ficha</button>
+            <form id="formulario" class="d-none mt-3">
+                <div class="form-group">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="apellido" class="form-label">Apellido:</label>
+                    <input type="text" id="apellido" name="apellido" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="instituto" class="form-label">Institución:</label>
+                    <input type="text" id="instituto" name="instituto" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="direccion" class="form-label">Dirección:</label>
+                    <input type="text" id="direccion" name="direccion" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="foto-usuario" class="form-label">Foto de Usuario:</label>
+                    <input type="file" id="foto-usuario" name="foto-usuario" class="form-control-file">
+                </div>
+                <div class="form-group">
+                    <label for="cant-adultos" class="form-label">Número de adultos supervisores:</label>
+                    <input type="number" id="cant-adultos" name="cant-adultos" class="form-control">
+                </div>
+                <div id="seccion-adultos" class="mt-3"></div>
+                <div class="form-group form-check mt-3">
+                    <input type="checkbox" class="form-check-input" id="check-acceso">
+                    <label class="form-check-label" for="check-acceso">Supervisión de un adulto</label>
+                </div>
+                <button type="button" id="modal-save-button" class="btn btn-primary mt-3">Guardar</button>
+            </form>
         </div>
     </main>
-    <section id="ajustar-ficha" class="container mt-5">
-        <button id="form-toggle" class="btn btn-primary">Ajustar Ficha</button>
-        <form id="formulario" class="mt-4 d-none">
-            <div class="form-group">
-                <label for="foto-usuario">Seleccionar Foto</label>
-                <input type="file" class="form-control-file" id="foto-usuario">
-            </div>
-            <div class="form-group">
-                <label for="nombre">Nombre</label>
-                <input type="text" class="form-control" id="nombre">
-            </div>
-            <div class="form-group">
-                <label for="apellido">Apellido</label>
-                <input type="text" class="form-control" id="apellido">
-            </div>
-            <div class="form-group">
-                <label for="instituto">Escuela / Instituto</label>
-                <input type="text" class="form-control" id="instituto">
-            </div>
-            <div class="form-group">
-                <label for="cant-adultos">Adultos a cargo</label>
-                <select class="form-control" id="cant-adultos">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
-            <div id="seccion-adultos"></div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="check-acceso">
-                <label class="form-check-label" for="check-acceso">Soy un adulto y confirmo la información.</label>
-            </div>
-            <button type="button" class="btn btn-primary" id="save-button">Guardar Datos</button>
-        </form>
-    </section>
 </body>
 </html>
