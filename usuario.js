@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
             direccionUsuario.textContent = usuario.direccion;
             formulario.direccion.value = usuario.direccion;
         }
+        if (usuario.foto) {
+            fotoUsuarioImg.src = usuario.foto;
+        }
     }
 
     // Mostrar adultos guardados
@@ -93,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function mostrarAdulto(index, adulto) {
         const div = document.createElement('div');
-        div.classList.add('adulto-card', 'card');
+        div.classList.add('adulto-card', 'card', 'mb-3');
         div.innerHTML = `
             <div class="card-body">
                 <h5 class="card-title">Adulto ${index + 1}</h5>
