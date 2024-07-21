@@ -1,41 +1,57 @@
+/* Variables de colores */
+:root {
+    --color-fondo: #ffffff;
+    --color-encabezado: #ffffff;
+    --color-texto: rgb(47, 47, 47);
+    --color-boton: rgb(76, 76, 76);
+    --color-separador: rgb(146, 146, 146);
+}
+
+/* Estilos globales */
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-fondo);
 }
 
+/* Encabezado */
+header {
+    background-color: var(--color-encabezado);
+    color: var(--color-texto);
+    text-align: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgb(113, 113, 113);
+}
+
+/* Navbar */
 .navbar {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    min-height: 3.2rem;
 }
 
-.navbar button {
-    background: none;
+#back-button-usuario {
+    font-size: 16px;
+    color: var(--color-boton);
     border: none;
     cursor: pointer;
+    background-color: var(--color-encabezado);
 }
 
-#ficha-container {
-    text-align: center;
+#back-button-usuario i {
+    margin-right: 0.5rem;
 }
 
-#ficha-container img {
-    max-width: 150px;
-    border-radius: 50%;
+/* Estilos para el formulario */
+form {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#ajustar-ficha {
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-}
-
-#ajustar-ficha form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.adulto {
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
+.form-group {
+    margin-bottom: 1rem;
 }
