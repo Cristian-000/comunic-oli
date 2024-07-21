@@ -159,6 +159,9 @@ function empezarEscuchar() {
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
+    const escucharButton = document.getElementById('empezar-escuchar');
+    escucharButton.classList.add('pulsing'); // Añadir la clase para la animación
+
     recognition.start();
 
     recognition.onresult = (event) => {
@@ -169,10 +172,12 @@ function empezarEscuchar() {
 
     recognition.onspeechend = () => {
         recognition.stop();
+        escucharButton.classList.remove('pulsing'); // Quitar la clase cuando se detiene el reconocimiento
     };
 
     recognition.onerror = (event) => {
         console.error('Error en el reconocimiento de voz: ', event.error);
+        escucharButton.classList.remove('pulsing'); // Quitar la clase en caso de error
     };
 }
 
