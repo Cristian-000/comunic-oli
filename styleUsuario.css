@@ -1,40 +1,39 @@
-/* Estilos para la página de usuario */
-
-/* Contenedor de usuario */
-#usuario-container {
-    padding: 2rem;
+/* Contenedor principal de la ficha del usuario */
+#ficha-container {
+    margin-top: 5rem;
     text-align: center;
 }
 
+/* Mensaje inicial cuando no hay datos */
 #mensaje-inicial {
     font-size: 1.5rem;
     color: var(--color-texto);
+    margin-bottom: 2rem;
 }
 
 /* Información del usuario */
-#info-usuario {
-    margin-top: 1rem;
+#ficha-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
 }
 
-#datos-usuario h2 {
+#ficha-container h2 {
+    font-size: 1.5rem;
     margin-bottom: 1rem;
+    color: var(--color-texto);
 }
 
-#datos-usuario p {
-    margin: 0.5rem 0;
-}
-
-#foto-usuario-actual {
+#foto-usuario-img {
     max-width: 100px;
-    height: auto;
+    max-height: 100px;
     border-radius: 50%;
-    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 /* Botón de ajustar ficha */
 #form-toggle {
     display: block;
-    margin: 1rem auto;
+    margin: 2rem auto;
     padding: 0.75rem 1.5rem;
     font-size: 1.2rem;
     color: white;
@@ -44,7 +43,7 @@
     cursor: pointer;
 }
 
-/* Formulario */
+/* Formulario de ajustes de ficha */
 #formulario {
     margin-top: 2rem;
     text-align: left;
@@ -53,7 +52,7 @@
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .form-label {
@@ -61,17 +60,17 @@
     margin-bottom: 0.5rem;
 }
 
-.form-control, .form-control-file, .form-check-input {
+.form-control, .form-control-file {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.75rem;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
 }
 
-.form-check-label {
-    margin-left: 0.5rem;
+.form-check-input {
+    margin-top: 0.3rem;
 }
 
 #modal-save-button {
@@ -90,23 +89,17 @@
     margin-top: 1rem;
 }
 
-footer {
+/* Botón de regresar */
+#back-button-usuario {
+    font-size: 1rem;
+    color: var(--color-boton);
+    border: none;
+    background: none;
+    cursor: pointer;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    text-align: center;
-    padding: 10px;
-    background-color: #f8f8f8;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    padding-right: 16px;
-    padding-left: 8px;
 }
 
-footer a {
-    margin-right: 16px;
-    text-decoration: none;
-    color: #000;
-    font-size: 1rem;
+#back-button-usuario i {
+    margin-right: 0.5rem;
 }
