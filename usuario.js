@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded and parsed');
+
     const nombreUsuario = document.getElementById('nombre-usuario');
     const apellidoUsuario = document.getElementById('apellido-usuario');
     const institucionUsuario = document.getElementById('institucion-usuario');
@@ -12,13 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const fotoUsuarioInput = document.getElementById('foto-usuario');
     const fotoUsuarioImg = document.getElementById('foto-usuario-img');
 
-    // Verificar que los elementos existen
     console.log(formToggle, formulario);
 
     let adultos = JSON.parse(localStorage.getItem('adultos')) || [];
     let usuario = JSON.parse(localStorage.getItem('usuario')) || {};
 
-    // Cargar datos del usuario
     if (usuario.nombre) {
         nombreUsuario.textContent = usuario.nombre;
         formulario.nombre.value = usuario.nombre;
@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
         formulario.instituto.value = usuario.institucion;
     }
 
-    // Mostrar adultos guardados
     adultos.forEach((adulto, index) => {
         agregarAdultoForm(index, adulto);
         mostrarAdulto(index, adulto);
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
         ajustarSeccionAdultos(cantidad);
     });
 
-    // Ajustar la sección de adultos
     function ajustarSeccionAdultos(cantidad) {
         const seccionAdultos = document.getElementById('seccion-adultos');
         seccionAdultos.innerHTML = '';
@@ -56,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Agregar formulario de adulto
     function agregarAdultoForm(index, adulto) {
         const seccionAdultos = document.getElementById('seccion-adultos');
         const div = document.createElement('div');
@@ -85,7 +82,6 @@ document.addEventListener('DOMContentLoaded', function() {
         seccionAdultos.appendChild(div);
     }
 
-    // Mostrar adulto en la sección principal
     function mostrarAdulto(index, adulto) {
         const div = document.createElement('div');
         div.classList.add('adulto-card', 'card');
@@ -101,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
         adultosContainer.appendChild(div);
     }
 
-    // Guardar datos en localStorage
     modalSaveButton.addEventListener('click', function(event) {
         if (!checkAcceso.checked) {
             alert('Se requiere la supervisión de un adulto para guardar los datos.');
@@ -132,7 +127,6 @@ document.addEventListener('DOMContentLoaded', function() {
         location.reload();
     });
 
-    // Mostrar imagen del usuario
     fotoUsuarioInput.addEventListener('change', function(event) {
         const file = event.target.files[0];
         const reader = new FileReader();
@@ -151,12 +145,11 @@ document.addEventListener('DOMContentLoaded', function() {
         fotoUsuarioImg.src = fotoGuardada;
     }
 
-    // Toggle form visibility
     formToggle.addEventListener('click', function() {
+        console.log('Botón "Ajustar Ficha" clickeado');
         formulario.classList.toggle('d-none');
     });
 
-    // Back button functionality
     backButton.addEventListener('click', function() {
         history.back();
     });
