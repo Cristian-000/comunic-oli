@@ -159,6 +159,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     backButton.addEventListener('click', function() {
-        history.back();
+        window.history.back();
     });
 });
