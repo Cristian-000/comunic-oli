@@ -229,6 +229,21 @@ input[type="range"] {
     cursor: pointer;
 }
 
+@keyframes pulsing {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulsing {
+    animation: pulsing 1s infinite;
+}
 #empezar-escuchar {
     padding: 0.75rem 1.5rem;
     font-size: 2rem;
