@@ -1,37 +1,46 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded and parsed');
-
     const nombreUsuario = document.getElementById('nombre-usuario');
     const apellidoUsuario = document.getElementById('apellido-usuario');
     const institucionUsuario = document.getElementById('institucion-usuario');
+    const direccionUsuario = document.getElementById('direccion-usuario');
     const adultosContainer = document.getElementById('adultos-container');
     const cantAdultosInput = document.getElementById('cant-adultos');
     const formulario = document.getElementById('formulario');
     const checkAcceso = document.getElementById('check-acceso');
-    const saveButton = document.getElementById('save-button');
+    const modalSaveButton = document.getElementById('modal-save-button');
     const formToggle = document.getElementById('form-toggle');
     const backButton = document.getElementById('back-button-usuario');
     const fotoUsuarioInput = document.getElementById('foto-usuario');
     const fotoUsuarioImg = document.getElementById('foto-usuario-img');
-
-    console.log(formToggle, formulario);
+    const fichaContainer = document.getElementById('ficha-container');
 
     let adultos = JSON.parse(localStorage.getItem('adultos')) || [];
     let usuario = JSON.parse(localStorage.getItem('usuario')) || {};
 
-    if (usuario.nombre) {
-        nombreUsuario.textContent = usuario.nombre;
-        formulario.nombre.value = usuario.nombre;
-    }
-    if (usuario.apellido) {
-        apellidoUsuario.textContent = usuario.apellido;
-        formulario.apellido.value = usuario.apellido;
-    }
-    if (usuario.institucion) {
-        institucionUsuario.textContent = usuario.institucion;
-        formulario.instituto.value = usuario.institucion;
+    // Mostrar mensaje si no hay datos guardados
+    if (!usuario.nombre && !usuario.apellido && !usuario.institucion && !usuario.direccion) {
+        fichaContainer.innerHTML = "<p>Aún no se han añadido datos de usuario</p>";
+    } else {
+        // Cargar datos del usuario
+        if (usuario.nombre) {
+            nombreUsuario.textContent = usuario.nombre;
+            formulario.nombre.value = usuario.nombre;
+        }
+        if (usuario.apellido) {
+            apellidoUsuario.textContent = usuario.apellido;
+            formulario.apellido.value = usuario.apellido;
+        }
+        if (usuario.institucion) {
+            institucionUsuario.textContent = usuario.institucion;
+            formulario.instituto.value = usuario.institucion;
+        }
+        if (usuario.direccion) {
+            direccionUsuario.textContent = usuario.direccion;
+            formulario.direccion.value = usuario.direccion;
+        }
     }
 
+    // Mostrar adultos guardados
     adultos.forEach((adulto, index) => {
         agregarAdultoForm(index, adulto);
         mostrarAdulto(index, adulto);
@@ -97,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         adultosContainer.appendChild(div);
     }
 
-    saveButton.addEventListener('click', function(event) {
+    modalSaveButton.addEventListener('click', function(event) {
         if (!checkAcceso.checked) {
             alert('Se requiere la supervisión de un adulto para guardar los datos.');
             return;
@@ -107,6 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             nombre: formulario.nombre.value,
             apellido: formulario.apellido.value,
             institucion: formulario.instituto.value,
+            direccion: formulario.direccion.value,
             foto: fotoUsuarioImg.src
         };
         localStorage.setItem('usuario', JSON.stringify(usuario));
