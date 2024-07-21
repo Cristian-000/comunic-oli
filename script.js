@@ -56,9 +56,10 @@ function cargarDatos() {
                     document.querySelector('.imagenes-grid').style.display = 'grid';
                     document.querySelector('#back-button').classList.remove('hidden');
                     document.querySelector('footer').style.display = 'none';
-                    dropdownContent.style.display = 'none'; // Ocultar el dropdown
+                    
                 });
                 dropdownContent.appendChild(dropdownButton);
+                dropdownContent.style.display = 'none'; // Ocultar el dropdown
             });
         })
         .catch(error => {
@@ -70,8 +71,7 @@ function cargarDatos() {
 function mostrarImagenes(imagenes) {
     const imagenesGrid = document.querySelector('.imagenes-grid');
     imagenesGrid.innerHTML = '';
-    const dropdownContent = document.querySelector('.dropdown-content');
-dropdownContent.style.display = 'none'; // Ocultar el dropdown
+    
     imagenes.forEach(imagen => {
         if (imagen.separador) {
             const separador = document.createElement('hr');
