@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mostrar mensaje si no hay datos guardados
     if (!usuario.nombre && !usuario.apellido && !usuario.institucion && !usuario.direccion) {
         fichaContainer.innerHTML = "<p>Aún no se han añadido datos de usuario</p>";
+        formulario.classList.add('d-none'); // Ocultar el formulario
     } else {
         // Cargar datos del usuario
         if (usuario.nombre) {
@@ -37,9 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (usuario.direccion) {
             direccionUsuario.textContent = usuario.direccion;
             formulario.direccion.value = usuario.direccion;
-        }
-        if (usuario.foto) {
-            fotoUsuarioImg.src = usuario.foto;
         }
     }
 
@@ -96,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function mostrarAdulto(index, adulto) {
         const div = document.createElement('div');
-        div.classList.add('adulto-card', 'card', 'mb-3');
+        div.classList.add('adulto-card', 'card');
         div.innerHTML = `
             <div class="card-body">
                 <h5 class="card-title">Adulto ${index + 1}</h5>
@@ -159,9 +157,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     formToggle.addEventListener('click', function() {
         formulario.classList.toggle('d-none');
+        // Mostrar u ocultar el mensaje y formulario según el estado
+        if (formulario.classList.contains('d-none')) {
+            // Formulario oculto, mostrar mensaje y botón si no hay datos
+            if (!usuario.nombre && !usuario.apellido && !usuario.institucion && !usuario.direccion) {
+                fichaContainer.innerHTML = "<p>Aún no se han añadido datos de usuario</p>";
+            } else {
+                fichaContainer.innerHTML = "";
+            }
+        } else {
+            // Formulario visible, ocultar mensaje
+            fichaContainer.innerHTML = "";
+        }
     });
 
     backButton.addEventListener('click', function() {
         history.back();
     });
+
+    // Mostrar el formulario si no hay datos guardados
+    if (!usuario.nombre && !usuario.apellido && !usuario.institucion && !usuario.direccion) {
+        formulario.classList.add('d-none'); // Ocultar el formulario
+    }
 });
