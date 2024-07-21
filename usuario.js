@@ -6,7 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const cantAdultosInput = document.getElementById('cant-adultos');
     const formulario = document.getElementById('formulario');
     const checkAcceso = document.getElementById('check-acceso');
-    const submitButton = document.getElementById('guardar-datos');
+    const modalSaveButton = document.getElementById('modal-save-button');
+    const formToggle = document.getElementById('form-toggle');
+    const backButton = document.getElementById('back-button-usuario');
 
     let adultos = JSON.parse(localStorage.getItem('adultos')) || [];
     let usuario = JSON.parse(localStorage.getItem('usuario')) || {};
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     cantAdultosInput.value = adultos.length;
     ajustarSeccionAdultos(adultos.length);
 
-    cantAdultosInput.addEventListener('input', function() {
+    cantAdultosInput.addEventListener('change', function() {
         const cantidad = parseInt(this.value);
         ajustarSeccionAdultos(cantidad);
     });
@@ -53,24 +55,26 @@ document.addEventListener('DOMContentLoaded', function() {
     function agregarAdultoForm(index, adulto) {
         const seccionAdultos = document.getElementById('seccion-adultos');
         const div = document.createElement('div');
-        div.classList.add('adulto-form');
+        div.classList.add('adulto-form', 'card', 'mb-3');
         div.innerHTML = `
-            <h4>Adulto ${index + 1}</h4>
-            <div class="mb-3">
-                <label for="nombre-adulto-${index}" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre-adulto-${index}" value="${adulto?.nombre || ''}">
-            </div>
-            <div class="mb-3">
-                <label for="apellido-adulto-${index}" class="form-label">Apellido</label>
-                <input type="text" class="form-control" id="apellido-adulto-${index}" value="${adulto?.apellido || ''}">
-            </div>
-            <div class="mb-3">
-                <label for="numero-adulto-${index}" class="form-label">Número de contacto</label>
-                <input type="text" class="form-control" id="numero-adulto-${index}" value="${adulto?.numero || ''}">
-            </div>
-            <div class="mb-3">
-                <label for="direccion-adulto-${index}" class="form-label">Dirección</label>
-                <input type="text" class="form-control" id="direccion-adulto-${index}" value="${adulto?.direccion || ''}">
+            <div class="card-body">
+                <h5 class="card-title">Adulto ${index + 1}</h5>
+                <div class="form-group">
+                    <label for="nombre-adulto-${index}" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre-adulto-${index}" value="${adulto?.nombre || ''}">
+                </div>
+                <div class="form-group">
+                    <label for="apellido-adulto-${index}" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="apellido-adulto-${index}" value="${adulto?.apellido || ''}">
+                </div>
+                <div class="form-group">
+                    <label for="numero-adulto-${index}" class="form-label">Número de contacto</label>
+                    <input type="text" class="form-control" id="numero-adulto-${index}" value="${adulto?.numero || ''}">
+                </div>
+                <div class="form-group">
+                    <label for="direccion-adulto-${index}" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="direccion-adulto-${index}" value="${adulto?.direccion || ''}">
+                </div>
             </div>
         `;
         seccionAdultos.appendChild(div);
@@ -79,20 +83,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mostrar adulto en la sección principal
     function mostrarAdulto(index, adulto) {
         const div = document.createElement('div');
-        div.classList.add('adulto-info');
+        div.classList.add('adulto-card', 'card');
         div.innerHTML = `
-            <h4>Adulto ${index + 1}</h4>
-            <p>Nombre: ${adulto.nombre}</p>
-            <p>Apellido: ${adulto.apellido}</p>
-            <p>Número de contacto: ${adulto.numero}</p>
-            <p>Dirección: ${adulto.direccion}</p>
+            <div class="card-body">
+                <h5 class="card-title">Adulto ${index + 1}</h5>
+                <p class="card-text">Nombre: ${adulto.nombre}</p>
+                <p class="card-text">Apellido: ${adulto.apellido}</p>
+                <p class="card-text">Número de contacto: ${adulto.numero}</p>
+                <p class="card-text">Dirección: ${adulto.direccion}</p>
+            </div>
         `;
         adultosContainer.appendChild(div);
     }
 
     // Guardar datos en localStorage
-    submitButton.addEventListener('click', function(event) {
-        event.preventDefault();
+    modalSaveButton.addEventListener('click', function(event) {
         if (!checkAcceso.checked) {
             alert('Se requiere la supervisión de un adulto para guardar los datos.');
             return;
@@ -118,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         localStorage.setItem('adultos', JSON.stringify(adultos));
         alert('Datos guardados correctamente.');
+        $('#adultApprovalModal').modal('hide');
         location.reload();
     });
 
@@ -142,4 +148,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (fotoGuardada) {
         fotoUsuarioImg.src = fotoGuardada;
     }
+
+    // Toggle form visibility
+    formToggle.addEventListener('click', function() {
+        formulario.classList.toggle('d-none');
+    });
+
+    // Back button functionality
+    backButton.addEventListener('click', function() {
+        history.back();
+    });
 });
+            
