@@ -111,7 +111,9 @@
 #modal-save-button {
     margin-button: 20px;
 }
-
+#delete-button {
+    margin-bottom: 20px;
+}
 
 /* Variables de color (personalizar según tu tema) */
 :root {
