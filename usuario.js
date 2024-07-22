@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function addFormToggleListener() {
-        const formToggle = document.getElementById('form-toggle');
+      //  const formToggle = document.getElementById('form-toggle');
         formToggle.addEventListener('click', function() {
             formulario.classList.toggle('d-none');
         });
