@@ -165,6 +165,6 @@ document.addEventListener('DOMContentLoaded', function() {
     addFormToggleListener();
 
     backButton.addEventListener('click', function() {
-        window.history.back();
+        window.location.href = 'index.html';
     });
 });
