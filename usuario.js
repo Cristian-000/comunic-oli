@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Mostrar mensaje si no hay datos guardados
     if (!usuario.nombre && !usuario.apellido && !usuario.institucion && !usuario.direccion) {
-        fichaContainer.innerHTML ="<p>Aún no se han añadido datos de usuario</p>" + formToggle.outerHTML;
+        fichaContainer.innerHTML = `<p>Aún no se han añadido datos de usuario</p><button id="form-toggle" class="btn btn-primary mt-3">Ajustar Ficha</button>`;
     } else {
         // Cargar datos del usuario
         if (usuario.nombre) {
@@ -154,9 +154,15 @@ document.addEventListener('DOMContentLoaded', function() {
         fotoUsuarioImg.src = fotoGuardada;
     }
 
-    formToggle.addEventListener('click', function() {
-        formulario.classList.toggle('d-none');
-    });
+    function addFormToggleListener() {
+        const formToggle = document.getElementById('form-toggle');
+        formToggle.addEventListener('click', function() {
+            formulario.classList.toggle('d-none');
+        });
+    }
+
+    // Add event listener for the form toggle button
+    addFormToggleListener();
 
     backButton.addEventListener('click', function() {
         window.history.back();
