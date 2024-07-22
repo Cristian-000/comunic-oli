@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const fotoUsuarioInput = document.getElementById('foto-usuario');
     const fotoUsuarioImg = document.getElementById('foto-usuario-img');
     const fichaContainer = document.getElementById('ficha-container');
-
+    const deleteButton = document.getElementById('delete-button');
+    
     let adultos = JSON.parse(localStorage.getItem('adultos')) || [];
     let usuario = JSON.parse(localStorage.getItem('usuario')) || {};
 
@@ -165,7 +166,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add event listener for the form toggle button
     addFormToggleListener();
-
+    // Add event listener for the delete button
+    deleteButton.addEventListener('click', function() {
+        if (confirm('¿Está seguro de que desea borrar la ficha actual?')) {
+            localStorage.removeItem('usuario');
+            localStorage.removeItem('adultos');
+            localStorage.removeItem('fotoUsuario');
+            alert('Ficha borrada correctamente.');
+            location.reload();
+        }
+    });
     backButton.addEventListener('click', function() {
         window.location.href = 'index.html';
     });
