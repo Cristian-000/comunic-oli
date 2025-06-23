@@ -1,0 +1,21 @@
+{
+    "name": "ComuniC",
+    "short_name": "ComuniC",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2196F3",
+    "icons": [
+      {
+        "src": "imagenes/ico192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "imagenes/ico512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  

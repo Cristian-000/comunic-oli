@@ -3,36 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplicación de Categorías</title>
+    <title>Comunicador Visual</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/idb@7/build/iife/index-min.js"></script>
     <script defer src="script.js"></script>
-    <script src="ajustes.js"></script>
-    
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <button id="back-button" class="hidden"><i class="fas fa-arrow-left"></i> Regresar</button>
-            
-            <a href="escribir.html" class="escribir-link"><i class="fa-solid fa-pen"></i></a>
-            <a href="escuchar.html" class="escribir-link"><i class="fa-solid fa-microphone"></i></a>
-            
             <div class="dropdown">
-    <button class="dropbtn"><i class="fa-solid fa-bars"></i> Categorías</button>
-    <div class="dropdown-content">
-        <!-- Botones de categorías se generarán aquí -->
-    </div>
+                <button class="dropbtn">Categorías</button>
+                <div class="dropdown-content">
+                    </div>
             </div>
+            <button id="back-button" class="hidden"><i class="fas fa-arrow-left"></i> Regresar</button>
+            <a href="ajustes.html" class="settings-button"><i class="fas fa-cog"></i></a>
         </nav>
     </header>
+
     <main>
-        <div class="categorias-grid"></div>
-        <div class="imagenes-grid"></div>
+        <div class="categorias-grid">
+            </div>
+        <div class="imagenes-grid" style="display: none;">
+            </div>
     </main>
+
     <footer>
-        <a href="ajustes.html" class="ajustes-link"><i class="fa-solid fa-cog"></i> Ajustes</a>
-        <a href="usuario.html" class="ajustes-link"><i class="fa-solid fa-user"></i> Usuario</a>
+        <a href="escribir.html" class="footer-button">
+            <i class="fas fa-keyboard"></i>
+            <span>Escribir</span>
+        </a>
+        <a href="escuchar.html" class="footer-button">
+            <i class="fas fa-microphone-alt"></i>
+            <span>Escuchar</span>
+        </a>
     </footer>
 </body>
 </html>
