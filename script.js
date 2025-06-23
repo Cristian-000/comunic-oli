@@ -1,28 +1,13 @@
 document.addEventListener('DOMContentLoaded', async () => {
     let db;
 
-    // --- FUNCIÓN initDB REESCRITA CON API NATIVA ---
     async function initDB() {
         return new Promise((resolve, reject) => {
-            // Solicitud para abrir la base de datos.
-            const request = window.indexedDB.open('audios-db', 1);
-
-            // Se ejecuta si hay un error en la apertura.
-            request.onerror = (event) => {
-                console.error("Error de IndexedDB:", event.target.error);
-                reject(event.target.error);
-            };
-
-            // Se ejecuta si la base de datos se abre con éxito.
-            request.onsuccess = (event) => {
-                console.log("Base de datos inicializada correctamente.");
-                resolve(event.target.result);
-            };
-
-            // Se ejecuta si se necesita crear o actualizar la estructura de la base de datos.
-            request.onupgradeneeded = (event) => {
-                console.log("Actualizando la estructura de la base de datos...");
-                const dbInstance = event.target.result;
+            const request = window.indexedDB.open('audios-db-v2', 1); // v2 para asegurar que sea una DB nueva
+            request.onerror = e => reject(e.target.error);
+            request.onsuccess = e => resolve(e.target.result);
+            request.onupgradeneeded = e => {
+                const dbInstance = e.target.result;
                 if (!dbInstance.objectStoreNames.contains('audios')) {
                     dbInstance.createObjectStore('audios');
                 }
@@ -30,7 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
     
-    // --- FUNCIÓN PARA "PROMESIFICAR" LAS PETICIONES DE INDEXEDDB ---
     function promisifyRequest(request) {
         return new Promise((resolve, reject) => {
             request.onsuccess = () => resolve(request.result);
@@ -40,98 +24,84 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         db = await initDB();
+        console.log("Base de datos inicializada correctamente.");
     } catch (error) {
         console.error("No se pudo inicializar la base de datos, la app funcionará sin guardar audios.", error);
         db = null;
     }
 
-    // --- LÓGICA DE LA APLICACIÓN ---
-    let sintesisEnCurso = false;
+    let audioPlayer;
 
-    // --- FUNCIÓN hablarTexto ADAPTADA A LA API NATIVA ---
-    async function hablarTexto(texto) {
-        if (!texto || texto.trim() === '') return;
-        if (sintesisEnCurso) {
-            window.speechSynthesis.cancel();
-        }
-        sintesisEnCurso = true;
-
-        if (!db) {
-            console.warn("Base de datos no disponible. Reproduciendo sin guardar.");
-            const synth = window.speechSynthesis;
-            const utterance = new SpeechSynthesisUtterance(texto);
-            utterance.lang = 'es-ES';
-            utterance.rate = parseFloat(localStorage.getItem('speechRate') || 1);
-            utterance.pitch = parseFloat(localStorage.getItem('speechPitch') || 1);
-            utterance.onend = () => { sintesisEnCurso = false; };
-            synth.speak(utterance);
-            return;
-        }
-
-        try {
-            const readTransaction = db.transaction('audios', 'readonly');
-            const audioStore = readTransaction.objectStore('audios');
-            const audioGuardado = await promisifyRequest(audioStore.get(texto));
-
-            if (audioGuardado) {
-                console.log(`Reproduciendo audio cacheado para: "${texto}"`);
-                const url = URL.createObjectURL(audioGuardado);
-                const audio = new Audio(url);
-                audio.onended = () => { sintesisEnCurso = false; };
-                audio.play();
-            } else {
-                console.log(`Generando y guardando audio para: "${texto}"`);
-                const synth = window.speechSynthesis;
-                const utterance = new SpeechSynthesisUtterance(texto);
-                utterance.lang = 'es-ES';
-                utterance.rate = parseFloat(localStorage.getItem('speechRate') || 1);
-                utterance.pitch = parseFloat(localStorage.getItem('speechPitch') || 1);
-
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const destination = audioContext.createMediaStreamDestination();
-                const mediaRecorder = new MediaRecorder(destination.stream);
-                const chunks = [];
-                
-                const source = audioContext.createBufferSource();
-                source.connect(destination);
-                
-                mediaRecorder.ondataavailable = e => chunks.push(e.data);
-                mediaRecorder.onstop = async () => {
-                    const blob = new Blob(chunks, { type: 'audio/webm;codecs=opus' });
-                    const writeTransaction = db.transaction('audios', 'readwrite');
-                    const audioStoreWrite = writeTransaction.objectStore('audios');
-                    await promisifyRequest(audioStoreWrite.put(blob, texto));
-                    console.log(`Audio para "${texto}" guardado.`);
-                    audioContext.close();
-                };
-
-                utterance.onstart = () => mediaRecorder.start();
-                utterance.onend = () => {
-                    if (mediaRecorder.state === 'recording') mediaRecorder.stop();
-                    sintesisEnCurso = false;
-                };
-                
-                synth.speak(utterance);
-            }
-        } catch (error) {
-            console.error(`Error al procesar el audio para "${texto}":`, error);
-            sintesisEnCurso = false;
-        }
-    }
+// --- FUNCIÓN hablarTexto CON PROXY CORS ---
+async function hablarTexto(texto) {
+    if (!texto || texto.trim() === '') return;
     
-    // --- EL RESTO DE TU CÓDIGO PERMANECE IGUAL ---
+    if (audioPlayer && !audioPlayer.paused) {
+        audioPlayer.pause();
+    }
+
+    try {
+        // 1. Buscar en la base de datos primero
+        const readTransaction = db.transaction('audios', 'readonly');
+        const audioStore = readTransaction.objectStore('audios');
+        const audioGuardado = await promisifyRequest(audioStore.get(texto));
+
+        if (audioGuardado) {
+            // 2. Si se encuentra, reproducirlo desde la base de datos
+            console.log(`Reproduciendo audio cacheado para: "${texto}"`);
+            const url = URL.createObjectURL(audioGuardado);
+            audioPlayer = new Audio(url);
+            await audioPlayer.play();
+            URL.revokeObjectURL(url);
+        } else {
+            // 3. Si NO se encuentra, obtenerlo de la API externa usando el proxy
+            console.log(`Obteniendo audio de API para: "${texto}"`);
+
+            const encodedText = encodeURIComponent(texto);
+            const originalUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=es&client=tw-ob`;
+            
+            // --- AQUÍ ESTÁ LA LÍNEA MÁGICA ---
+            // Usamos un proxy para evitar el error de CORS
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(originalUrl)}`;
+
+            const response = await fetch(proxyUrl);
+            if (!response.ok) throw new Error(`La respuesta de la red no fue válida: ${response.statusText}`);
+
+            const audioBlob = await response.blob();
+
+            // Guardar el nuevo audio en la base de datos
+            const writeTransaction = db.transaction('audios', 'readwrite');
+            const store = writeTransaction.objectStore('audios');
+            store.put(audioBlob, texto);
+            console.log(`Audio para "${texto}" guardado en la base de datos.`);
+
+            // Reproducir el audio recién descargado
+            const url = URL.createObjectURL(audioBlob);
+            audioPlayer = new Audio(url);
+            await audioPlayer.play();
+            URL.revokeObjectURL(url);
+        }
+    } catch (error) {
+        console.error(`Error al procesar el audio para "${texto}":`, error);
+        // Fallback: si todo falla, usar la voz del navegador (no se guardará)
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(texto);
+        utterance.lang = 'es-ES';
+        synth.speak(utterance);
+    }
+}
+    
+    // --- FUNCIONES DE LA INTERFAZ ---
 
     function cargarDatos() {
         fetch('datos.json')
             .then(response => response.json())
             .then(data => {
                 const categoriasGrid = document.querySelector('.categorias-grid');
+                if (!categoriasGrid) return;
                 const dropdownContent = document.querySelector('.dropdown-content');
-                if (!categoriasGrid || !dropdownContent) return;
-
                 categoriasGrid.innerHTML = '';
                 dropdownContent.innerHTML = '';
-
                 data.categorias.forEach(categoria => {
                     const categoriaButton = document.createElement('button');
                     categoriaButton.classList.add('categoria-button');
@@ -145,10 +115,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         document.querySelector('.imagenes-grid').style.display = 'grid';
                         document.querySelector('#back-button').classList.remove('hidden');
                         const footer = document.querySelector('footer');
-                        if(footer) footer.style.display = 'none';
+                        if (footer) footer.style.display = 'none';
                     });
                     categoriasGrid.appendChild(categoriaButton);
-
                     const dropdownButton = document.createElement('button');
                     dropdownButton.textContent = categoria.nombre;
                     dropdownButton.addEventListener('click', () => {
@@ -158,14 +127,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         document.querySelector('.imagenes-grid').style.display = 'grid';
                         document.querySelector('#back-button').classList.remove('hidden');
                         const footer = document.querySelector('footer');
-                        if(footer) footer.style.display = 'none';
-                        const dropdown = document.querySelector('.dropdown-content');
-                        if(dropdown) dropdown.style.display = 'none';
+                        if (footer) footer.style.display = 'none';
                     });
                     dropdownContent.appendChild(dropdownButton);
                 });
-            })
-            .catch(error => console.error("Error al cargar datos.json:", error));
+            });
     }
 
     function mostrarImagenes(imagenes) {
@@ -189,6 +155,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // --- FUNCIONES DE HISTORIAL Y RECONOCIMIENTO DE VOZ ---
+    
     function cargarHistorial() {
         const historialLista = document.getElementById('historial-lista');
         if (historialLista) {
@@ -256,9 +224,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     }
 
-    // --- CONFIGURACIÓN DE EVENT LISTENERS ---
+    // --- CONFIGURACIÓN DE EVENT LISTENERS PARA CADA PÁGINA ---
 
     if (document.querySelector('.categorias-grid')) {
+        cargarDatos();
         const backButton = document.getElementById('back-button');
         backButton.addEventListener('click', () => {
             document.querySelector('.categorias-grid').style.display = 'grid';
@@ -267,7 +236,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (footer) footer.style.display = 'flex';
             backButton.classList.add('hidden');
         });
-        cargarDatos();
     }
 
     if (document.getElementById('texto-escribir')) {
@@ -286,3 +254,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         cargarHistorial();
     }
 });
+
+
+// --- REGISTRO DEL SERVICE WORKER ---
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(reg => console.log('Service Worker registrado.', reg))
+            .catch(err => console.error('Error en registro de Service Worker:', err));
+    });
+}

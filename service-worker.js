@@ -1,3 +1,4 @@
+// service-worker.js
 const CACHE_NAME = 'mi-pwa-cache-v1';
 const urlsToCache = [
   '/',
