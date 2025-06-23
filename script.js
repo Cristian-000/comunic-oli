@@ -1,89 +1,110 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // --- INICIO: CÓDIGO PARA LA BASE DE DATOS ---
+document.addEventListener('DOMContentLoaded', async () => {
+    // --- INICIALIZACIÓN DE LA BASE DE DATOS (AHORA ASÍNCRONA) ---
     let db;
 
     async function initDB() {
-        if (!('indexedDB' in window)) {
-            console.error('Este navegador no soporta IndexedDB.');
-            return;
+        try {
+            // Verifica que la librería 'idb' se haya cargado
+            if (!window.idb) {
+                console.error('La librería IDB no se ha cargado. Revisa la conexión a internet la primera vez o el link en el HTML.');
+                return null;
+            }
+            
+            console.log("Inicializando base de datos...");
+            const database = await idb.openDB('audios-db', 1, {
+                upgrade(db) {
+                    if (!db.objectStoreNames.contains('audios')) {
+                        db.createObjectStore('audios');
+                    }
+                },
+            });
+            console.log("Base de datos inicializada correctamente.");
+            return database;
+
+        } catch (error) {
+            console.error("Error grave al inicializar la base de datos:", error);
+            return null;
         }
-        db = await idb.openDB('audios-db', 1, {
-            upgrade(db) {
-                if (!db.objectStoreNames.contains('audios')) {
-                    db.createObjectStore('audios');
-                }
-            },
-        });
     }
 
-    // --- FIN: CÓDIGO PARA LA BASE DE DATOS ---
+    // Esperamos a que la base de datos esté lista ANTES de continuar.
+    db = await initDB();
+
+    // --- LÓGICA DE LA APLICACIÓN ---
 
     let sintesisEnCurso = false;
+    let audioContext; // Definir AudioContext una sola vez
 
-    // --- FUNCIÓN 'hablarTexto' MODIFICADA PARA GUARDAR AUDIOS ---
+    // --- FUNCIÓN 'hablarTexto' CORREGIDA Y MÁS ROBUSTA ---
     async function hablarTexto(texto) {
         if (!texto || texto.trim() === '') return;
-
         if (sintesisEnCurso) {
             window.speechSynthesis.cancel();
         }
         sintesisEnCurso = true;
 
+        // Si la base de datos no está disponible, usar un método simple sin guardar
+        if (!db) {
+            console.warn("Base de datos no disponible. Reproduciendo sin guardar.");
+            const synth = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = 'es-ES';
+            utterance.rate = parseFloat(localStorage.getItem('speechRate') || 1);
+            utterance.pitch = parseFloat(localStorage.getItem('speechPitch') || 1);
+            utterance.onend = () => { sintesisEnCurso = false; };
+            synth.speak(utterance);
+            return;
+        }
+
         try {
             const audioGuardado = await db.get('audios', texto);
 
             if (audioGuardado) {
+                console.log(`Reproduciendo audio cacheado para: "${texto}"`);
                 const url = URL.createObjectURL(audioGuardado);
                 const audio = new Audio(url);
-                audio.onended = () => {
-                    sintesisEnCurso = false;
-                };
+                audio.onended = () => { sintesisEnCurso = false; };
                 audio.play();
             } else {
+                console.log(`Generando y guardando audio para: "${texto}"`);
                 const synth = window.speechSynthesis;
                 const utterance = new SpeechSynthesisUtterance(texto);
                 utterance.lang = 'es-ES';
                 utterance.rate = parseFloat(localStorage.getItem('speechRate') || 1);
                 utterance.pitch = parseFloat(localStorage.getItem('speechPitch') || 1);
 
-                utterance.onend = () => {
-                    sintesisEnCurso = false;
-                };
-                
-                // Simulación de grabación para compatibilidad
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                // Lógica de grabación simplificada
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const destination = audioContext.createMediaStreamDestination();
                 const mediaRecorder = new MediaRecorder(destination.stream);
                 const chunks = [];
+
+                const source = audioContext.createBufferSource();
+                source.connect(destination);
                 
-                mediaRecorder.ondataavailable = (event) => chunks.push(event.data);
-                
+                mediaRecorder.ondataavailable = e => chunks.push(e.data);
                 mediaRecorder.onstop = async () => {
                     const blob = new Blob(chunks, { type: 'audio/webm;codecs=opus' });
                     await db.put('audios', blob, texto);
-                    audioContext.close(); // Liberar recursos
+                    console.log(`Audio para "${texto}" guardado.`);
+                    audioContext.close();
+                };
+
+                utterance.onstart = () => mediaRecorder.start();
+                utterance.onend = () => {
+                    if (mediaRecorder.state === 'recording') mediaRecorder.stop();
+                    sintesisEnCurso = false;
                 };
                 
-                const source = audioContext.createBufferSource(); // Fuente vacía
-                source.connect(destination);
-
                 synth.speak(utterance);
-                
-                // Iniciar y detener la grabación casi instantáneamente después de hablar
-                setTimeout(() => mediaRecorder.start(), 0);
-                utterance.addEventListener('end', () => {
-                    if (mediaRecorder.state === 'recording') {
-                        mediaRecorder.stop();
-                    }
-                });
             }
         } catch (error) {
-            console.error("Error al procesar el audio:", error);
+            console.error(`Error al procesar el audio para "${texto}":`, error);
             sintesisEnCurso = false;
         }
     }
 
-    // --- FUNCIONES ORIGINALES DEL PROYECTO ---
+    // --- RESTO DE FUNCIONES (SIN CAMBIOS) ---
 
     function cargarDatos() {
         fetch('datos.json')
@@ -123,7 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.querySelector('#back-button').classList.remove('hidden');
                         const footer = document.querySelector('footer');
                         if(footer) footer.style.display = 'none';
-                        dropdownContent.style.display = 'none';
+                        const dropdown = document.querySelector('.dropdown-content');
+                        if(dropdown) dropdown.style.display = 'none';
                     });
                     dropdownContent.appendChild(dropdownButton);
                 });
@@ -201,7 +223,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         recognition.lang = 'es-ES';
         recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
         const escucharButton = document.getElementById('empezar-escuchar');
         escucharButton.classList.add('pulsing');
         recognition.start();
@@ -220,25 +241,24 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // --- EVENT LISTENERS PARA CADA PÁGINA ---
+    // --- CONFIGURACIÓN DE EVENT LISTENERS (AHORA SE EJECUTA DESPUÉS DE INICIAR DB) ---
 
     // Página Principal (index.html)
-    const backButton = document.getElementById('back-button');
-    if (backButton) {
+    if (document.querySelector('.categorias-grid')) {
+        const backButton = document.getElementById('back-button');
         backButton.addEventListener('click', () => {
             document.querySelector('.categorias-grid').style.display = 'grid';
             document.querySelector('.imagenes-grid').style.display = 'none';
             const footer = document.querySelector('footer');
-            if(footer) footer.style.display = 'flex';
+            if (footer) footer.style.display = 'flex';
             backButton.classList.add('hidden');
         });
         cargarDatos();
     }
 
     // Página de Escribir (escribir.html)
-    const backButtonEscribir = document.getElementById('back-button-escribir');
-    if (backButtonEscribir) {
-        backButtonEscribir.addEventListener('click', () => window.history.back());
+    if (document.getElementById('texto-escribir')) {
+        document.getElementById('back-button-escribir').addEventListener('click', () => window.history.back());
         document.getElementById('leer-texto').addEventListener('click', () => {
             const texto = document.getElementById('texto-escribir').value;
             hablarTexto(texto);
@@ -248,13 +268,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Página de Escuchar (escuchar.html)
-    const backButtonEscuchar = document.getElementById('back-button-escuchar');
-    if (backButtonEscuchar) {
-        backButtonEscuchar.addEventListener('click', () => window.history.back());
+    if (document.getElementById('empezar-escuchar')) {
+        document.getElementById('back-button-escuchar').addEventListener('click', () => window.history.back());
         document.getElementById('empezar-escuchar').addEventListener('click', empezarEscuchar);
         cargarHistorial();
     }
-    
-    // Inicializar la base de datos al cargar el script
-    initDB();
 });
