@@ -1,41 +1,54 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // --- INICIALIZACIÓN DE LA BASE DE DATOS (AHORA ASÍNCRONA) ---
     let db;
 
+    // --- FUNCIÓN initDB REESCRITA CON API NATIVA ---
     async function initDB() {
-        try {
-            // Verifica que la librería 'idb' se haya cargado
-            if (!window.idb) {
-                console.error('La librería IDB no se ha cargado. Revisa la conexión a internet la primera vez o el link en el HTML.');
-                return null;
-            }
-            
-            console.log("Inicializando base de datos...");
-            const database = await idb.openDB('audios-db', 1, {
-                upgrade(db) {
-                    if (!db.objectStoreNames.contains('audios')) {
-                        db.createObjectStore('audios');
-                    }
-                },
-            });
-            console.log("Base de datos inicializada correctamente.");
-            return database;
+        return new Promise((resolve, reject) => {
+            // Solicitud para abrir la base de datos.
+            const request = window.indexedDB.open('audios-db', 1);
 
-        } catch (error) {
-            console.error("Error grave al inicializar la base de datos:", error);
-            return null;
-        }
+            // Se ejecuta si hay un error en la apertura.
+            request.onerror = (event) => {
+                console.error("Error de IndexedDB:", event.target.error);
+                reject(event.target.error);
+            };
+
+            // Se ejecuta si la base de datos se abre con éxito.
+            request.onsuccess = (event) => {
+                console.log("Base de datos inicializada correctamente.");
+                resolve(event.target.result);
+            };
+
+            // Se ejecuta si se necesita crear o actualizar la estructura de la base de datos.
+            request.onupgradeneeded = (event) => {
+                console.log("Actualizando la estructura de la base de datos...");
+                const dbInstance = event.target.result;
+                if (!dbInstance.objectStoreNames.contains('audios')) {
+                    dbInstance.createObjectStore('audios');
+                }
+            };
+        });
+    }
+    
+    // --- FUNCIÓN PARA "PROMESIFICAR" LAS PETICIONES DE INDEXEDDB ---
+    function promisifyRequest(request) {
+        return new Promise((resolve, reject) => {
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
     }
 
-    // Esperamos a que la base de datos esté lista ANTES de continuar.
-    db = await initDB();
+    try {
+        db = await initDB();
+    } catch (error) {
+        console.error("No se pudo inicializar la base de datos, la app funcionará sin guardar audios.", error);
+        db = null;
+    }
 
     // --- LÓGICA DE LA APLICACIÓN ---
-
     let sintesisEnCurso = false;
-    let audioContext; // Definir AudioContext una sola vez
 
-    // --- FUNCIÓN 'hablarTexto' CORREGIDA Y MÁS ROBUSTA ---
+    // --- FUNCIÓN hablarTexto ADAPTADA A LA API NATIVA ---
     async function hablarTexto(texto) {
         if (!texto || texto.trim() === '') return;
         if (sintesisEnCurso) {
@@ -43,7 +56,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         sintesisEnCurso = true;
 
-        // Si la base de datos no está disponible, usar un método simple sin guardar
         if (!db) {
             console.warn("Base de datos no disponible. Reproduciendo sin guardar.");
             const synth = window.speechSynthesis;
@@ -57,7 +69,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         try {
-            const audioGuardado = await db.get('audios', texto);
+            const readTransaction = db.transaction('audios', 'readonly');
+            const audioStore = readTransaction.objectStore('audios');
+            const audioGuardado = await promisifyRequest(audioStore.get(texto));
 
             if (audioGuardado) {
                 console.log(`Reproduciendo audio cacheado para: "${texto}"`);
@@ -73,19 +87,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                 utterance.rate = parseFloat(localStorage.getItem('speechRate') || 1);
                 utterance.pitch = parseFloat(localStorage.getItem('speechPitch') || 1);
 
-                // Lógica de grabación simplificada
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const destination = audioContext.createMediaStreamDestination();
                 const mediaRecorder = new MediaRecorder(destination.stream);
                 const chunks = [];
-
+                
                 const source = audioContext.createBufferSource();
                 source.connect(destination);
                 
                 mediaRecorder.ondataavailable = e => chunks.push(e.data);
                 mediaRecorder.onstop = async () => {
                     const blob = new Blob(chunks, { type: 'audio/webm;codecs=opus' });
-                    await db.put('audios', blob, texto);
+                    const writeTransaction = db.transaction('audios', 'readwrite');
+                    const audioStoreWrite = writeTransaction.objectStore('audios');
+                    await promisifyRequest(audioStoreWrite.put(blob, texto));
                     console.log(`Audio para "${texto}" guardado.`);
                     audioContext.close();
                 };
@@ -103,8 +118,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             sintesisEnCurso = false;
         }
     }
-
-    // --- RESTO DE FUNCIONES (SIN CAMBIOS) ---
+    
+    // --- EL RESTO DE TU CÓDIGO PERMANECE IGUAL ---
 
     function cargarDatos() {
         fetch('datos.json')
@@ -241,9 +256,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     }
 
-    // --- CONFIGURACIÓN DE EVENT LISTENERS (AHORA SE EJECUTA DESPUÉS DE INICIAR DB) ---
+    // --- CONFIGURACIÓN DE EVENT LISTENERS ---
 
-    // Página Principal (index.html)
     if (document.querySelector('.categorias-grid')) {
         const backButton = document.getElementById('back-button');
         backButton.addEventListener('click', () => {
@@ -256,7 +270,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         cargarDatos();
     }
 
-    // Página de Escribir (escribir.html)
     if (document.getElementById('texto-escribir')) {
         document.getElementById('back-button-escribir').addEventListener('click', () => window.history.back());
         document.getElementById('leer-texto').addEventListener('click', () => {
@@ -267,7 +280,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         cargarHistorial();
     }
 
-    // Página de Escuchar (escuchar.html)
     if (document.getElementById('empezar-escuchar')) {
         document.getElementById('back-button-escuchar').addEventListener('click', () => window.history.back());
         document.getElementById('empezar-escuchar').addEventListener('click', empezarEscuchar);
