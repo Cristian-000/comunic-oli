@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let audioPlayer;
 
-// --- FUNCIÓN hablarTexto CON PROXY CORS ---
+// --- FUNCIÓN hablarTexto (VERSIÓN FINAL CON MANEJO DE CUOTA) ---
 async function hablarTexto(texto) {
     if (!texto || texto.trim() === '') return;
     
@@ -41,6 +41,8 @@ async function hablarTexto(texto) {
     }
 
     try {
+        if (!db) throw new Error("La base de datos no está disponible.");
+
         // 1. Buscar en la base de datos primero
         const readTransaction = db.transaction('audios', 'readonly');
         const audioStore = readTransaction.objectStore('audios');
@@ -54,14 +56,11 @@ async function hablarTexto(texto) {
             await audioPlayer.play();
             URL.revokeObjectURL(url);
         } else {
-            // 3. Si NO se encuentra, obtenerlo de la API externa usando el proxy
+            // 3. Si NO se encuentra, obtenerlo de la API externa
             console.log(`Obteniendo audio de API para: "${texto}"`);
 
             const encodedText = encodeURIComponent(texto);
             const originalUrl = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodedText}&tl=es&client=tw-ob`;
-            
-            // --- AQUÍ ESTÁ LA LÍNEA MÁGICA ---
-            // Usamos un proxy para evitar el error de CORS
             const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(originalUrl)}`;
 
             const response = await fetch(proxyUrl);
@@ -69,13 +68,25 @@ async function hablarTexto(texto) {
 
             const audioBlob = await response.blob();
 
-            // Guardar el nuevo audio en la base de datos
-            const writeTransaction = db.transaction('audios', 'readwrite');
-            const store = writeTransaction.objectStore('audios');
-            store.put(audioBlob, texto);
-            console.log(`Audio para "${texto}" guardado en la base de datos.`);
+            // --- AQUÍ ESTÁ LA MEJORA ---
+            // Intentamos guardar el audio en un bloque try...catch separado
+            try {
+                const writeTransaction = db.transaction('audios', 'readwrite');
+                const store = writeTransaction.objectStore('audios');
+                await promisifyRequest(store.put(audioBlob, texto)); // Usamos await para capturar el error
+                console.log(`Audio para "${texto}" guardado en la base de datos.`);
+            } catch (err) {
+                // Si el error es por falta de espacio, lo manejamos elegantemente
+                if (err.name === 'QuotaExceededError') {
+                    console.warn(`No hay espacio para guardar el audio "${texto}". Se reproducirá, pero no se guardará para uso offline.`);
+                    // En una futura versión, aquí se podría mostrar un aviso al usuario.
+                } else {
+                    console.error(`Error al guardar en IndexedDB:`, err);
+                }
+            }
+            // --- FIN DE LA MEJORA ---
 
-            // Reproducir el audio recién descargado
+            // La reproducción del audio ocurre independientemente de si se pudo guardar o no
             const url = URL.createObjectURL(audioBlob);
             audioPlayer = new Audio(url);
             await audioPlayer.play();
@@ -83,14 +94,13 @@ async function hablarTexto(texto) {
         }
     } catch (error) {
         console.error(`Error al procesar el audio para "${texto}":`, error);
-        // Fallback: si todo falla, usar la voz del navegador (no se guardará)
+        // Fallback por si todo lo demás falla
         const synth = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(texto);
         utterance.lang = 'es-ES';
         synth.speak(utterance);
     }
 }
-    
     // --- FUNCIONES DE LA INTERFAZ ---
 
     function cargarDatos() {
