@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escuchar y Escribir</title>
-        <link rel="manifest" href="manifest.json">
+    <title>Escuchar</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <script defer src="script.js"></script>
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <button id="back-button-escuchar"><i class="fas fa-arrow-left"></i> Regresar</button>
+            <a href="index.html" class="back-button"><i class="fas fa-arrow-left"></i> Regresar</a>
         </nav>
     </header>
     <main>
-        <div class="escribir-container">
+        <div class="page-container">
             <button id="empezar-escuchar"><i class="fa-solid fa-microphone"></i></button>
-            <p id="texto-escuchado"></p>
+            <p id="texto-escuchado">Toca el micrófono para empezar a escuchar</p>
             <div id="historial-container">
                 <h2>Historial</h2>
                 <ul id="historial-lista-escuchar"></ul>

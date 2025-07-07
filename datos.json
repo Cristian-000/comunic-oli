@@ -1,607 +1,240 @@
 {
-    "categorias": [
-     
-      {
-        "nombre": "Emociones",
-        "src": "imagenes/emojismain.png",
-        "texto": "emociones",
-        "imagenes": [
-          {
-            "nombre": "bien",
-            "src": "embien.png",
-            "texto": "bien"
-          },{
-            "nombre": "feliz",
-            "src": "emfeliz.png",
-            "texto": "feliz"
-          },{
-            "nombre": "divertida",
-            "src": "emdivertida.png",
-            "texto": "divertida"
-          },
-          {
-            "nombre": "amor",
-            "src": "embeso.png",
-            "texto": "amor"
-          },{
-            "nombre": "aburrida",
-            "src": "emaburrida.png",
-            "texto": "aburrida"
-          },
-          {
-            "nombre": "cansada",
-            "src": "emenferma.png",
-            "texto": "cansada"
-          },{
-            "nombre": "mal",
-            "src": "emmal.png",
-            "texto": "mal"
-          },{
-            "nombre": "triste",
-            "src": "emtriste.png",
-            "texto": "triste"
-          },{
-            "nombre": "muy triste",
-            "src": "emllanto.png",
-            "texto": "muy triste"
-          },{
-            "nombre": "sorprendida",
-            "src": "emsorprendida.png",
-            "texto": "sorprendida"
-          },{
-            "nombre": "enojada",
-            "src": "emenojada.png",
-            "texto": "enojada"
-          },{
-            "nombre": "confundida",
-            "src": "emconfundida.png",
-            "texto": "confundida"
-          },{
-            "nombre": "inteligente",
-            "src": "eminteligente.png",
-            "texto": "inteligente"
-          }
-        ]
-      },
-      {
-        "nombre": "Quiero",
-        "src": "imagenes/cantar.png",
-        "texto": "Quiero",
-        "imagenes": [
-          {
-            "nombre": "celular",
-            "src": "qtabletdos.png",
-            "texto": "celular"
-          },{
-            "nombre": "juguetes",
-            "src": "qjueguetes.png",
-            "texto": "juguetes"
-          },{
-            "nombre": "dibujar",
-            "src": "qdibujar.png",
-            "texto": "dibujar"
-          },
-          {
-            "nombre": "jugar afuera",
-            "src": "jugarafuera.png",
-            "texto": "jugar afuera"
-          },
-          {
-            "nombre": "pasear",
-            "src": "qpasear.png",
-            "texto": "pasear"
-          },{
-            "nombre": "bailar",
-            "src": "qbailar.png",
-            "texto": "bailar"
-          },{
-            "nombre": "cantar",
-            "src": "qcantar.png",
-            "texto": "cantar"
-          },{
-            "nombre": "cambiar ropa",
-            "src": "qcambiarropa.png",
-            "texto": "cambiar ropa"
-          },{
-            "nombre": "ducha",
-            "src": "qducha.png",
-            "texto": "ducha"
-          },{
-            "nombre": "estudiar",
-            "src": "qestudiar.png",
-            "texto": "estudiar"
-          },{
-            "nombre": "foto",
-            "src": "qfoto.png",
-            "texto": "foto"
-          },{
-            "nombre": "leer",
-            "src": "qleer.png",
-            "texto": "leer"
-          }
-        ]
-      },
-      {
-        "nombre": "Colores",
-        "src": "imagenes/coloreslapicesmain.png",
-        "imagenes": [
-          {
-            "nombre": "rojo",
-            "src": "rojo.png",
-            "texto": "rojo"
-          },
-          {
-            "nombre": "azul",
-            "src": "azul.png",
-            "texto": "azul"
-          },
-          {
-            "nombre": "verde",
-            "src": "verde.png",
-            "texto": "verde"
-          },
-          {
-            "nombre": "amarillo",
-            "src": "amarillo.png",
-            "texto": "amarillo"
-          },
-          {
-            "nombre": "naranja",
-            "src": "naranja.png",
-            "texto": "naranja"
-          },
-          {
-            "nombre": "violeta",
-            "src": "violeta.png",
-            "texto": "violeta"
-          },
-          {
-            "nombre": "celeste",
-            "src": "celeste.png",
-            "texto": "celeste"
-          },
-          {
-            "nombre": "negro",
-            "src": "negro.png",
-            "texto": "negro"
-          },
-          {
-            "nombre": "blanco",
-            "src": "blanco.png",
-            "texto": "blanco"
-          },
-          {
-            "nombre": "rosa",
-            "src": "rosa.png",
-            "texto": "rosa"
-          }
-        ]
-      },
-      {
-        "nombre": "Números",
-        "src": "imagenes/numerosmain.png",
-        "imagenes": [
-          {
-            "nombre": "1",
-            "src": "num1.png",
-            "texto": "uno"
-          },
-          {
-            "nombre": "2",
-            "src": "num2.png",
-            "texto": "dos"
-          },
-          {
-            "nombre": "3",
-            "src": "num3.png",
-            "texto": "tres"
-          },
-          {
-            "nombre": "4",
-            "src": "num4.png",
-            "texto": "cuatro"
-          },
-          {
-            "nombre": "5",
-            "src": "num5.png",
-            "texto": "cinco"
-          },
-          {
-            "nombre": "6",
-            "src": "num6.png",
-            "texto": "seis"
-          },
-          {
-            "nombre": "7",
-            "src": "num7.png",
-            "texto": "siete"
-          },
-          {
-            "nombre": "8",
-            "src": "num8.png",
-            "texto": "ocho"
-          },
-          {
-            "nombre": "9",
-            "src": "num9.png",
-            "texto": "nueve"
-          },
-          {
-            "nombre": "10",
-            "src": "num10.png",
-            "texto": "diez"
-          }
-        ]
-      },
-      {
-        "nombre": "Letras",
-        "src":"imagenes/abcmain.png",
-        "imagenes": [
-          {
-            "nombre": "a",
-            "src": "a.png",
-            "texto": "a"
-          },
-          {
-            "nombre": "b",
-            "src": "b.png",
-            "texto": "b"
-          },
-          {
-            "nombre": "c",
-            "src": "c.png",
-            "texto": "c"
-          },
-          {
-            "nombre": "d",
-            "src": "d.png",
-            "texto": "d"
-          },
-          {
-            "nombre": "e",
-            "src": "e.png",
-            "texto": "e"
-          },
-          {
-            "nombre": "f",
-            "src": "f.png",
-            "texto": "f"
-          },
-          {
-            "nombre": "g",
-            "src": "g.png",
-            "texto": "g"
-          },
-          {
-            "nombre": "h",
-            "src": "h.png",
-            "texto": "h"
-          },
-          {
-            "nombre": "i",
-            "src": "i.png",
-            "texto": "i"
-          },
-          {
-            "nombre": "j",
-            "src": "j.png",
-            "texto": "j"
-          },
-          {
-            "nombre": "k",
-            "src": "k.png",
-            "texto": "k"
-          },
-          {
-            "nombre": "l",
-            "src": "l.png",
-            "texto": "l"
-          },
-          {
-            "nombre": "m",
-            "src": "m.png",
-            "texto": "m"
-          },
-          {
-            "nombre": "n",
-            "src": "n.png",
-            "texto": "n"
-          },
-          {
-            "nombre": "enie",
-            "src": "enie.png",
-            "texto": "enie"
-          },
-          {
-            "nombre": "o",
-            "src": "o.png",
-            "texto": "o"
-          },
-          {
-            "nombre": "p",
-            "src": "p.png",
-            "texto": "p"
-          },
-          {
-            "nombre": "q",
-            "src": "q.png",
-            "texto": "q"
-          },
-          {
-            "nombre": "r",
-            "src": "r.png",
-            "texto": "r"
-          },
-          {
-            "nombre": "s",
-            "src": "s.png",
-            "texto": "s"
-          },
-          {
-            "nombre": "t",
-            "src": "t.png",
-            "texto": "t"
-          },
-          {
-            "nombre": "u",
-            "src": "u.png",
-            "texto": "u"
-          },
-          {
-            "nombre": "v",
-            "src": "v.png",
-            "texto": "v"
-          },
-          {
-            "nombre": "w",
-            "src": "w.png",
-            "texto": "w"
-          },
-          {
-            "nombre": "x",
-            "src": "x.png",
-            "texto": "x"
-          },
-          {
-            "nombre": "y",
-            "src": "y.png",
-            "texto": "y"
-          },
-          {
-            "nombre": "z",
-            "src": "z.png",
-            "texto": "z"
-          }
-     
-     
-        ]
-      },
-      {
-        "nombre": "Comidas",
-        "src": "imagenes/btnfrutasmain.png",
-        "imagenes": [
-        
-          {
-            "nombre": "agua",
-            "src": "bebagua.png",
-            "texto": "agua"
-          },
-          {
-            "nombre": "jugo",
-            "src": "bebjugonaranja.png",
-            "texto": "jugo"
-          },
-          {
-            "nombre": "leche",
-            "src": "bebleche.png",
-            "texto": "leche"
-          },
-          {
-            "nombre": "licuado",
-            "src": "beblicuado.png",
-            "texto": "licuado"
-          },
-          {
-            "nombre": "refresco",
-            "src": "bebrefresco.png",
-            "texto": "refresco"
-          },
-          {
-            "nombre": "te",
-            "src": "bebte.png",
-            "texto": "té"
-          },
-          {
-            "separador": true
-          },
-          {
-            "nombre": "manzana",
-            "src": "manzana.png",
-            "texto": "manzana"
-          },
-          {
-            "nombre": "banana",
-            "src": "bananas.png",
-            "texto": "banana"
-          },
-          {
-            "nombre": "durazno",
-            "src": "durazno.png",
-            "texto": "durazno"
-          },
-          {
-            "nombre": "frutilla",
-            "src": "frutilla.png",
-            "texto": "frutilla"
-          },
-          {
-            "nombre": "kiwi",
-            "src": "kiwi.png",
-            "texto": "kiwi"
-          },
-          {
-            "nombre": "naranja",
-            "src": "naranga.png",
-            "texto": "naranja"
-          },
-          {
-            "nombre": "sandia",
-            "src": "sandia.png",
-            "texto": "sandía"
-          },
-          {
-            "nombre": "pera",
-            "src": "pera.png",
-            "texto": "pera"
-          },
-          {
-            "nombre": "manzanaVerde",
-            "src": "manzanaverde.png",
-            "texto": "manzana verde"
-          },
-          {
-            "separador": true
-          },
-          {
-            "nombre": "asado",
-            "src": "comasado.png",
-            "texto": "asado"
-          },
-          {
-            "nombre": "ensalada",
-            "src": "comensalada.png",
-            "texto": "ensalada"
-          },
-          {
-            "nombre": "fideos",
-            "src": "comfideos.png",
-            "texto": "fideos"
-          },
-          {
-            "nombre": "guiso",
-            "src": "comguiso.png",
-            "texto": "guiso"
-          },
-          {
-            "nombre": "hamburguesa",
-            "src": "comhamburg.png",
-            "texto": "hamburguesa"
-          },
-          {
-            "nombre": "huevos",
-            "src": "comhuevos.png",
-            "texto": "huevo frito"
-          },
-          {
-            "nombre": "pancho",
-            "src": "compancho.png",
-            "texto": "pancho"
-          },
-          {
-            "nombre": "papas fritas",
-            "src": "compapasfritas.png",
-            "texto": "papa frita"
-          },
-          {
-            "nombre": "pizza",
-            "src": "compiza.png",
-            "texto": "pizza"
-          },
-          {
-            "nombre": "pollo",
-            "src": "compolllo.png",
-            "texto": "pollo"
-          },
-          {
-            "nombre": "ravioles",
-            "src": "comravioles.png",
-            "texto": "ravioles"
-          },
-          {
-            "nombre": "tacos",
-            "src": "comtacos.png",
-            "texto": "tacos"
-          }
-
-        ]
-      },
-      {
-        "nombre": "Lugares",
-        "src": "imagenes/lugares.png",
-        "texto": "Lugares",
-        "imagenes": [
-          {
-            "nombre": "casa",
-            "src": "lucasa.png",
-            "texto": "casa"
-          },
-          {
-            "nombre": "casa de papa",
-            "src": "lucasadepapa.png",
-            "texto": "casa de papá"
-          },
-          {
-            "nombre": "escuela",
-            "src": "luescuela.png",
-            "texto": "escuela"
-          },
-          {
-            "nombre": "casa abuela",
-            "src": "lucasaabuela.png",
-            "texto": "parque"
-          },
-          {
-            "nombre": "trabajo papa",
-            "src": "lutrabajopapa.png",
-            "texto": "trabajo de papá"
-          }
-        ]
-      },
-      {
-        "nombre": "Actividades Diarias",
-        "src": "imagenes/actividades.png",
-        "texto": "Actividades Diarias",
-        "imagenes": [
-          {
-            "nombre": "ir al baño",
-            "src": "cacbaño.png",
-            "texto": "ir al baño"
-          },
-          {
-            "nombre": "cepillar",
-            "src": "accepillar.png",
-            "texto": "Cepillar los dientes"
-          },
-          {
-            "nombre": "descansar",
-            "src": "acdescansar.png",
-            "texto": "descansar"
-          },
-          {
-            "nombre": "dormir",
-            "src": "dormir.png",
-            "texto": "Dormir"
-          }
-        ]
-      },
-      {
-        "nombre": "Animales",
-        "src": "imagenes/animales.png",
-        "texto": "Animales",
-        "imagenes": [
-          {
-            "nombre": "perro",
-            "src": "perro.png",
-            "texto": "Perro"
-          },
-          {
-            "nombre": "gato",
-            "src": "gato.png",
-            "texto": "Gato"
-          }
-        ]
-      }
-      
-    ]
-  }
-  
+  "categorias": [
+    {
+      "nombre": "Quiero",
+      "texto": "Quiero",
+      "imagenes": [
+        { "texto": "Comer", "hablar": "Quiero comer" },
+        { "texto": "Beber", "hablar": "Quiero beber" },
+        { "texto": "Baño", "hablar": "Quiero ir al baño" },
+        { "texto": "Jugar", "hablar": "Quiero jugar" },
+        { "texto": "Dormir", "hablar": "Quiero dormir" },
+        { "texto": "Salir", "hablar": "Quiero salir" },
+        { "texto": "Abrazo", "hablar": "Quiero un abrazo" },
+        { "texto": "Solo", "hablar": "Quiero estar solo" },
+        { "texto": "Música", "hablar": "Quiero escuchar música" },
+        { "texto": "Televisión", "hablar": "Quiero ver la tele" }
+      ]
+    },
+    {
+      "nombre": "Me siento",
+      "texto": "Me siento",
+      "imagenes": [
+        { "texto": "Feliz", "hablar": "Me siento feliz" },
+        { "texto": "Triste", "hablar": "Me siento triste" },
+        { "texto": "Enojado", "hablar": "Me siento enojado" },
+        { "texto": "Cansado", "hablar": "Me siento cansado" },
+        { "texto": "Asustado", "hablar": "Me siento asustado" },
+        { "texto": "Sorprendido", "hablar": "Me siento sorprendido" },
+        { "texto": "Frustrado", "hablar": "Me siento frustrado" },
+        { "texto": "Nervioso", "hablar": "Me siento nervioso" },
+        { "texto": "Contento", "hablar": "Me siento contento" },
+        { "texto": "Enfermo", "hablar": "Me siento enfermo" },
+        { "texto": "Aburrido", "hablar": "Me siento aburrido" }
+      ]
+    },
+    {
+      "nombre": "Preguntas",
+      "texto": "Preguntas",
+      "imagenes": [
+        { "texto": "Qué", "hablar": "¿Qué es esto?" },
+        { "texto": "Dónde", "hablar": "¿Dónde está?" },
+        { "texto": "Quién", "hablar": "¿Quién es?" },
+        { "texto": "Cuándo", "hablar": "¿Cuándo vamos?" },
+        { "texto": "Porqué", "hablar": "¿Por qué?" },
+        { "texto": "Poder", "hablar": "¿Podemos?" }
+      ]
+    },
+    {
+      "nombre": "Personas",
+      "texto": "Personas",
+      "imagenes": [
+        { "texto": "Mamá" },
+        { "texto": "Papá" },
+        { "texto": "Hermano" },
+        { "texto": "Hermana" },
+        { "texto": "Abuela" },
+        { "texto": "Abuelo" },
+        { "texto": "Amigo" },
+        { "texto": "Amiga" },
+        { "texto": "Maestra" },
+        { "texto": "Doctor" }
+      ]
+    },
+    {
+      "nombre": "Acciones",
+      "texto": "Acciones",
+      "imagenes": [
+        { "texto": "Comer" },
+        { "texto": "Beber" },
+        { "texto": "Jugar" },
+        { "texto": "Dormir" },
+        { "texto": "Correr" },
+        { "texto": "Saltar" },
+        { "texto": "Mirar" },
+        { "texto": "Escuchar" },
+        { "texto": "Leer" },
+        { "texto": "Escribir" },
+        { "texto": "Dibujar" },
+        { "texto": "Ayudar" }
+      ]
+    },
+    {
+      "nombre": "Comida",
+      "texto": "Comida",
+      "imagenes": [
+        { "texto": "Manzana" },
+        { "texto": "Banana" },
+        { "texto": "Naranja" },
+        { "texto": "Frutilla" },
+        { "separador": true },
+        { "texto": "Pan" },
+        { "texto": "Galletitas" },
+        { "texto": "Yogur" },
+        { "texto": "Queso" },
+        { "separador": true },
+        { "texto": "Pollo" },
+        { "texto": "Carne" },
+        { "texto": "Pasta" },
+        { "texto": "Arroz" }
+      ]
+    },
+    {
+      "nombre": "Bebidas",
+      "texto": "Bebidas",
+      "imagenes": [
+        { "texto": "Agua" },
+        { "texto": "Leche" },
+        { "texto": "Jugo de naranja" },
+        { "texto": "Jugo de manzana" },
+        { "texto": "Gaseosa" }
+      ]
+    },
+    {
+      "nombre": "Lugares",
+      "texto": "Lugares",
+      "imagenes": [
+        { "texto": "Casa" },
+        { "texto": "Escuela" },
+        { "texto": "Parque" },
+        { "texto": "Supermercado" },
+        { "texto": "Dormitorio" },
+        { "texto": "Cocina" },
+        { "texto": "Baño" }
+      ]
+    },
+    {
+      "nombre": "Cuerpo",
+      "texto": "Partes del cuerpo",
+      "imagenes": [
+        { "texto": "Cabeza" },
+        { "texto": "Ojos" },
+        { "texto": "Nariz" },
+        { "texto": "Boca" },
+        { "texto": "Manos" },
+        { "texto": "Pies" },
+        { "texto": "Brazos" },
+        { "texto": "Piernas" },
+        { "texto": "Dolor", "hablar": "Me duele" }
+      ]
+    },
+    {
+      "nombre": "Ropa",
+      "texto": "Ropa",
+      "imagenes": [
+        { "texto": "Remera" },
+        { "texto": "Pantalón" },
+        { "texto": "Zapatos" },
+        { "texto": "Medias" },
+        { "texto": "Campera" },
+        { "texto": "Gorro" }
+      ]
+    },
+    {
+      "nombre": "Animales",
+      "texto": "Animales",
+      "imagenes": [
+        { "texto": "Perro" },
+        { "texto": "Gato" },
+        { "texto": "Pájaro" },
+        { "texto": "Pez" },
+        { "texto": "León" },
+        { "texto": "Elefante" }
+      ]
+    },
+    {
+      "nombre": "Juguetes",
+      "texto": "Juguetes",
+      "imagenes": [
+        { "texto": "Pelota" },
+        { "texto": "Auto" },
+        { "texto": "Muñeca" },
+        { "texto": "Bloques" },
+        { "texto": "Libro" },
+        { "texto": "Lápices de colores" }
+      ]
+    },
+    {
+      "nombre": "Números",
+      "texto": "Números",
+      "imagenes": [
+        { "texto": "Cero" },
+        { "texto": "Uno" },
+        { "texto": "Dos" },
+        { "texto": "Tres" },
+        { "texto": "Cuatro" },
+        { "texto": "Cinco" },
+        { "texto": "Seis" },
+        { "texto": "Siete" },
+        { "texto": "Ocho" },
+        { "texto": "Nueve" },
+        { "texto": "Diez" }
+      ]
+    },
+    {
+      "nombre": "Colores",
+      "texto": "Colores",
+      "imagenes": [
+        { "texto": "Rojo" },
+        { "texto": "Azul" },
+        { "texto": "Verde" },
+        { "texto": "Amarillo" },
+        { "texto": "Naranja" },
+        { "texto": "Violeta" },
+        { "texto": "Blanco" },
+        { "texto": "Negro" },
+        { "texto": "Rosa" },
+        { "texto": "Marrón" }
+      ]
+    },
+    {
+      "nombre": "Rutinas",
+      "texto": "Rutinas",
+      "imagenes": [
+        { "texto": "Buenos días" },
+        { "texto": "Buenas noches" },
+        { "texto": "Desayuno", "hablar": "Desayunar" },
+        { "texto": "Almuerzo", "hablar": "Almorzar" },
+        { "texto": "Cena", "hablar": "Cenar" },
+        { "separador": true },
+        { "texto": "Lavar manos", "hablar": "Lavarse las manos" },
+        { "texto": "Lavar dientes", "hablar": "Lavarse los dientes" },
+        { "texto": "Ducha", "hablar": "Bañarse" }
+      ]
+    },
+    {
+      "nombre": "Social",
+      "texto": "Social",
+      "imagenes": [
+        { "texto": "Hola" },
+        { "texto": "Adiós" },
+        { "texto": "Por favor" },
+        { "texto": "Gracias" },
+        { "texto": "De nada" },
+        { "texto": "Perdón", "hablar": "Lo siento" },
+        { "texto": "Sí" },
+        { "texto": "No" }
+      ]
+    }
+  ]
+}
