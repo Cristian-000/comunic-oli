@@ -1,126 +1,78 @@
-/* Contenedor principal de la ficha del usuario */
-#ficha-container {
-    margin-top: 5rem;
-    text-align: center;
+/* Estilos para la página de Usuario, trabajando junto a Bootstrap y style.css */
+:root {
+    --color-primario: #1b74e4;
+    --color-fondo: #f0f2f5;
+    --color-superficie: #ffffff;
+    --color-texto: #1c1e21;
+    --color-borde: #ccd0d5;
+    --sombra: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --radio-borde: 16px;
 }
 
-/* Mensaje inicial cuando no hay datos */
-#ficha-container p {
-    font-size: 1.5rem;
-    color: var(--color-texto);
-    margin-bottom: 2rem;
+body {
+    background-color: var(--color-fondo);
 }
 
-/* Información del usuario */
-#ficha-container h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
+main.container {
+    max-width: 700px;
 }
 
-#ficha-container h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--color-texto);
+.user-card, .form-card {
+    background-color: var(--color-superficie);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    border: 1px solid var(--color-borde);
 }
 
-#foto-usuario-img {
-    max-width: 100px;
-    max-height: 100px;
+.user-photo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 4px solid var(--color-primario);
     border-radius: 50%;
-    margin-bottom: 1rem;
 }
 
-/* Botón de ajustar ficha */
-#form-toggle {
-    display: block;
-    margin: 2rem auto;
+.user-details p {
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--color-fondo);
+}
+.user-details p:last-child {
+    border-bottom: none;
+}
+
+.adulto-card {
+    background-color: var(--color-fondo);
+}
+
+.btn {
+    font-weight: 600;
     padding: 0.75rem 1.5rem;
-    font-size: 1.2rem;
-    color: white;
-    background-color: var(--color-boton);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* Formulario de ajustes de ficha */
-#formulario {
-    margin-top: 2rem;
-    text-align: left;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.form-label {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-    display: block;
-}
-
-.form-control {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-.form-control-file {
-    display: block;
-    width: 100%;
-}
-
-.form-check-input {
-    margin-top: 0.3rem;
-}
-
-.form-check-label {
-    margin-left: 0.5rem;
-}
-
-/* Tarjetas de adultos */
-.adulto-form, .adulto-card {
-    margin-bottom: 1.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.adulto-form .card-body, .adulto-card .card-body {
-    padding: 1rem;
-}
-
-.adulto-form .card-title, .adulto-card .card-title {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.adulto-form .form-group, .adulto-card .card-text {
-    margin-bottom: 0.75rem;
+    border-radius: var(--radio-borde);
+    transition: all 0.2s ease-in-out;
 }
 
 .btn-primary {
-    background-color: var(--color-boton);
-    border: none;
-    color: white;
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+}
+.btn-primary:hover {
+    background-color: #1565c0;
+    border-color: #1565c0;
 }
 
-#modal-save-button {
-    margin-button: 20px;
+.form-card {
+    text-align: left;
 }
-#delete-button {
-    margin-bottom: 20px;
+.form-control:focus {
+    border-color: var(--color-primario);
+    box-shadow: 0 0 0 0.2rem rgba(27, 116, 228, 0.25);
 }
 
-/* Variables de color (personalizar según tu tema) */
-:root {
-    --color-texto: #333;
-    --color-boton: #007bff;
-    --color-boton-hover: #0056b3;
-    --color-link: #007bff;
-    --color-link-hover: #0056b3;
-    --color-navbar: #f8f9fa;
+.adulto-form {
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--color-fondo);
 }
