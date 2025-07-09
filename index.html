@@ -12,30 +12,22 @@
 <body>
     <header>
         <div id="tira-frase-container">
-            <div id="tira-frase">
-                </div>
+            <div id="tira-frase"></div>
             <div id="tira-frase-controles">
                 <button id="hablar-frase-btn" aria-label="Hablar frase"><i class="fas fa-play"></i></button>
                 <button id="borrar-frase-btn" aria-label="Borrar frase"><i class="fas fa-trash"></i></button>
             </div>
         </div>
-
         <nav class="navbar">
             <button id="back-button" class="hidden"><i class="fas fa-arrow-left"></i> Regresar</button>
-            <h1 id="titulo-categoria"></h1>
-            <a href="ajustes.html" class="settings-button"><i class="fas fa-cog"></i></a>
+            <h1 id="titulo-categoria">Categorías</h1>
         </nav>
     </header>
 
     <main>
-        <div class="comunicador-container">
-            <div id="periferico-container">
-                <div id="categorias-grid" class="grid-container">
-                    </div>
-                <div id="imagenes-grid" class="grid-container" style="display: none;">
-                    </div>
-            </div>
-        </div>
+        <div id="nucleo-grid" class="grid-container"></div>
+        <div id="categorias-grid" class="grid-container"></div>
+        <div id="imagenes-grid" class="grid-container hidden"></div>
     </main>
 
     <footer>
