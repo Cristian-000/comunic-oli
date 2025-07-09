@@ -89,6 +89,15 @@ footer {
     margin: 6px;
 }
 
+#back-button, .back-button{
+    background-color: none;
+    text-decoration: none;
+    color: var(--color-borrar);
+    border: none;
+    background: none;
+    font-size: 1.2rem;
+
+}
 .pictograma-frase-contenido {
     display: flex;
     flex-direction: column;
