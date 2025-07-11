@@ -366,3 +366,12 @@ footer {
     font-size: 28px;
     margin-bottom: 4px;
 }
+/* Clases de SortableJS para feedback visual */
+.sortable-ghost {
+    opacity: 0.4;
+    background: #cce5ff;
+}
+
+.sortable-drag {
+    cursor: grabbing !important;
+}
