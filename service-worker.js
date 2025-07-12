@@ -1,64 +1,89 @@
-const CACHE_NAME = 'comunicador-cache-v2'; // Nueva versión para forzar la actualización
+// service-worker.js
 
-// Lista de archivos base que componen la aplicación (el "esqueleto").
-// Se han eliminado los archivos que no existen.
-const APP_SHELL_URLS = [
-    '/',
-    '/index.html',
-    '/escribir.html',
-    '/escuchar.html',
-    '/script.js',
-    '/style.css',
-    '/datos.json',
-    '/manifest.json',
-    '/imagenes/ico192.png',
-    '/imagenes/ico512.png',
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css'
+// Nombre y versión de la caché. Cámbialo si haces actualizaciones importantes.
+const CACHE_NAME = 'comunicador-cache-v1';
+
+// Lista de archivos esenciales para que la aplicación funcione offline.
+// ¡IMPORTANTE! Asegúrate de que estas rutas coincidan con la estructura de tu proyecto.
+const urlsToCache = [
+    '/', // La página principal
+    'index.html',
+    'escribir.html',
+    'escuchar.html',
+    'style.css',
+    'app.js',
+    'datos.json', // ¡Muy importante para que las categorías carguen!
+    'manifest.json',
+    'imagenes/placeholder.png',
+    // Añade aquí los iconos de tu app que definiste en el manifest.json
+    'icon-192.png',
+    'icon-512.png',
+    'https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js' // Cacheamos también la librería
 ];
 
-// Evento de Instalación: Se cachea el esqueleto de la aplicación.
+// Evento 'install': Se dispara cuando el Service Worker se instala por primera vez.
+// Aquí es donde guardamos nuestros archivos en la caché.
 self.addEventListener('install', event => {
-    console.log('SW: Instalando y cacheando App Shell...');
+    console.log('Service Worker: Instalando...');
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(cache => cache.addAll(APP_SHELL_URLS))
-            .then(() => self.skipWaiting())
+            .then(cache => {
+                console.log('Service Worker: Abriendo caché y guardando archivos principales.');
+                return cache.addAll(urlsToCache);
+            })
+            .then(() => {
+                // Forzar al nuevo Service Worker a activarse inmediatamente.
+                return self.skipWaiting();
+            })
+            .catch(err => {
+                console.error('Service Worker: Falló el cacheo de archivos en la instalación.', err);
+            })
     );
 });
 
-// Evento de Activación: Se limpia el caché antiguo.
+// Evento 'activate': Se dispara cuando el Service Worker se activa.
+// Aquí limpiamos las cachés antiguas que ya no se usan.
 self.addEventListener('activate', event => {
-    console.log('SW: Activando y limpiando cachés antiguas...');
+    console.log('Service Worker: Activando...');
+    const cacheWhitelist = [CACHE_NAME];
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
-                    if (cacheName !== CACHE_NAME) {
-                        console.log('SW: Eliminando caché antigua:', cacheName);
+                    // Si la caché no está en nuestra "lista blanca", la borramos.
+                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                        console.log(`Service Worker: Borrando caché antigua: ${cacheName}`);
                         return caches.delete(cacheName);
                     }
                 })
             );
-        }).then(() => self.clients.claim())
+        })
+        // Tomar control de la página inmediatamente.
+        .then(() => self.clients.claim())
     );
 });
 
-// Evento Fetch: Define cómo se manejan las solicitudes de red.
-// Estrategia: "Network First" (Intenta ir a la red primero, si falla, usa el caché).
+// Evento 'fetch': Se dispara cada vez que la aplicación hace una petición de red (imágenes, scripts, etc.).
+// Aquí decidimos si servimos el archivo desde la caché o desde la red.
 self.addEventListener('fetch', event => {
+    // Usamos una estrategia "Cache First" (Primero la Caché).
     event.respondWith(
-        fetch(event.request)
-            .then(networkResponse => {
-                // Si la respuesta de la red es exitosa, la usamos y la guardamos en el caché
-                return caches.open(CACHE_NAME).then(cache => {
-                    cache.put(event.request, networkResponse.clone());
-                    return networkResponse;
-                });
+        caches.match(event.request)
+            .then(response => {
+                // Si encontramos una respuesta en la caché, la devolvemos.
+                if (response) {
+                    // console.log(`Service Worker: Sirviendo desde caché: ${event.request.url}`);
+                    return response;
+                }
+
+                // Si no, vamos a la red a buscarlo.
+                // console.log(`Service Worker: Sirviendo desde red: ${event.request.url}`);
+                return fetch(event.request);
             })
-            .catch(() => {
-                // Si la petición de red falla (sin conexión), se busca en el caché.
-                console.log(`SW: Sirviendo ${event.request.url} desde el caché.`);
-                return caches.match(event.request);
+            .catch(err => {
+                // Si tanto la caché como la red fallan (offline y no está en caché),
+                // podrías devolver una página de fallback si quisieras.
+                console.error(`Service Worker: Error en fetch para ${event.request.url}`, err);
             })
     );
 });

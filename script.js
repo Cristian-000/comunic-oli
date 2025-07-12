@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     let db;
     let fraseActual = [];
     let audioPlayer;
-    let sortableInstance = null; // Para la instancia de SortableJS
+    let sortableInstance = null;
+    let isPlayingSequence = false;
 
     // --- VOCABULARIO NÚCLEO ---
     const vocabularioNucleo = [
@@ -48,32 +49,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         db = null;
     }
 
-    // --- FUNCIONES DE CACHÉ Y API ---
+    // --- FUNCIONES DE CACHÉ Y API (CON CORRECCIÓN DE CORS) ---
     async function obtenerYCachearPictograma(texto) {
         if (!texto || texto.trim() === '') return 'imagenes/placeholder.png';
-        if (!db) {
-            try {
-                const textoBusqueda = encodeURIComponent(texto);
-                const urlBusqueda = `https://api.arasaac.org/api/pictograms/es/search/${textoBusqueda}`;
-                const response = await fetch(urlBusqueda);
-                if (!response.ok) return 'imagenes/placeholder.png';
-                const resultados = await response.json();
-                if (resultados.length === 0) return 'imagenes/placeholder.png';
-                const pictogramaId = resultados[0]._id;
-                return `https://api.arasaac.org/api/pictograms/${pictogramaId}?download=false`;
-            } catch (e) {
-                return 'imagenes/placeholder.png';
-            }
-        }
+        if (!db) return 'imagenes/placeholder.png'; // No intentar fetch si la DB falló
+
         try {
             const transaccionLectura = db.transaction('pictogramas', 'readonly');
             const pictogramaGuardado = await promisifyRequest(transaccionLectura.objectStore('pictogramas').get(texto));
             if (pictogramaGuardado) return URL.createObjectURL(pictogramaGuardado);
 
+            // CORRECCIÓN 1: Usamos el proxy para la búsqueda en ARASAAC
             const textoBusqueda = encodeURIComponent(texto);
-            const urlBusqueda = `https://api.arasaac.org/api/pictograms/es/search/${textoBusqueda}`;
-            let response = await fetch(urlBusqueda);
-            if (!response.ok) throw new Error('Error en búsqueda ARASAAC');
+            const urlBusquedaOriginal = `https://api.arasaac.org/api/pictograms/es/search/${textoBusqueda}`;
+            const urlBusquedaProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(urlBusquedaOriginal)}`;
+            
+            let response = await fetch(urlBusquedaProxy);
+            if (!response.ok) throw new Error('Error en búsqueda ARASAAC a través de proxy');
+            
             const resultados = await response.json();
             if (resultados.length === 0) {
                 console.warn(`No se encontró pictograma para "${texto}"`);
@@ -81,53 +74,96 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const pictogramaId = resultados[0]._id;
+            // No necesitamos proxy para la URL final ya que es una URL directa a la imagen
             const urlImagen = `https://api.arasaac.org/api/pictograms/${pictogramaId}?download=false`;
             response = await fetch(urlImagen);
             if (!response.ok) throw new Error('Error al descargar imagen');
+            
             const imagenBlob = await response.blob();
             const transaccionEscritura = db.transaction('pictogramas', 'readwrite');
             await promisifyRequest(transaccionEscritura.objectStore('pictogramas').put(imagenBlob, texto));
+            
             return URL.createObjectURL(imagenBlob);
         } catch (error) {
-            console.error('Error procesando pictograma:', error);
+            console.error(`Error procesando pictograma para "${texto}":`, error);
             return 'imagenes/placeholder.png';
         }
     }
 
-    async function hablarTexto(texto) {
-        if (!texto || texto.trim() === '') return;
-        if (window.speechSynthesis.speaking) {
-            window.speechSynthesis.cancel();
-        }
-        if (audioPlayer && !audioPlayer.paused) audioPlayer.pause();
+    // --- FUNCIONES DE AUDIO OPTIMIZADAS ---
+    async function obtenerAudio(texto) {
+        if (!texto || texto.trim() === '') return null;
         try {
-            if (!db) throw new Error("DB no disponible, usando fallback de navegador.");
+            if (!db) throw new Error("DB no disponible");
             const audioGuardado = await promisifyRequest(db.transaction('audios', 'readonly').objectStore('audios').get(texto));
-            if (audioGuardado) {
-                const url = URL.createObjectURL(audioGuardado);
-                audioPlayer = new Audio(url);
-                await audioPlayer.play();
-                audioPlayer.onended = () => URL.revokeObjectURL(url);
-            } else {
-                const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(texto)}&tl=es&client=tw-ob`)}`;
-                const response = await fetch(proxyUrl);
-                if (!response.ok) throw new Error(`Respuesta de red no válida desde proxy`);
-                const audioBlob = await response.blob();
-                try {
-                    await promisifyRequest(db.transaction('audios', 'readwrite').objectStore('audios').put(audioBlob, texto));
-                } catch (err) {
-                    console.error(`Error al guardar audio en IndexedDB:`, err);
+            if (audioGuardado) return audioGuardado;
+
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(texto)}&tl=es&client=tw-ob`)}`;
+            const response = await fetch(proxyUrl);
+            if (!response.ok) throw new Error(`Respuesta de red no válida`);
+            const audioBlob = await response.blob();
+            await promisifyRequest(db.transaction('audios', 'readwrite').objectStore('audios').put(audioBlob, texto));
+            return audioBlob;
+        } catch (error) {
+            console.error(`Error al obtener audio para "${texto}":`, error);
+            return null;
+        }
+    }
+
+    function reproducirAudio(blob) {
+        return new Promise((resolve, reject) => {
+            if (isPlayingSequence) { // Detener audio individual si se está reproduciendo una secuencia
+                if(audioPlayer && !audioPlayer.paused) audioPlayer.pause();
+            }
+            if (!blob) return reject("Blob de audio nulo.");
+            const url = URL.createObjectURL(blob);
+            audioPlayer = new Audio(url);
+            audioPlayer.onended = () => { URL.revokeObjectURL(url); resolve(); };
+            audioPlayer.onerror = (e) => { URL.revokeObjectURL(url); reject(e); };
+            audioPlayer.play();
+        });
+    }
+
+    async function hablarFraseSecuencial() {
+        if (isPlayingSequence || fraseActual.length === 0) return;
+        isPlayingSequence = true;
+        const btnHablar = document.getElementById('hablar-frase-btn');
+        if (btnHablar) btnHablar.classList.add('pulsing');
+
+        for (const pictograma of fraseActual) {
+            const textoParaHablar = pictograma.hablar || pictograma.texto;
+            try {
+                const audioBlob = await obtenerAudio(textoParaHablar);
+                if (audioBlob) {
+                    await reproducirAudio(audioBlob);
+                } else {
+                    const utterance = new SpeechSynthesisUtterance(textoParaHablar);
+                    utterance.lang = 'es-ES';
+                    window.speechSynthesis.speak(utterance);
+                    await new Promise(resolve => utterance.onend = resolve);
                 }
-                const url = URL.createObjectURL(audioBlob);
-                audioPlayer = new Audio(url);
-                await audioPlayer.play();
-                audioPlayer.onended = () => URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error("Error en la reproducción secuencial:", error);
+            }
+        }
+        isPlayingSequence = false;
+        if (btnHablar) btnHablar.classList.remove('pulsing');
+    }
+
+    async function hablarTextoIndividual(texto) {
+        if (isPlayingSequence) return;
+        if (!texto || texto.trim() === '') return;
+        try {
+            const audioBlob = await obtenerAudio(texto);
+            if (audioBlob) {
+                await reproducirAudio(audioBlob);
+            } else {
+                const utterance = new SpeechSynthesisUtterance(texto);
+                utterance.lang = 'es-ES';
+                window.speechSynthesis.speak(utterance);
             }
         } catch (error) {
-            console.error(`Error al procesar audio para "${texto}". Usando SpeechSynthesis.`, error);
-            const utterance = new SpeechSynthesisUtterance(texto);
-            utterance.lang = 'es-ES';
-            window.speechSynthesis.speak(utterance);
+            console.error("Error en reproducción individual:", error);
         }
     }
 
@@ -135,24 +171,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     function agregarAPipa(pictograma) {
         fraseActual.push(pictograma);
         renderizarTiraFrase();
-        hablarTexto(pictograma.hablar || pictograma.texto);
+        hablarTextoIndividual(pictograma.hablar || pictograma.texto);
     }
 
     async function renderizarTiraFrase() {
         const tiraFraseDiv = document.getElementById('tira-frase');
         if (!tiraFraseDiv) return;
         tiraFraseDiv.innerHTML = '';
-
         fraseActual.forEach((pictograma, index) => {
             const pictogramaContenedor = document.createElement('div');
             pictogramaContenedor.className = 'pictograma-frase';
-            
             const pictogramaContenido = document.createElement('div');
             pictogramaContenido.className = 'pictograma-frase-contenido';
-
             const img = document.createElement('img');
             obtenerYCachearPictograma(pictograma.texto).then(src => img.src = src);
-
             const btnBorrar = document.createElement('button');
             btnBorrar.className = 'btn-borrar-pictograma';
             btnBorrar.innerHTML = '&times;';
@@ -162,25 +194,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 fraseActual.splice(index, 1);
                 renderizarTiraFrase();
             };
-
             pictogramaContenido.appendChild(img);
             pictogramaContenedor.appendChild(pictogramaContenido);
             pictogramaContenedor.appendChild(btnBorrar);
             tiraFraseDiv.appendChild(pictogramaContenedor);
         });
-
         tiraFraseDiv.scrollLeft = tiraFraseDiv.scrollWidth;
     }
 
-    // --- LÓGICA DE DRAG & DROP (MÓVIL Y ESCRITORIO) ---
+    // --- LÓGICA DE DRAG & DROP ---
     function inicializarDragAndDrop() {
         const tiraFraseDiv = document.getElementById('tira-frase');
         if (!tiraFraseDiv) return;
-        
         if (sortableInstance) {
             sortableInstance.destroy();
         }
-        
         sortableInstance = new Sortable(tiraFraseDiv, {
             animation: 150,
             ghostClass: 'sortable-ghost',
@@ -196,13 +224,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function crearBotonPictograma(item) {
         const pictoButton = document.createElement('button');
         pictoButton.className = 'pictograma-button';
-
         const img = document.createElement('img');
         img.src = await obtenerYCachearPictograma(item.texto || item.nombre);
-        
         const span = document.createElement('span');
         span.textContent = item.texto || item.nombre;
-        
         pictoButton.appendChild(img);
         pictoButton.appendChild(span);
         return pictoButton;
@@ -227,7 +252,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const categoriasGrid = document.getElementById('categorias-grid');
             if (!categoriasGrid) return;
             categoriasGrid.innerHTML = '';
-            
             for (const categoria of data.categorias) {
                 const categoriaButton = await crearBotonPictograma(categoria);
                 categoriaButton.addEventListener('click', () => mostrarImagenes(categoria));
@@ -244,9 +268,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const nucleoGrid = document.getElementById('nucleo-grid');
         const tituloCategoria = document.getElementById('titulo-categoria');
         const backButton = document.getElementById('back-button');
-
         if (!imagenesGrid || !categoriasGrid || !nucleoGrid || !tituloCategoria || !backButton) return;
-
         imagenesGrid.innerHTML = '';
         for (const imagen of categoria.imagenes) {
             if (imagen.separador) {
@@ -259,11 +281,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 imagenesGrid.appendChild(imgButton);
             }
         }
-        
         categoriasGrid.classList.add('hidden');
         nucleoGrid.classList.add('hidden');
         imagenesGrid.classList.remove('hidden');
-        
         tituloCategoria.textContent = categoria.nombre;
         backButton.classList.remove('hidden');
     }
@@ -276,18 +296,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         cargarCategoriasPerifericas();
         inicializarDragAndDrop();
 
-        document.getElementById('hablar-frase-btn')?.addEventListener('click', () => {
-            if (fraseActual.length > 0) {
-                const textoCompleto = fraseActual.map(p => p.hablar || p.texto).join(' ');
-                hablarTexto(textoCompleto.charAt(0).toUpperCase() + textoCompleto.slice(1));
-            }
-        });
-        
+        document.getElementById('hablar-frase-btn')?.addEventListener('click', hablarFraseSecuencial);
         document.getElementById('borrar-frase-btn')?.addEventListener('click', () => {
             fraseActual = [];
             renderizarTiraFrase();
         });
-
         document.getElementById('back-button')?.addEventListener('click', () => {
             document.getElementById('categorias-grid').classList.remove('hidden');
             document.getElementById('nucleo-grid').classList.remove('hidden');
@@ -295,6 +308,26 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('back-button').classList.add('hidden');
             document.getElementById('titulo-categoria').textContent = 'Categorías';
         });
+
+        const shareFraseBtn = document.getElementById('share-frase-btn');
+        if (navigator.share && shareFraseBtn) {
+            shareFraseBtn.addEventListener('click', async () => {
+                if (fraseActual.length === 0) {
+                    alert('Primero crea una frase para compartir.');
+                    return;
+                }
+                const textoCompleto = fraseActual.map(p => p.hablar || p.texto).join(' ');
+                const textoFinal = textoCompleto.charAt(0).toUpperCase() + textoCompleto.slice(1);
+                try {
+                    await navigator.share({ title: 'Frase desde Mi Comunicador', text: textoFinal });
+                    console.log('Frase compartida con éxito.');
+                } catch (error) {
+                    console.error('Error al intentar compartir:', error);
+                }
+            });
+        } else if (shareFraseBtn) {
+            shareFraseBtn.style.display = 'none';
+        }
     }
 
     // Lógica para la página de escritura (escribir.html)
@@ -310,7 +343,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             historial.reverse().forEach(texto => {
                 const li = document.createElement('li');
                 li.textContent = texto;
-                li.addEventListener('click', () => hablarTexto(texto));
+                li.addEventListener('click', () => hablarTextoIndividual(texto));
                 historialLista.appendChild(li);
             });
         }
@@ -328,7 +361,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (leerTextoBtn) {
             leerTextoBtn.addEventListener('click', () => {
                 const texto = textoEscribirArea.value;
-                hablarTexto(texto);
+                hablarTextoIndividual(texto);
                 agregarAlHistorialEscribir(texto);
             });
         }
@@ -348,7 +381,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             historialEscuchar.reverse().forEach(texto => {
                 const li = document.createElement('li');
                 li.textContent = texto;
-                li.addEventListener('click', () => hablarTexto(texto));
+                li.addEventListener('click', () => hablarTextoIndividual(texto));
                 historialListaEscuchar.appendChild(li);
             });
         }
@@ -381,7 +414,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const texto = event.results[0][0].transcript;
                 if (textoEscuchadoElem) textoEscuchadoElem.textContent = `"${texto}"`;
                 agregarAlHistorialEscuchar(texto);
-                hablarTexto(texto);
+                hablarTextoIndividual(texto);
             };
             recognition.onspeechend = () => {
                 recognition.stop();
