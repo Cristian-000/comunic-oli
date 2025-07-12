@@ -11,7 +11,7 @@ const urlsToCache = [
     'escribir.html',
     'escuchar.html',
     'style.css',
-    'app.js',
+    'script.js',
     'datos.json', // ¡Muy importante para que las categorías carguen!
     'manifest.json',
     'imagenes/placeholder.png',
