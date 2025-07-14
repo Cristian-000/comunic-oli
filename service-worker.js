@@ -11,6 +11,7 @@ const urlsToCache = [
     'index.html',
     'escribir.html',
     'escuchar.html',
+     "usuario.html",
     'style.css',
     'script.js',
     'datos.json', // ¡Muy importante para que las categorías carguen!
