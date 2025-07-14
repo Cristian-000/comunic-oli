@@ -1,7 +1,7 @@
 // service-worker.js
 
 // Nombre y versión de la caché. Cámbialo si haces actualizaciones importantes.
-const CACHE_NAME = 'comunicador-cache-v3';
+const CACHE_NAME = 'comunicador-cache-v4';
 console.log(CACHE_NAME);
 
 // Lista de archivos esenciales para que la aplicación funcione offline.
@@ -14,8 +14,8 @@ const urlsToCache = [
     'style.css',
     'script.js',
     'datos.json', // ¡Muy importante para que las categorías carguen!
-    'manifest.json',
-    'https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js' // Cacheamos también la librería
+    'manifest.json'
+   
 ];
 
 // Evento 'install': Se dispara cuando el Service Worker se instala por primera vez.
