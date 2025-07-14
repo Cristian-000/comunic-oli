@@ -15,9 +15,7 @@ const urlsToCache = [
     'datos.json', // ¡Muy importante para que las categorías carguen!
     'manifest.json',
     'imagenes/placeholder.png',
-    // Añade aquí los iconos de tu app que definiste en el manifest.json
-    'icon-192.png',
-    'icon-512.png',
+   
     'https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js' // Cacheamos también la librería
 ];
 

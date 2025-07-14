@@ -8,12 +8,12 @@
     "theme_color": "#2196F3",
     "icons": [
       {
-        "src": "imagenes/ico192.png",
+        "src": "imagenes/qtabletdos.png",
         "sizes": "192x192",
         "type": "image/png"
       },
       {
-        "src": "imagenes/ico512.png",
+        "src": "imagenes/qtabletdos.png",
         "sizes": "512x512",
         "type": "image/png"
       }
