@@ -1,7 +1,7 @@
 // service-worker.js
 
 // Nombre y versión de la caché. Cámbialo si haces actualizaciones importantes.
-const CACHE_NAME = 'comunicador-cache-v6';
+const CACHE_NAME = 'comunicador-cache-v7';
 console.log(CACHE_NAME);
 
 // Lista de archivos esenciales para que la aplicación funcione offline.
