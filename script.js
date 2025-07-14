@@ -50,66 +50,76 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- FUNCIONES DE CACHÉ Y API (CON CORRECCIÓN DE CORS) ---
-    async function obtenerYCachearPictograma(texto) {
-        if (!texto || texto.trim() === '') return 'imagenes/placeholder.png';
-        if (!db) return 'imagenes/placeholder.png'; // No intentar fetch si la DB falló
+   // script.js
 
-        try {
-            const transaccionLectura = db.transaction('pictogramas', 'readonly');
-            const pictogramaGuardado = await promisifyRequest(transaccionLectura.objectStore('pictogramas').get(texto));
-            if (pictogramaGuardado) return URL.createObjectURL(pictogramaGuardado);
+async function obtenerYCachearPictograma(texto) {
+    if (!texto || texto.trim() === '') return 'imagenes/placeholder.png';
+    if (!db) return 'imagenes/placeholder.png';
 
-            // CORRECCIÓN 1: Usamos el proxy para la búsqueda en ARASAAC
-            const textoBusqueda = encodeURIComponent(texto);
-            const urlBusquedaOriginal = `https://api.arasaac.org/api/pictograms/es/search/${textoBusqueda}`;
-            const urlBusquedaProxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(urlBusquedaOriginal)}`;
-            
-            let response = await fetch(urlBusquedaProxy);
-            if (!response.ok) throw new Error('Error en búsqueda ARASAAC a través de proxy');
-            
-            const resultados = await response.json();
-            if (resultados.length === 0) {
-                console.warn(`No se encontró pictograma para "${texto}"`);
-                return 'imagenes/placeholder.png';
-            }
+    try {
+        const transaccionLectura = db.transaction('pictogramas', 'readonly');
+        const pictogramaGuardado = await promisifyRequest(transaccionLectura.objectStore('pictogramas').get(texto));
+        if (pictogramaGuardado) return URL.createObjectURL(pictogramaGuardado);
 
-            const pictogramaId = resultados[0]._id;
-            // No necesitamos proxy para la URL final ya que es una URL directa a la imagen
-            const urlImagen = `https://api.arasaac.org/api/pictograms/${pictogramaId}?download=false`;
-            response = await fetch(urlImagen);
-            if (!response.ok) throw new Error('Error al descargar imagen');
-            
-            const imagenBlob = await response.blob();
-            const transaccionEscritura = db.transaction('pictogramas', 'readwrite');
-            await promisifyRequest(transaccionEscritura.objectStore('pictogramas').put(imagenBlob, texto));
-            
-            return URL.createObjectURL(imagenBlob);
-        } catch (error) {
-            console.error(`Error procesando pictograma para "${texto}":`, error);
+        // --- INICIO DE LA CORRECCIÓN ---
+        // Ya no usamos el proxy para la búsqueda
+        const textoBusqueda = encodeURIComponent(texto);
+        const urlBusquedaOriginal = `https://api.arasaac.org/api/pictograms/es/search/${textoBusqueda}`;
+        
+        // Hacemos el fetch directamente a la URL de ARASAAC
+        let response = await fetch(urlBusquedaOriginal); 
+        // --- FIN DE LA CORRECCIÓN ---
+
+        if (!response.ok) throw new Error('Error en búsqueda ARASAAC');
+        
+        const resultados = await response.json();
+        if (resultados.length === 0) {
+            console.warn(`No se encontró pictograma para "${texto}"`);
             return 'imagenes/placeholder.png';
         }
+
+        const pictogramaId = resultados[0]._id;
+        const urlImagen = `https://api.arasaac.org/api/pictograms/${pictogramaId}?download=false`;
+        response = await fetch(urlImagen); // Esta descarga tampoco necesita proxy
+        if (!response.ok) throw new Error('Error al descargar imagen');
+        
+        const imagenBlob = await response.blob();
+        const transaccionEscritura = db.transaction('pictogramas', 'readwrite');
+        await promisifyRequest(transaccionEscritura.objectStore('pictogramas').put(imagenBlob, texto));
+        
+        return URL.createObjectURL(imagenBlob);
+    } catch (error) {
+        console.error(`Error procesando pictograma para "${texto}":`, error);
+        return 'imagenes/placeholder.png';
     }
+}
 
     // --- FUNCIONES DE AUDIO OPTIMIZADAS ---
-    async function obtenerAudio(texto) {
-        if (!texto || texto.trim() === '') return null;
-        try {
-            if (!db) throw new Error("DB no disponible");
-            const audioGuardado = await promisifyRequest(db.transaction('audios', 'readonly').objectStore('audios').get(texto));
-            if (audioGuardado) return audioGuardado;
+// script.js
 
-            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(texto)}&tl=es&client=tw-ob`)}`;
-            const response = await fetch(proxyUrl);
-            if (!response.ok) throw new Error(`Respuesta de red no válida`);
-            const audioBlob = await response.blob();
-            await promisifyRequest(db.transaction('audios', 'readwrite').objectStore('audios').put(audioBlob, texto));
-            return audioBlob;
-        } catch (error) {
-            console.error(`Error al obtener audio para "${texto}":`, error);
-            return null;
-        }
+async function obtenerAudio(texto) {
+    if (!texto || texto.trim() === '') return null;
+    try {
+        if (!db) throw new Error("DB no disponible");
+        const audioGuardado = await promisifyRequest(db.transaction('audios', 'readonly').objectStore('audios').get(texto));
+        if (audioGuardado) return audioGuardado;
+
+        // --- INICIO DE LA CORRECCIÓN ---
+        // Cambiamos el proxy a corsproxy.io
+        const urlOriginal = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(texto)}&tl=es&client=tw-ob`;
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlOriginal)}`;
+        // --- FIN DE LA CORRECCIÓN ---
+
+        const response = await fetch(proxyUrl);
+        if (!response.ok) throw new Error(`Respuesta de red no válida`);
+        const audioBlob = await response.blob();
+        await promisifyRequest(db.transaction('audios', 'readwrite').objectStore('audios').put(audioBlob, texto));
+        return audioBlob;
+    } catch (error) {
+        console.error(`Error al obtener audio para "${texto}":`, error);
+        return null;
     }
-
+}
     function reproducirAudio(blob) {
         return new Promise((resolve, reject) => {
             if (isPlayingSequence) { // Detener audio individual si se está reproduciendo una secuencia
