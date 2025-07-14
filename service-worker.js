@@ -15,8 +15,6 @@ const urlsToCache = [
     'script.js',
     'datos.json', // ¡Muy importante para que las categorías carguen!
     'manifest.json',
-    'imagenes/placeholder.png',
-   
     'https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js' // Cacheamos también la librería
 ];
 
