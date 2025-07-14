@@ -2,6 +2,7 @@
 
 // Nombre y versión de la caché. Cámbialo si haces actualizaciones importantes.
 const CACHE_NAME = 'comunicador-cache-v3';
+console.log(CACHE_NAME);
 
 // Lista de archivos esenciales para que la aplicación funcione offline.
 // ¡IMPORTANTE! Asegúrate de que estas rutas coincidan con la estructura de tu proyecto.
