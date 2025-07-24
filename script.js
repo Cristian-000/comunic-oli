@@ -8,12 +8,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- VOCABULARIO NÚCLEO ---
     const vocabularioNucleo = [
+        { texto: "Hola", tipo: "adverbio", hablar: "Hola" },
+        { texto: "Si", tipo: "adverbio", hablar: "Si" },
+        { texto: "No", tipo: "adverbio", hablar: "No" },
         { texto: "Yo", tipo: "pronombre", hablar: "Yo" },
         { texto: "Quiero", tipo: "verbo", hablar: "Quiero" },
         { texto: "Ser", tipo: "verbo", hablar: "Ser" },
         { texto: "Ir", tipo: "verbo", hablar: "Ir" },
         { texto: "Gusta", tipo: "verbo", hablar: "Me gusta" },
-        { texto: "No", tipo: "adverbio", hablar: "No" },
+        { texto: "Gracias", tipo: "adverbio", hablar: "Gracias" },
+
     ];
 
     // --- INICIALIZACIÓN DE LA BASE DE DATOS (IndexedDB) ---
@@ -50,80 +54,80 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- FUNCIONES DE CACHÉ Y API (CON CORRECCIÓN DE CORS) ---
-   // script.js
+    // script.js
 
-async function obtenerYCachearPictograma(texto) {
-    if (!texto || texto.trim() === '') return 'imagenes/placeholder.png';
-    if (!db) return 'imagenes/placeholder.png';
+    async function obtenerYCachearPictograma(texto) {
+        if (!texto || texto.trim() === '') return 'imagenes/placeholder.png';
+        if (!db) return 'imagenes/placeholder.png';
 
-    try {
-        const transaccionLectura = db.transaction('pictogramas', 'readonly');
-        const pictogramaGuardado = await promisifyRequest(transaccionLectura.objectStore('pictogramas').get(texto));
-        if (pictogramaGuardado) return URL.createObjectURL(pictogramaGuardado);
+        try {
+            const transaccionLectura = db.transaction('pictogramas', 'readonly');
+            const pictogramaGuardado = await promisifyRequest(transaccionLectura.objectStore('pictogramas').get(texto));
+            if (pictogramaGuardado) return URL.createObjectURL(pictogramaGuardado);
 
-        // --- INICIO DE LA CORRECCIÓN ---
-        // Ya no usamos el proxy para la búsqueda
-        const textoBusqueda = encodeURIComponent(texto);
-        const urlBusquedaOriginal = `https://api.arasaac.org/api/pictograms/es/search/${textoBusqueda}`;
-        
-        // Hacemos el fetch directamente a la URL de ARASAAC
-        let response = await fetch(urlBusquedaOriginal); 
-        // --- FIN DE LA CORRECCIÓN ---
+            // --- INICIO DE LA CORRECCIÓN ---
+            // Ya no usamos el proxy para la búsqueda
+            const textoBusqueda = encodeURIComponent(texto);
+            const urlBusquedaOriginal = `https://api.arasaac.org/api/pictograms/es/search/${textoBusqueda}`;
 
-        if (!response.ok) throw new Error('Error en búsqueda ARASAAC');
-        
-        const resultados = await response.json();
-        if (resultados.length === 0) {
-            console.warn(`No se encontró pictograma para "${texto}"`);
+            // Hacemos el fetch directamente a la URL de ARASAAC
+            let response = await fetch(urlBusquedaOriginal);
+            // --- FIN DE LA CORRECCIÓN ---
+
+            if (!response.ok) throw new Error('Error en búsqueda ARASAAC');
+
+            const resultados = await response.json();
+            if (resultados.length === 0) {
+                console.warn(`No se encontró pictograma para "${texto}"`);
+                return 'imagenes/placeholder.png';
+            }
+
+            const pictogramaId = resultados[0]._id;
+            const urlImagen = `https://api.arasaac.org/api/pictograms/${pictogramaId}?download=false`;
+            response = await fetch(urlImagen); // Esta descarga tampoco necesita proxy
+            if (!response.ok) throw new Error('Error al descargar imagen');
+
+            const imagenBlob = await response.blob();
+            const transaccionEscritura = db.transaction('pictogramas', 'readwrite');
+            await promisifyRequest(transaccionEscritura.objectStore('pictogramas').put(imagenBlob, texto));
+
+            return URL.createObjectURL(imagenBlob);
+        } catch (error) {
+            console.error(`Error procesando pictograma para "${texto}":`, error);
             return 'imagenes/placeholder.png';
         }
-
-        const pictogramaId = resultados[0]._id;
-        const urlImagen = `https://api.arasaac.org/api/pictograms/${pictogramaId}?download=false`;
-        response = await fetch(urlImagen); // Esta descarga tampoco necesita proxy
-        if (!response.ok) throw new Error('Error al descargar imagen');
-        
-        const imagenBlob = await response.blob();
-        const transaccionEscritura = db.transaction('pictogramas', 'readwrite');
-        await promisifyRequest(transaccionEscritura.objectStore('pictogramas').put(imagenBlob, texto));
-        
-        return URL.createObjectURL(imagenBlob);
-    } catch (error) {
-        console.error(`Error procesando pictograma para "${texto}":`, error);
-        return 'imagenes/placeholder.png';
     }
-}
 
     // --- FUNCIONES DE AUDIO OPTIMIZADAS ---
-// script.js
+    // script.js
 
-async function obtenerAudio(texto) {
-    if (!texto || texto.trim() === '') return null;
-    try {
-        if (!db) throw new Error("DB no disponible");
-        const audioGuardado = await promisifyRequest(db.transaction('audios', 'readonly').objectStore('audios').get(texto));
-        if (audioGuardado) return audioGuardado;
+    async function obtenerAudio(texto) {
+        if (!texto || texto.trim() === '') return null;
+        try {
+            if (!db) throw new Error("DB no disponible");
+            const audioGuardado = await promisifyRequest(db.transaction('audios', 'readonly').objectStore('audios').get(texto));
+            if (audioGuardado) return audioGuardado;
 
-        // --- INICIO DE LA CORRECCIÓN ---
-        // Cambiamos el proxy a corsproxy.io
-        const urlOriginal = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(texto)}&tl=es&client=tw-ob`;
-        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlOriginal)}`;
-        // --- FIN DE LA CORRECCIÓN ---
+            // --- INICIO DE LA CORRECCIÓN ---
+            // Cambiamos el proxy a corsproxy.io
+            const urlOriginal = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(texto)}&tl=es&client=tw-ob`;
+            const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(urlOriginal)}`;
+            // --- FIN DE LA CORRECCIÓN ---
 
-        const response = await fetch(proxyUrl);
-        if (!response.ok) throw new Error(`Respuesta de red no válida`);
-        const audioBlob = await response.blob();
-        await promisifyRequest(db.transaction('audios', 'readwrite').objectStore('audios').put(audioBlob, texto));
-        return audioBlob;
-    } catch (error) {
-        console.error(`Error al obtener audio para "${texto}":`, error);
-        return null;
+            const response = await fetch(proxyUrl);
+            if (!response.ok) throw new Error(`Respuesta de red no válida`);
+            const audioBlob = await response.blob();
+            await promisifyRequest(db.transaction('audios', 'readwrite').objectStore('audios').put(audioBlob, texto));
+            return audioBlob;
+        } catch (error) {
+            console.error(`Error al obtener audio para "${texto}":`, error);
+            return null;
+        }
     }
-}
     function reproducirAudio(blob) {
         return new Promise((resolve, reject) => {
             if (isPlayingSequence) { // Detener audio individual si se está reproduciendo una secuencia
-                if(audioPlayer && !audioPlayer.paused) audioPlayer.pause();
+                if (audioPlayer && !audioPlayer.paused) audioPlayer.pause();
             }
             if (!blob) return reject("Blob de audio nulo.");
             const url = URL.createObjectURL(blob);
@@ -183,18 +187,26 @@ async function obtenerAudio(texto) {
         renderizarTiraFrase();
         hablarTextoIndividual(pictograma.hablar || pictograma.texto);
     }
-
     async function renderizarTiraFrase() {
         const tiraFraseDiv = document.getElementById('tira-frase');
-        if (!tiraFraseDiv) return;
+        const tiraFraseTexto = document.getElementById('tira-frase-texto');
+
+        if (!tiraFraseDiv || !tiraFraseTexto) return;
+
+        // Limpiar tira de pictogramas
         tiraFraseDiv.innerHTML = '';
+
+        // Agregar pictogramas visuales
         fraseActual.forEach((pictograma, index) => {
             const pictogramaContenedor = document.createElement('div');
             pictogramaContenedor.className = 'pictograma-frase';
+
             const pictogramaContenido = document.createElement('div');
             pictogramaContenido.className = 'pictograma-frase-contenido';
+
             const img = document.createElement('img');
             obtenerYCachearPictograma(pictograma.texto).then(src => img.src = src);
+
             const btnBorrar = document.createElement('button');
             btnBorrar.className = 'btn-borrar-pictograma';
             btnBorrar.innerHTML = '&times;';
@@ -202,16 +214,55 @@ async function obtenerAudio(texto) {
             btnBorrar.onclick = (e) => {
                 e.stopPropagation();
                 fraseActual.splice(index, 1);
-                renderizarTiraFrase();
+                renderizarTiraFrase(); // Vuelve a renderizar
             };
+
             pictogramaContenido.appendChild(img);
             pictogramaContenedor.appendChild(pictogramaContenido);
             pictogramaContenedor.appendChild(btnBorrar);
             tiraFraseDiv.appendChild(pictogramaContenedor);
         });
+
+        // Mostrar el texto debajo en orden
+        const fraseComoTexto = fraseActual.map(p => p.hablar || p.texto).join(' ');
+        tiraFraseTexto.textContent = fraseComoTexto;
+
+        // Scroll automático al final
         tiraFraseDiv.scrollLeft = tiraFraseDiv.scrollWidth;
     }
 
+    /*
+        async function renderizarTiraFrase() {
+            const tiraFraseDiv = document.getElementById('tira-frase');
+            //agregar func aca 
+            const tiraFraseDivText = document.getElementById('tira-frase');
+            
+            if (!tiraFraseDiv) return;
+            tiraFraseDiv.innerHTML = '';
+            fraseActual.forEach((pictograma, index) => {
+                const pictogramaContenedor = document.createElement('div');
+                pictogramaContenedor.className = 'pictograma-frase';
+                const pictogramaContenido = document.createElement('div');
+                pictogramaContenido.className = 'pictograma-frase-contenido';
+                const img = document.createElement('img');
+                obtenerYCachearPictograma(pictograma.texto).then(src => img.src = src);
+                const btnBorrar = document.createElement('button');
+                btnBorrar.className = 'btn-borrar-pictograma';
+                btnBorrar.innerHTML = '&times;';
+                btnBorrar.setAttribute('aria-label', `Borrar ${pictograma.texto}`);
+                btnBorrar.onclick = (e) => {
+                    e.stopPropagation();
+                    fraseActual.splice(index, 1);
+                    renderizarTiraFrase();
+                };
+                pictogramaContenido.appendChild(img);
+                pictogramaContenedor.appendChild(pictogramaContenido);
+                pictogramaContenedor.appendChild(btnBorrar);
+                tiraFraseDiv.appendChild(pictogramaContenedor);
+            });
+            tiraFraseDiv.scrollLeft = tiraFraseDiv.scrollWidth;
+        }
+    */
     // --- LÓGICA DE DRAG & DROP ---
     function inicializarDragAndDrop() {
         const tiraFraseDiv = document.getElementById('tira-frase');
@@ -223,10 +274,18 @@ async function obtenerAudio(texto) {
             animation: 150,
             ghostClass: 'sortable-ghost',
             dragClass: 'sortable-drag',
+            /*
             onEnd: function (evt) {
                 const [movedItem] = fraseActual.splice(evt.oldIndex, 1);
                 fraseActual.splice(evt.newIndex, 0, movedItem);
+            },*/
+            onEnd: function (evt) {
+                const [movedItem] = fraseActual.splice(evt.oldIndex, 1);
+                fraseActual.splice(evt.newIndex, 0, movedItem);
+                renderizarTiraFrase(); // 🔁 vuelve a mostrar pictogramas y texto ordenado
             },
+
+
         });
     }
 

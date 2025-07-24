@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,22 +12,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script defer src="script.js"></script>
 </head>
+
 <body>
-    <header>
-        <div id="tira-frase-container">
-            <div id="tira-frase"></div>
-            <div id="tira-frase-controles">
-                <button id="hablar-frase-btn" aria-label="Hablar frase"><i class="fas fa-play"></i></button>
-                 <button id="share-frase-btn" aria-label="Compartir frase"><i class="fas fa-share"></i></button>
-  
-                <button id="borrar-frase-btn" aria-label="Borrar frase"><i class="fas fa-trash"></i></button>
-            </div>
-        </div>
-        <nav class="navbar">
-            <button id="back-button" class="hidden"><i class="fas fa-arrow-left"></i> Regresar</button>
-            <h1 id="titulo-categoria">Categorías</h1>
-        </nav>
-    </header>
+ <header>
+  <!-- Fila 1: Tira de pictogramas -->
+  <div id="tira-frase-container">
+    <div id="tira-frase"></div>
+  </div>
+
+  <!-- Fila 2: Texto de la frase -->
+  <div id="tira-frase-container-text">
+    <div id="tira-frase-texto"></div>
+  </div>
+
+  <!-- Fila 3: Botones de control -->
+  <div id="tira-frase-controles">
+    <button id="hablar-frase-btn" aria-label="Hablar frase"><i class="fas fa-play"></i></button>
+    <button id="share-frase-btn" aria-label="Compartir frase"><i class="fas fa-share"></i></button>
+    <button id="borrar-frase-btn" aria-label="Borrar frase"><i class="fas fa-trash"></i></button>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <button id="back-button" class="hidden"><i class="fas fa-arrow-left"></i> Regresar</button>
+    <h1 id="titulo-categoria">Categorías</h1>
+  </nav>
+</header>
+
 
     <main>
         <div id="nucleo-grid" class="grid-container"></div>
@@ -49,4 +61,5 @@
         </a>
     </footer>
 </body>
+
 </html>
