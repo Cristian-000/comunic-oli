@@ -70,22 +70,7 @@
         { "texto": "Peor", "tipo": "adverbio", "hablar": "Me siento peor" }
       ]
     },
-    {
-      "nombre": "Me duele",
-      "texto": "Dolor",
-      "imagenes": [
-        { "texto": "Cabeza", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la cabeza" },
-        { "texto": "Garganta", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la garganta" },
-        { "texto": "Panza", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la panza" },
-        { "texto": "Oído", "tipo": "sustantivo", "genero": "m", "hablar": "Me duele el oído" },
-        { "texto": "Muela", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele una muela" },
-        { "texto": "Espalda", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la espalda" },
-        { "texto": "Pierna", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la pierna" },
-        { "texto": "Brazo", "tipo": "sustantivo", "genero": "m", "hablar": "Me duele el brazo" },
-        { "texto": "Rodilla", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la rodilla" },
-        { "texto": "Pie", "tipo": "sustantivo", "genero": "m", "hablar": "Me duele el pie" }
-      ]
-    },
+  
     {
       "nombre": "Preguntas",
       "texto": "Preguntas",
@@ -421,6 +406,50 @@
     { "texto": "Y", "tipo": "letra" },
     { "texto": "Z", "tipo": "letra" }
   ]
-}
+}, {
+  "nombre": "Numeros",
+  "texto": "Numeros",
+  "imagenes": [
+    { "texto": "0", "tipo": "letra" },
+    { "texto": "1", "tipo": "letra" },
+    { "texto": "2", "tipo": "letra" },
+    { "texto": "3", "tipo": "letra" },
+    { "texto": "4", "tipo": "letra" },
+    { "texto": "5", "tipo": "letra" },
+    { "texto": "6", "tipo": "letra" },
+    { "texto": "7", "tipo": "letra" },
+    { "texto": "8", "tipo": "letra" },
+    { "texto": "9", "tipo": "letra" },
+    { "texto": "10", "tipo": "letra" },
+    { "separador": true },
+    { "texto": "20", "tipo": "letra" },
+    { "texto": "30", "tipo": "letra" },
+    { "texto": "40", "tipo": "letra" },
+    { "texto": "50", "tipo": "letra" },
+    { "texto": "60", "tipo": "letra" },
+    { "texto": "70", "tipo": "letra" },
+    { "texto": "80", "tipo": "letra" },
+    { "texto": "90", "tipo": "letra" },
+    { "texto": "100", "tipo": "letra" },
+    
+    { "separador": true },
+    { "texto": "1000", "tipo": "letra" }
+  ]
+},  {
+      "nombre": "Me duele",
+      "texto": "Dolor",
+      "imagenes": [
+        { "texto": "Cabeza", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la cabeza" },
+        { "texto": "Garganta", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la garganta" },
+        { "texto": "Panza", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la panza" },
+        { "texto": "Oído", "tipo": "sustantivo", "genero": "m", "hablar": "Me duele el oído" },
+        { "texto": "Muela", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele una muela" },
+        { "texto": "Espalda", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la espalda" },
+        { "texto": "Pierna", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la pierna" },
+        { "texto": "Brazo", "tipo": "sustantivo", "genero": "m", "hablar": "Me duele el brazo" },
+        { "texto": "Rodilla", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la rodilla" },
+        { "texto": "Pie", "tipo": "sustantivo", "genero": "m", "hablar": "Me duele el pie" }
+      ]
+    }
   ]
 }
