@@ -1,0 +1,177 @@
+#game-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 1rem;
+    height: calc(100vh - 100px); /* Ajustar altura */
+}
+
+#pictograma-container {
+    background-color: var(--color-superficie);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    padding: 1rem;
+    height: 150px;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#pictograma-img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#respuesta-container {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    min-height: 60px;
+}
+
+.casillero {
+    width: 50px;
+    height: 60px;
+    background-color: var(--color-fondo);
+    border: 2px dashed var(--color-borde);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-primario);
+    text-transform: uppercase;
+    transition: transform 0.2s;
+}
+
+.casillero.lleno {
+    background-color: #e7f3ff;
+    border-style: solid;
+    border-color: var(--color-primario);
+    transform: scale(1.1);
+}
+
+#letras-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.letra-btn {
+    width: 55px;
+    height: 55px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--color-texto);
+    background-color: var(--color-superficie);
+    border: 2px solid var(--color-borde);
+    border-radius: 10px;
+    box-shadow: var(--sombra);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.letra-btn:active {
+    transform: scale(0.9);
+}
+
+.letra-btn.usado {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: scale(0.9);
+}
+
+#feedback-palabras {
+    font-size: 1.5rem;
+    font-weight: bold;
+    min-height: 30px;
+    color: #28a745;
+}
+
+#siguiente-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    color: white;
+    background-color: var(--color-primario);
+    border: none;
+    border-radius: var(--radio-borde);
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: opacity 0.3s;
+}
+
+.hidden {
+    display: none;
+}
+.parlante-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--color-primario); /* O el color que prefieras */
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: 0.5rem; /* Espacio entre la imagen y el botón */
+    padding: 0.25rem;
+}
+
+.parlante-btn:hover {
+    opacity: 0.8;
+}
+
+#pictograma-container {
+    background-color: var(--color-superficie);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    padding: 1rem;
+    height: 150px;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; /* Indica que todo el área es cliqueable */
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+    position: relative; /* Importante para posicionar el icono absolutamente */
+    overflow: hidden; /* Asegura que el icono no se salga si lo posicionas al borde */
+}
+
+#pictograma-container:active {
+    transform: scale(0.98);
+    box-shadow: var(--sombra-activa); /* Asegúrate de definir --sombra-activa o usa un valor directo */
+}
+
+#pictograma-img {
+    max-width: 100%;
+    max-height: 100%;
+    /* Asegúrate de que la imagen no tenga márgenes o paddings que la separen del icono */
+}
+
+.parlante-icon-btn {
+    background-color: rgba(0, 0, 0, 0.4); /* Fondo semi-transparente para el icono */
+    border: none;
+    color: white; /* Color del icono */
+    font-size: 1.2rem; /* Tamaño del icono */
+    padding: 0.5rem;
+    border-radius: 50%; /* Para hacerlo circular */
+    cursor: pointer; /* Para indicar que el icono en sí mismo es interactivo */
+    position: absolute; /* Posiciona el icono sobre el contenedor */
+    top: 5px; /* Ajusta la posición vertical */
+    right: 5px; /* Ajusta la posición horizontal */
+    z-index: 10; /* Asegura que esté por encima de la imagen */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.parlante-icon-btn:hover {
+    background-color: rgba(0, 0, 0, 0.6); /* Oscurece al pasar el ratón */
+}
+
+.parlante-icon-btn:active {
+    transform: scale(0.9); /* Efecto de clic en el icono */
+}

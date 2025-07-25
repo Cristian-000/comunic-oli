@@ -1,7 +1,7 @@
 // service-worker.js
 
 // Nombre y versión de la caché. Cámbialo si haces actualizaciones importantes.
-const CACHE_NAME = 'comunicador-cache-v9';
+const CACHE_NAME = 'comunicador-cache-v10';
 console.log(CACHE_NAME);
 
 // Lista de archivos esenciales para que la aplicación funcione offline.
@@ -11,10 +11,22 @@ const urlsToCache = [
     'index.html',
     'escribir.html',
     'escuchar.html',
-     "usuario.html",
+    'matematicas.html',
+    'descripcion.html',
+    'palabras.html',
+    'pronunciacion.html',
+     'matematicas.css',
+    'descripcion.css',
+    'palabras.css',
+    'pronunciacion.css',
+     'matematicas.js',
+    'descripcion.js',
+    'palabras.js',
+    'pronunciacion.js',
+    "usuario.html",
     'style.css',
     'script.js',
-    'datos.json', // ¡Muy importante para que las categorías carguen!
+    'datos.json', 
     'manifest.json'
    
 ];

@@ -1,0 +1,160 @@
+/* Estilos para la página de matemáticas */
+#math-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem;
+    /* Eliminamos la altura fija para que el contenido se ajuste mejor */
+}
+
+#back-button-math {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-primario);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+/* ===== NUEVOS ESTILOS PARA EL SELECTOR ===== */
+#operacion-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--color-superficie);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    width: 100%;
+}
+
+.op-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 50%;
+    border: 2px solid var(--color-borde);
+    background-color: var(--color-fondo);
+    color: var(--color-texto-secundario);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.op-btn:hover {
+    background-color: #e4e6eb;
+}
+
+.op-btn.active {
+    background-color: var(--color-primario);
+    color: white;
+    border-color: var(--color-primario);
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(27, 116, 228, 0.4);
+}
+/* ============================================ */
+
+#problema-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background-color: var(--color-superficie);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    min-height: 120px;
+    margin-top: 1rem;
+}
+
+.problema-pictograma {
+    height: 50px;
+    width: 50px;
+}
+
+.problema-simbolo {
+    font-size: 2.5rem;
+    color: var(--color-primario);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+}
+
+#opciones-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.opcion-btn {
+    width: 70px;
+    height: 70px;
+    font-size: 2.2rem;
+    font-weight: bold;
+    border-radius: var(--radio-borde);
+    border: 3px solid var(--color-borde);
+    background-color: var(--color-superficie);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.opcion-btn:active {
+    transform: scale(0.95);
+}
+
+.opcion-btn.correcto {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #28a745;
+    transform: scale(1.1);
+}
+
+.opcion-btn.incorrecto {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #dc3545;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+#feedback-container {
+    min-height: 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+#feedback-container.correcto { color: #28a745; }
+#feedback-container.incorrecto { color: #dc3545; }
+
+#nuevo-problema-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    color: white;
+    background-color: var(--color-primario);
+    border: none;
+    border-radius: var(--radio-borde);
+    cursor: pointer;
+    font-weight: 600;
+}

@@ -1,0 +1,153 @@
+/* Estilos específicos para el juego de descripción */
+
+#game-main-descripcion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around; /* Ajustado para un mejor espaciado */
+    padding: 1rem;
+    min-height: calc(100vh - 100px); /* Ajustar altura para dejar espacio al header/footer si los hay */
+}
+
+#pictograma-container {
+  
+    width: 250px;
+    height: 250px;
+    border: 3px solid var(--color-primario);
+    border-radius: var(--radio-borde);
+    background-color: var(--color-superficie);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto;
+    box-shadow: var(--sombra);
+
+      cursor: pointer; /* Indica que todo el área es cliqueable */
+    position: relative; /* Importante para posicionar el icono absolutamente */
+    overflow: hidden;
+}
+
+#pictograma-img {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.parlante-btn-descripcion { /* Cambié la clase para evitar conflictos si usas 'parlante-btn' en otro lado */
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.4); /* Fondo semi-transparente para el icono */
+    border: none;
+    color: white; /* Color del icono */
+    font-size: 1.2rem; /* Tamaño del icono */
+    padding: 0.5rem;
+    border-radius: 50%; /* Para hacerlo circular */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    z-index: 10;
+}
+
+.parlante-btn-descripcion:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.parlante-btn-descripcion:active {
+    transform: scale(0.9);
+}
+
+
+#opciones-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.opcion-btn {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    border: 2px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.1s;
+    min-width: 150px;
+    text-align: center;
+}
+
+.opcion-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--sombra);
+}
+
+.opcion-btn:active {
+    transform: translateY(0);
+}
+
+.opcion-btn.correcto {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+}
+
+.opcion-btn.incorrecto {
+    background-color: #F44336; /* Rojo */
+    color: white;
+}
+
+#feedback-descripcion {
+    font-size: 1.5rem;
+    font-weight: bold;
+    min-height: 30px; /* Para mantener el espacio */
+    margin-top: 1rem;
+    color: var(--color-primario); /* Puedes ajustar el color de feedback */
+}
+
+#siguiente-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    color: white;
+    background-color: var(--color-primario);
+    border: none;
+    border-radius: var(--radio-borde);
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: opacity 0.3s;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Puedes añadir reglas para el botón de regresar si no están en style.css */
+/*
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: var(--color-header-footer);
+    color: white;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar h1 {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.5rem;
+}
+*/

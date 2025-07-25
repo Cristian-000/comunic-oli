@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formar Palabras - Comunicador Visual</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="palabras.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script defer src="palabras.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" id="back-button-palabras"><i class="fas fa-arrow-left"></i> Regresar</a>
+            <h1 id="titulo-categoria">Formar Palabras</h1>
+        </nav>
+    </header>
+
+    <main id="game-main">
+        <div id="pictograma-container">
+            <img id="pictograma-img" src="" alt="Pictograma de la palabra a formar">
+        </div>
+
+        <div id="respuesta-container">
+            </div>
+
+        <div id="feedback-palabras"></div>
+
+        <div id="letras-container">
+            </div>
+        
+        <button id="siguiente-btn" class="hidden">Siguiente Palabra</button>
+    </main>
+    
+    <audio id="audio-correcto" src="sonidos/correcto.mp3" preload="auto"></audio>
+    <audio id="audio-incorrecto" src="sonidos/incorrecto.mp3" preload="auto"></audio>
+</body>
+</html>

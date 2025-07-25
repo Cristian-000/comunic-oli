@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Pronunciación</title>
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="pronunciacion.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" id="back-button-pronunciacion"><i class="fas fa-arrow-left"></i> Regresar</a>
+            <h1 id="titulo-categoria">Juego de Pronunciación</h1>
+        </nav>
+    </header>
+
+    <main id="game-main-pronunciacion">
+        <div id="target-display-container">
+            <p id="target-text">A</p> <button id="listen-target-btn" class="parlante-btn-pronunciacion">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+        
+        <button id="start-recognition-btn" class="btn-principal">
+            <i class="fas fa-microphone"></i> Hablar
+        </button>
+
+        <div id="feedback-container">
+            <p id="recognition-feedback" class="feedback-texto"></p>
+            <p id="result-feedback" class="feedback-texto"></p>
+        </div>
+
+        <button id="next-item-btn" class="btn-principal hidden">Siguiente</button>
+    </main>
+
+    <audio id="audio-correcto" src="sonidos/correcto.mp3" preload="auto"></audio>
+    <audio id="audio-incorrecto" src="sonidos/incorrecto.mp3" preload="auto"></audio>
+
+
+    <script defer src="pronunciacion.js"></script>
+</body>
+</html>

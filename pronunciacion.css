@@ -1,0 +1,144 @@
+/* Estilos específicos para el juego de Pronunciación */
+
+#game-main-pronunciacion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    min-height: calc(100vh - 100px); /* Ajustar altura */
+}
+
+#target-display-container {
+    position: relative;
+    background-color: var(--color-superficie);
+    border: 3px solid var(--color-primario);
+    border-radius: var(--radio-borde);
+    box-shadow: var(--sombra);
+    padding: 2rem 3rem;
+    margin: 2rem auto;
+    font-size: 4rem; /* Tamaño grande para la letra/palabra */
+    font-weight: bold;
+    color: var(--color-texto);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    min-height: 150px;
+    cursor: pointer; /* <--- IMPORTANTE: Indica que todo el área es cliqueable */
+}
+
+#target-text {
+    margin: 0;
+    line-height: 1;
+}
+
+.parlante-btn-pronunciacion {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    z-index: 10;
+}
+
+.parlante-btn-pronunciacion:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.parlante-btn-pronunciacion:active {
+    transform: scale(0.9);
+}
+
+
+#start-recognition-btn {
+    background-color: #007bff; /* Azul vibrante */
+    color: white;
+    border: none;
+    border-radius: var(--radio-borde);
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 1.5rem;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#start-recognition-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+#start-recognition-btn:active {
+    transform: translateY(0);
+}
+
+#start-recognition-btn.listening {
+    background-color: #dc3545; /* Rojo cuando está escuchando */
+}
+
+#start-recognition-btn.listening:hover {
+    background-color: #c82333;
+}
+
+#feedback-container {
+    margin-top: 2rem;
+    text-align: center;
+    min-height: 80px; /* Espacio para los mensajes */
+}
+
+#recognition-feedback {
+    font-size: 1.2rem;
+    color: var(--color-texto-claro);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+#result-feedback {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+#next-item-btn {
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    border-radius: var(--radio-borde);
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 2rem;
+    transition: opacity 0.3s;
+}
+
+#next-item-btn:hover {
+    opacity: 0.9;
+}
+
+.hidden {
+    display: none;
+}
+
+.correct-feedback {
+    color: #28a745; /* Verde para correcto */
+}
+
+.incorrect-feedback {
+    color: #dc3545; /* Rojo para incorrecto */
+}

@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderizarTiraFrase();
         hablarTextoIndividual(pictograma.hablar || pictograma.texto);
     }
+    /*
     async function renderizarTiraFrase() {
         const tiraFraseDiv = document.getElementById('tira-frase');
         const tiraFraseTexto = document.getElementById('tira-frase-texto');
@@ -229,6 +230,64 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Scroll automático al final
         tiraFraseDiv.scrollLeft = tiraFraseDiv.scrollWidth;
+    }*/
+
+    async function renderizarTiraFrase() {
+        const tiraFraseContainer = document.getElementById('tira-frase-container');
+        const tiraFraseTextoContainer = document.getElementById('tira-frase-container-text');
+        const tiraFraseControles = document.getElementById('tira-frase-controles');
+        const tiraFraseDiv = document.getElementById('tira-frase');
+        const tiraFraseTexto = document.getElementById('tira-frase-texto');
+
+        if (!tiraFraseDiv || !tiraFraseTexto || !tiraFraseContainer || !tiraFraseTextoContainer || !tiraFraseControles) return;
+
+        // Limpiar tira de pictogramas
+        tiraFraseDiv.innerHTML = '';
+
+        // Agregar pictogramas visuales
+        fraseActual.forEach((pictograma, index) => {
+            const pictogramaContenedor = document.createElement('div');
+            pictogramaContenedor.className = 'pictograma-frase';
+
+            const pictogramaContenido = document.createElement('div');
+            pictogramaContenido.className = 'pictograma-frase-contenido';
+
+            const img = document.createElement('img');
+            obtenerYCachearPictograma(pictograma.texto).then(src => img.src = src);
+
+            const btnBorrar = document.createElement('button');
+            btnBorrar.className = 'btn-borrar-pictograma';
+            btnBorrar.innerHTML = '&times;';
+            btnBorrar.setAttribute('aria-label', `Borrar ${pictograma.texto}`);
+            btnBorrar.onclick = (e) => {
+                e.stopPropagation();
+                fraseActual.splice(index, 1);
+                renderizarTiraFrase(); // Vuelve a renderizar
+            };
+
+            pictogramaContenido.appendChild(img);
+            pictogramaContenedor.appendChild(pictogramaContenido);
+            pictogramaContenedor.appendChild(btnBorrar);
+            tiraFraseDiv.appendChild(pictogramaContenedor);
+        });
+
+        // Mostrar el texto debajo en orden
+        const fraseComoTexto = fraseActual.map(p => p.hablar || p.texto).join(' ');
+        tiraFraseTexto.textContent = fraseComoTexto;
+
+        // Scroll automático al final
+        tiraFraseDiv.scrollLeft = tiraFraseDiv.scrollWidth;
+
+        // --- Lógica para ocultar/mostrar los controles (actualizada) ---
+        if (fraseActual.length === 0) {
+            tiraFraseContainer.classList.add('hidden');
+            tiraFraseTextoContainer.classList.add('hidden');
+            tiraFraseControles.classList.add('hidden');
+        } else {
+            tiraFraseContainer.classList.remove('hidden');
+            tiraFraseTextoContainer.classList.remove('hidden');
+            tiraFraseControles.classList.remove('hidden');
+        }
     }
 
     /*
@@ -364,7 +423,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         cargarNucleo();
         cargarCategoriasPerifericas();
         inicializarDragAndDrop();
-
+        renderizarTiraFrase();
         document.getElementById('hablar-frase-btn')?.addEventListener('click', hablarFraseSecuencial);
         document.getElementById('borrar-frase-btn')?.addEventListener('click', () => {
             fraseActual = [];

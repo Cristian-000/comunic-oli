@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Qué Ves? - Juego de Descripción</title>
+    <link rel="stylesheet" href="style.css"> <link rel="stylesheet" href="descripcion.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="index.html" id="back-button-descripcion"><i class="fas fa-arrow-left"></i> Regresar</a>
+            <h1 id="titulo-categoria">¿Qué ves?</h1>
+        </nav>
+    </header>
+
+    <main id="game-main-descripcion">
+        <div id="pictograma-container">
+            <img id="pictograma-img" src="imagenes/placeholder.png" alt="Pictograma del juego">
+            <button id="parlante-btn-pregunta" class="parlante-btn-descripcion">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+        
+        <div id="opciones-container">
+            </div>
+
+        <div id="feedback-container">
+            <p id="feedback-descripcion" class="feedback-texto"></p>
+            <button id="siguiente-btn" class="btn-principal hidden">Siguiente</button>
+        </div>
+    </main>
+
+    <audio id="audio-correcto" src="sonidos/correcto.mp3" preload="auto"></audio>
+    <audio id="audio-incorrecto" src="sonidos/incorrecto.mp3" preload="auto"></audio>
+
+    <script defer src="descripcion.js"></script>
+</body>
+</html>
