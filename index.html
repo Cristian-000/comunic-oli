@@ -34,25 +34,33 @@
             <div id="tira-frase-texto"></div>
         </div>
 
-        <!-- Fila 3: Botones de control (Zonas táctiles grandes) -->
+        <!-- Fila 3: Botones de control -->
         <div id="tira-frase-controles" class="hidden">
             <button id="hablar-frase-btn" aria-label="Hablar frase"><i class="fas fa-play"></i> Leer</button>
             <button id="share-frase-btn" aria-label="Compartir frase"><i class="fas fa-share"></i> Enviar</button>
             <button id="borrar-ultimo-btn" aria-label="Borrar último pictograma"><i class="fas fa-backspace"></i> Atrás</button>
             <button id="borrar-frase-btn" aria-label="Borrar frase completa"><i class="fas fa-trash"></i> Todo</button>
         </div>
-
-        <!-- Navbar -->
-        <nav class="navbar">
-            <button id="back-button" class="hidden"><i class="fas fa-arrow-left"></i> Regresar</button>
-            <h1 id="titulo-categoria">Categorías</h1>
-        </nav>
     </header>
 
     <main>
-        <div id="nucleo-grid" class="grid-container"></div>
-        <div id="categorias-grid" class="grid-container"></div>
-        <div id="imagenes-grid" class="grid-container hidden"></div>
+        <!-- PANEL 1: VOCABULARIO FIJO -->
+        <div id="seccion-nucleo" class="seccion-panel">
+            <div class="seccion-header">
+                <h2 class="seccion-titulo"><i class="fas fa-star" style="color: #F59E0B;"></i> Palabras Principales</h2>
+            </div>
+            <div id="nucleo-grid" class="grid-container"></div>
+        </div>
+
+        <!-- PANEL 2: CATEGORÍAS Y CONTENIDO -->
+        <div id="seccion-categorias" class="seccion-panel">
+            <div class="seccion-header">
+                <h2 id="titulo-categoria" class="seccion-titulo"><i class="fas fa-folder-open" style="color: #3B82F6;"></i> Categorías</h2>
+                <button id="back-button" class="hidden"><i class="fas fa-arrow-left"></i> Volver</button>
+            </div>
+            <div id="categorias-grid" class="grid-container"></div>
+            <div id="imagenes-grid" class="grid-container hidden"></div>
+        </div>
     </main>
 
     <footer>
