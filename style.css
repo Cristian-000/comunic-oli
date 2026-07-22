@@ -2,6 +2,7 @@
 /* VARIABLES Y ESTILOS GLOBALES */
 /* ========================================= */
 :root {
+  /* Colores base originales */
   --color-fondo: #f0f2f5;
   --color-superficie: #ffffff;
   --color-texto: #1c1e21;
@@ -13,6 +14,14 @@
   --color-borrar: #fa383e;
   --sombra: 0 2px 8px rgba(0, 0, 0, 0.1);
   --radio-borde: 16px;
+
+  /* Colores Clave Fitzgerald (Nuevos para neurodivergencia) */
+  --fitz-amarillo-bg: #FEF9C3; --fitz-amarillo-border: #FDE047; /* Pronombres/Personas */
+  --fitz-verde-bg: #DCFCE7; --fitz-verde-border: #4ADE80;       /* Verbos/Acciones */
+  --fitz-naranja-bg: #FFEDD5; --fitz-naranja-border: #FB923C;   /* Sustantivos/Cosas */
+  --fitz-azul-bg: #DBEAFE; --fitz-azul-border: #60A5FA;         /* Adjetivos/Descriptivos */
+  --fitz-rosa-bg: #FCE7F3; --fitz-rosa-border: #F472B6;         /* Social/Frases */
+  --fitz-gris-bg: #F3F4F6; --fitz-gris-border: #9CA3AF;         /* Adverbios/Conectores */
 }
 
 * {
@@ -20,6 +29,9 @@
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
+  /* Evita que los niños seleccionen texto o imágenes por accidente al mantener presionado */
+  user-select: none; 
+  -webkit-user-select: none;
 }
 
 html, body {
@@ -79,6 +91,7 @@ footer {
   gap: 1rem;
   padding: 0.5rem;
   justify-content: flex-start;
+  min-height: 80px;
 }
 
 .pictograma-frase {
@@ -93,9 +106,9 @@ footer {
   justify-content: center;
   background-color: var(--color-superficie);
   border-radius: var(--radio-borde);
-  border: 2px solid var(--color-borde);
-  height: 60px;
-  width: 60px;
+  border: 3px solid var(--color-borde);
+  height: 65px;
+  width: 65px;
   padding: 4px;
 }
 
@@ -105,32 +118,40 @@ footer {
   object-fit: contain;
 }
 
+/* Clases Fitzgerald aplicadas también a los pictogramas de la tira */
+.pictograma-frase-contenido.pronombre { background-color: var(--fitz-amarillo-bg); border-color: var(--fitz-amarillo-border); }
+.pictograma-frase-contenido.verbo { background-color: var(--fitz-verde-bg); border-color: var(--fitz-verde-border); }
+.pictograma-frase-contenido.sustantivo { background-color: var(--fitz-naranja-bg); border-color: var(--fitz-naranja-border); }
+.pictograma-frase-contenido.adjetivo { background-color: var(--fitz-azul-bg); border-color: var(--fitz-azul-border); }
+.pictograma-frase-contenido.interjeccion, .pictograma-frase-contenido.frase { background-color: var(--fitz-rosa-bg); border-color: var(--fitz-rosa-border); }
+.pictograma-frase-contenido.adverbio, .pictograma-frase-contenido.conjuncion, .pictograma-frase-contenido.preposicion, .pictograma-frase-contenido.letra { background-color: var(--fitz-gris-bg); border-color: var(--fitz-gris-border); }
+
+/* Botón de borrar pictograma ajustado para motricidad fina */
 .btn-borrar-pictograma {
   position: absolute;
   top: -8px;
   right: -8px;
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background-color: var(--color-borrar);
   color: white;
   border: 2px solid white;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 1;
+  box-shadow: var(--sombra);
+  transition: transform 0.1s;
 }
 
-#borrar-frase-btn i{
-    color: var(--color-borrar);
+.btn-borrar-pictograma:active {
+  transform: scale(0.85);
 }
 
-#share-frase-btn i{
-    color: rgb(9, 75, 175);
-}
 /* ========================================= */
 /* TEXTO DE FRASE Y BOTÓN COMPARTIR */
 /* ========================================= */
@@ -144,43 +165,58 @@ footer {
 
 #tira-frase-texto {
   flex-grow: 1;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
   color: var(--color-texto);
   white-space: normal;
   word-break: break-word;
+  min-height: 30px;
 }
 
-
-
 /* ========================================= */
-/* CONTROLES DE LA TIRA */
+/* CONTROLES DE LA TIRA (Botones Grandes Accesibles) */
 /* ========================================= */
 #tira-frase-controles {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.6rem;
-  padding:  1rem 0.5rem;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem 1rem 1rem;
 }
 
 #tira-frase-controles button {
-  background: var(--color-fondo);
+  flex: 1;
+  padding: 0.6rem 0.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
   border: none;
-  font-size: 1.8rem;
   cursor: pointer;
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s;
-  color: var(--color-secundario);
+  gap: 6px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.1s ease, filter 0.1s;
 }
 
-#tira-frase-controles button:hover {
-  background-color: #e4e6eb;
+#tira-frase-controles button:active {
+  transform: scale(0.95);
+  filter: brightness(0.9);
 }
+
+#tira-frase-controles i {
+  font-size: 1.1rem;
+}
+
+/* Colores específicos para los botones grandes */
+#hablar-frase-btn { background-color: var(--color-primario); }
+#share-frase-btn { background-color: #10B981; } /* Verde para compartir/whatsapp */
+#borrar-ultimo-btn { background-color: #F59E0B; } /* Naranja para advertencia menor */
+#borrar-frase-btn { background-color: var(--color-borrar); } /* Rojo para borrar todo */
 
 /* ========================================= */
 /* NAVBAR & GRID DE PICTOGRAMAS */
@@ -189,14 +225,15 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 
 #titulo-categoria {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1.3rem;
+  font-weight: 700;
   color: var(--color-primario);
-
+  flex-grow: 1;
+  text-align: center;
 }
 
 .hidden {
@@ -205,52 +242,61 @@ footer {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 2fr));
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
   gap: 1rem;
   padding-bottom: 1rem;
 }
 
 .pictograma-button {
   background-color: var(--color-superficie);
-  border: 1px solid var(--color-borde);
+  border: 3px solid var(--color-borde);
   border-radius: var(--radio-borde);
   cursor: pointer;
-  transition: transform 0.1s;
+  transition: transform 0.1s, box-shadow 0.1s;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.8rem;
   aspect-ratio: 1 / 1;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: var(--color-texto);
   text-align: center;
   box-shadow: var(--sombra);
+  word-break: break-word;
 }
 
+/* Feedback táctil intenso para niños */
 .pictograma-button:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .pictograma-button img {
   width: 65%;
   height: 65%;
   object-fit: contain;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
-.pictograma-button.nucleo {
-  background-color: var(--color-nucleo);
-  border: 2px solid var(--color-nucleo-borde);
-}
+/* ========================================= */
+/* CLAVE FITZGERALD EN LA GRILLA PRINCIPAL */
+/* ========================================= */
+.pictograma-button.nucleo { background-color: var(--color-nucleo); border-color: var(--color-nucleo-borde); }
+.pictograma-button.pronombre { background-color: var(--fitz-amarillo-bg); border-color: var(--fitz-amarillo-border); }
+.pictograma-button.verbo { background-color: var(--fitz-verde-bg); border-color: var(--fitz-verde-border); }
+.pictograma-button.sustantivo { background-color: var(--fitz-naranja-bg); border-color: var(--fitz-naranja-border); }
+.pictograma-button.adjetivo { background-color: var(--fitz-azul-bg); border-color: var(--fitz-azul-border); }
+.pictograma-button.interjeccion, .pictograma-button.frase { background-color: var(--fitz-rosa-bg); border-color: var(--fitz-rosa-border); }
+.pictograma-button.adverbio, .pictograma-button.conjuncion, .pictograma-button.preposicion, .pictograma-button.letra { background-color: var(--fitz-gris-bg); border-color: var(--fitz-gris-border); }
 
 .separador {
   grid-column: 1 / -1;
   border: 0;
-  border-top: 1px solid var(--color-borde);
-  margin: 1rem 0;
+  border-top: 2px dashed var(--color-borde);
+  margin: 0.5rem 0;
 }
 
 /* ========================================= */
@@ -273,7 +319,7 @@ footer {
   min-height: 150px;
   padding: 1rem;
   font-size: 1.2rem;
-  border: 1px solid var(--color-borde);
+  border: 2px solid var(--color-borde);
   border-radius: var(--radio-borde);
   resize: vertical;
   box-shadow: var(--sombra);
@@ -282,34 +328,30 @@ footer {
 #texto-escribir:focus {
   outline: none;
   border-color: var(--color-primario);
-  box-shadow: 0 0 0 3px rgba(27, 116, 228, 0.25);
+  box-shadow: 0 0 0 4px rgba(27, 116, 228, 0.2);
 }
 
 #leer-texto, #empezar-escuchar {
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
   font-size: 1.2rem;
   color: white;
   background-color: var(--color-primario);
   border: none;
   border-radius: var(--radio-borde);
   cursor: pointer;
-  font-weight: 600;
+  font-weight: bold;
   transition: background-color 0.2s, transform 0.1s;
 }
 
-#leer-texto:hover, #empezar-escuchar:hover {
-  background-color: #1565c0;
-}
-
 #leer-texto:active, #empezar-escuchar:active {
-  transform: scale(0.97);
+  transform: scale(0.95);
 }
 
 #empezar-escuchar {
   font-size: 2.5rem;
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -318,20 +360,20 @@ footer {
 
 #texto-escuchado {
   font-size: 1.5rem;
-  font-weight: 500;
+  font-weight: bold;
   color: var(--color-texto-secundario);
   min-height: 2.5rem;
   text-align: center;
 }
 
 @keyframes pulsing {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(27, 116, 228, 0.7); }
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(27, 116, 228, 0.5); }
   70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(27, 116, 228, 0); }
   100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(27, 116, 228, 0); }
 }
 
 .pulsing {
-  animation: pulsing 1.5s infinite;
+  animation: pulsing 1.5s infinite !important;
 }
 
 /* ========================================= */
@@ -339,7 +381,7 @@ footer {
 /* ========================================= */
 #historial-container {
   width: 100%;
-  margin-top: 2rem;
+  margin-top: 1rem;
   text-align: center;
 }
 
@@ -359,11 +401,16 @@ footer {
   background-color: var(--color-superficie);
   padding: 1rem;
   margin-bottom: 0.75rem;
-  border-radius: var(--radio-borde);
-  border: 1px solid var(--color-borde);
+  border-radius: 12px;
+  border: 2px solid var(--color-borde);
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
-  font-weight: 500;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+#historial-lista li:active, #historial-lista-escuchar li:active {
+  transform: scale(0.98);
 }
 
 #historial-lista li:hover, #historial-lista-escuchar li:hover {
@@ -380,32 +427,49 @@ footer {
   flex-direction: column;
   align-items: center;
   text-decoration: none;
-  color: var(--color-secundario);
-  font-size: 14px;
+  color: var(--color-texto-secundario);
+  font-size: 12px;
+  font-weight: 600;
   padding: 0;
-  transition: background-color 0.2s;
+  transition: transform 0.1s, color 0.2s;
+}
+
+.footer-button:active {
+  transform: scale(0.9);
+  color: var(--color-primario);
 }
 
 .footer-button i {
-  font-size: 20px;
-  margin-bottom: 4px;
+  font-size: 22px;
+  margin-bottom: 6px;
 }
-#back-button, .back-button{
-    background-color: none;
-    text-decoration: none;
-    color: var(--color-borrar);
-    border: none;
-    background: none;
-    font-weight: 600;
-    font-size: 1.2rem;
 
+#back-button, .back-button {
+  text-decoration: none;
+  color: var(--color-borrar);
+  border: none;
+  background: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
 }
+
+#back-button:active, .back-button:active {
+  background-color: #fee2e2;
+}
+
 /* SortableJS visual feedback */
 .sortable-ghost {
-  opacity: 0.4;
+  opacity: 0.3;
   background: #cce5ff;
+  border-radius: var(--radio-borde);
 }
 
 .sortable-drag {
   cursor: grabbing !important;
+  opacity: 1 !important;
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
 }
