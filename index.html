@@ -7,21 +7,24 @@
     <title>Comunicador Visual Inteligente</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Librería para Drag and Drop -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-
+    <!-- Iconos FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <script defer src="script.js"></script>
 </head>
 
 <body>
     <header>
         <!-- Fila 1: Tira de pictogramas -->
-        <div id="tira-frase-container">
+        <div id="tira-frase-container" class="hidden">
             <div id="tira-frase"></div>
         </div>
 
         <!-- Fila 2: Texto de la frase -->
-        <div id="tira-frase-container-text">
+        <div id="tira-frase-container-text" class="hidden">
             <div id="tira-frase-texto"></div>
         </div>
 
@@ -39,7 +42,6 @@
             <h1 id="titulo-categoria">Categorías</h1>
         </nav>
     </header>
-
 
     <main>
         <div id="nucleo-grid" class="grid-container"></div>
@@ -76,4 +78,5 @@
         </a>
     </footer>
 </body>
+
 </html>
