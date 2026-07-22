@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     let audioPlayer;
     let sortableInstance = null;
     let isPlayingSequence = false;
-    let datosGlobales = null; // Caché en memoria para datos.json
+    let datosGlobales = null;
 
-    // --- VOCABULARIO NÚCLEO (Con Clave Fitzgerald) ---
+    // --- VOCABULARIO NÚCLEO ---
     const vocabularioNucleo = [
         { texto: "Hola", tipo: "interjeccion", hablar: "Hola" },
         { texto: "Si", tipo: "adverbio", hablar: "Si" },
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { texto: "Gracias", tipo: "interjeccion", hablar: "Gracias" },
     ];
 
-    // --- INICIALIZACIÓN DE LA BASE DE DATOS (IndexedDB) ---
+    // --- INICIALIZACIÓN DE LA BASE DE DATOS ---
     async function initDB() {
         return new Promise((resolve, reject) => {
             const request = window.indexedDB.open('comunicador-db-v4', 1);
@@ -47,13 +47,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         db = await initDB();
-        console.log("Base de datos inicializada correctamente.");
     } catch (error) {
         console.error("No se pudo inicializar la base de datos.", error);
         db = null;
     }
 
-    // --- CARGA GLOBAL DE JSON (Para el motor predictivo) ---
     async function cargarDatosGlobales() {
         if (!datosGlobales) {
             try {
@@ -66,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return datosGlobales;
     }
 
-    // --- FUNCIONES DE CACHÉ Y API ARASAAC ---
+    // --- FUNCIONES DE API ARASAAC Y CACHÉ ---
     async function obtenerYCachearPictograma(texto) {
         if (!texto || texto.trim() === '') return 'imagenes/placeholder.png';
         if (!db) return 'imagenes/placeholder.png';
@@ -83,10 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!response.ok) throw new Error('Error en búsqueda ARASAAC');
 
             const resultados = await response.json();
-            if (resultados.length === 0) {
-                console.warn(`No se encontró pictograma para "${texto}"`);
-                return 'imagenes/placeholder.png';
-            }
+            if (resultados.length === 0) return 'imagenes/placeholder.png';
 
             const pictogramaId = resultados[0]._id;
             const urlImagen = `https://api.arasaac.org/api/pictograms/${pictogramaId}?download=false`;
@@ -104,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- FUNCIONES DE AUDIO OPTIMIZADAS ---
+    // --- FUNCIONES DE AUDIO ---
     async function obtenerAudio(texto) {
         if (!texto || texto.trim() === '') return null;
         try {
@@ -144,23 +139,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (isPlayingSequence) return;
         if (!texto || texto.trim() === '') return;
         
-        // Prioridad 1: Síntesis nativa offline (Más rápida y amigable para niños)
         if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance(texto);
             utterance.lang = 'es-ES';
-            utterance.rate = 0.9; // Velocidad amigable
+            utterance.rate = 0.9;
             window.speechSynthesis.speak(utterance);
             return;
         }
 
-        // Prioridad 2: Proxy Google TTS
         try {
             const audioBlob = await obtenerAudio(texto);
-            if (audioBlob) {
-                await reproducirAudio(audioBlob);
-            }
+            if (audioBlob) await reproducirAudio(audioBlob);
         } catch (error) {
-            console.error("Error en reproducción individual:", error);
+            console.error("Error en reproducción:", error);
         }
     }
 
@@ -189,15 +180,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const audioBlob = await obtenerAudio(textoParaHablar);
                 if (audioBlob) await reproducirAudio(audioBlob);
-            } catch (error) {
-                console.error("Error en la reproducción secuencial:", error);
-            }
+            } catch (error) {}
         }
         isPlayingSequence = false;
         if (btnHablar) btnHablar.classList.remove('pulsing');
     }
 
-    // --- MOTOR PREDICTIVO (La Plantilla Inteligente) ---
+    // --- MOTOR PREDICTIVO INTELIGENTE ---
     async function actualizarSugerenciasPredictivas() {
         const categoriasGrid = document.getElementById('categorias-grid');
         const nucleoGrid = document.getElementById('nucleo-grid');
@@ -205,7 +194,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const tituloCategoria = document.getElementById('titulo-categoria');
         const backButton = document.getElementById('back-button');
 
-        // Reset visual: Ocultamos la vista profunda de imágenes y mostramos las categorías sugeridas
         if (imagenesGrid) imagenesGrid.classList.add('hidden');
         if (nucleoGrid) nucleoGrid.classList.remove('hidden');
         if (categoriasGrid) categoriasGrid.classList.remove('hidden');
@@ -222,7 +210,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         let categoriasSugeridas = [];
 
-        // Reglas Inteligentes
         if (ultimoPicto.tipo === 'pronombre') {
             categoriasSugeridas = ['Acciones', 'Quiero', 'Me siento', 'Preguntas'];
         } else if (['Quiero', 'Comer', 'Beber'].includes(ultimoPicto.texto) || ultimoPicto.tipo === 'verbo') {
@@ -249,15 +236,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
-            for (const categoria of categoriasFiltradas) {
-                const categoriaButton = await crearBotonPictograma(categoria);
-                categoriaButton.addEventListener('click', () => mostrarImagenes(categoria));
-                categoriasGrid.appendChild(categoriaButton);
-            }
+            // CARGA EN PARALELO OPTIMIZADA
+            const promesasBotones = categoriasFiltradas.map(async (categoria) => {
+                const btn = await crearBotonPictograma(categoria);
+                btn.addEventListener('click', () => mostrarImagenes(categoria));
+                return btn;
+            });
+            const botones = await Promise.all(promesasBotones);
+            botones.forEach(btn => categoriasGrid.appendChild(btn));
         }
     }
 
-    // --- LÓGICA PARA LA TIRA DE FRASES ---
+    // --- LÓGICA DE LA TIRA ---
     function agregarAPipa(pictograma) {
         fraseActual.push(pictograma);
         renderizarTiraFrase();
@@ -282,8 +272,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const pictogramaContenido = document.createElement('div');
             pictogramaContenido.className = 'pictograma-frase-contenido';
-
-            // Asignar borde Fitzgerald en la tira
             if (pictograma.tipo) pictogramaContenido.classList.add(pictograma.tipo);
 
             const img = document.createElement('img');
@@ -310,7 +298,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         tiraFraseTexto.textContent = fraseComoTexto;
         tiraFraseDiv.scrollLeft = tiraFraseDiv.scrollWidth;
 
-        // Ocultar/mostrar los contenedores enteros
         if (fraseActual.length === 0) {
             tiraFraseContainer.classList.add('hidden');
             tiraFraseTextoContainer.classList.add('hidden');
@@ -322,7 +309,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- LÓGICA DE DRAG & DROP ---
     function inicializarDragAndDrop() {
         const tiraFraseDiv = document.getElementById('tira-frase');
         if (!tiraFraseDiv) return;
@@ -340,12 +326,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- FUNCIONES DE LA INTERFAZ ---
     async function crearBotonPictograma(item) {
         const pictoButton = document.createElement('button');
         pictoButton.className = 'pictograma-button';
-        
-        // Aplica la clase de Clave Fitzgerald automáticamente
         if (item.tipo) pictoButton.classList.add(item.tipo);
 
         const img = document.createElement('img');
@@ -361,12 +344,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const nucleoGrid = document.getElementById('nucleo-grid');
         if (!nucleoGrid) return;
         nucleoGrid.innerHTML = '';
-        for (const palabra of vocabularioNucleo) {
-            const pictoButton = await crearBotonPictograma(palabra);
-            pictoButton.classList.add('nucleo');
-            pictoButton.addEventListener('click', () => agregarAPipa(palabra));
-            nucleoGrid.appendChild(pictoButton);
-        }
+        
+        // CARGA EN PARALELO OPTIMIZADA
+        const promesasBotones = vocabularioNucleo.map(async (palabra) => {
+            const btn = await crearBotonPictograma(palabra);
+            btn.classList.add('nucleo');
+            btn.addEventListener('click', () => agregarAPipa(palabra));
+            return btn;
+        });
+        
+        const botones = await Promise.all(promesasBotones);
+        botones.forEach(btn => nucleoGrid.appendChild(btn));
     }
 
     async function cargarCategoriasPerifericas() {
@@ -375,44 +363,67 @@ document.addEventListener('DOMContentLoaded', async () => {
             const categoriasGrid = document.getElementById('categorias-grid');
             if (!categoriasGrid || !data) return;
             categoriasGrid.innerHTML = '';
-            for (const categoria of data.categorias) {
-                const categoriaButton = await crearBotonPictograma(categoria);
-                categoriaButton.addEventListener('click', () => mostrarImagenes(categoria));
-                categoriasGrid.appendChild(categoriaButton);
-            }
+            
+            // CARGA EN PARALELO OPTIMIZADA
+            const promesasBotones = data.categorias.map(async (categoria) => {
+                const btn = await crearBotonPictograma(categoria);
+                btn.addEventListener('click', () => mostrarImagenes(categoria));
+                return btn;
+            });
+
+            const botones = await Promise.all(promesasBotones);
+            botones.forEach(btn => categoriasGrid.appendChild(btn));
         } catch (error) {
             console.error("Error al cargar categorías:", error);
         }
     }
 
+    // --- FUNCIÓN DE CARGA DE IMÁGENES CON SPINNER Y PROMISE.ALL ---
     async function mostrarImagenes(categoria) {
+        const loadingOverlay = document.getElementById('loading-overlay');
         const imagenesGrid = document.getElementById('imagenes-grid');
         const categoriasGrid = document.getElementById('categorias-grid');
         const nucleoGrid = document.getElementById('nucleo-grid');
         const tituloCategoria = document.getElementById('titulo-categoria');
         const backButton = document.getElementById('back-button');
+
         if (!imagenesGrid || !categoriasGrid || !nucleoGrid || !tituloCategoria || !backButton) return;
+
+        // 1. Mostrar el Spinner
+        if (loadingOverlay) loadingOverlay.classList.remove('hidden');
         
+        // Pequeña pausa para asegurar que el navegador dibuje el spinner en pantalla
+        await new Promise(resolve => setTimeout(resolve, 30));
+
         imagenesGrid.innerHTML = '';
-        for (const imagen of categoria.imagenes) {
+
+        // 2. Procesar TODO el array en paralelo (Extremadamente rápido)
+        const promesasElementos = categoria.imagenes.map(async (imagen) => {
             if (imagen.separador) {
                 const separador = document.createElement('hr');
                 separador.className = 'separador';
-                imagenesGrid.appendChild(separador);
+                return separador;
             } else {
                 const imgButton = await crearBotonPictograma(imagen);
                 imgButton.addEventListener('click', () => agregarAPipa(imagen));
-                imagenesGrid.appendChild(imgButton);
+                return imgButton;
             }
-        }
+        });
+
+        const elementos = await Promise.all(promesasElementos);
+        elementos.forEach(el => imagenesGrid.appendChild(el));
+
         categoriasGrid.classList.add('hidden');
         nucleoGrid.classList.add('hidden');
         imagenesGrid.classList.remove('hidden');
         tituloCategoria.textContent = categoria.nombre;
         backButton.classList.remove('hidden');
+
+        // 3. Ocultar el Spinner al finalizar
+        if (loadingOverlay) loadingOverlay.classList.add('hidden');
     }
 
-    // --- INICIALIZACIÓN DE LA PÁGINA PRINCIPAL (ROUTER) ---
+    // --- INICIALIZACIÓN (ROUTER) ---
     if (document.getElementById('nucleo-grid')) {
         await cargarDatosGlobales(); 
         cargarNucleo();
@@ -420,7 +431,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         inicializarDragAndDrop();
         renderizarTiraFrase();
         
-        // --- EVENTOS DE LOS BOTONES DE CONTROL ---
         document.getElementById('hablar-frase-btn')?.addEventListener('click', hablarFraseSecuencial);
         
         document.getElementById('borrar-frase-btn')?.addEventListener('click', () => {
@@ -429,7 +439,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             actualizarSugerenciasPredictivas();
         });
 
-        // Evento Botón "Atrás" corregido y validado
         const btnBorrarUltimo = document.getElementById('borrar-ultimo-btn');
         if (btnBorrarUltimo) {
             btnBorrarUltimo.addEventListener('click', (e) => {
@@ -455,7 +464,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 try {
                     await navigator.share({ title: 'Frase desde Mi Comunicador', text: textoFinal });
                 } catch (error) {
-                    console.error('Error al intentar compartir:', error);
+                    console.error('Error al compartir:', error);
                 }
             });
         } else if (shareFraseBtn) {
@@ -463,7 +472,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- LÓGICA DE LA PÁGINA DE ESCRITURA (escribir.html) ---
+    // --- PÁGINA ESCRIBIR ---
     if (document.getElementById('texto-escribir')) {
         const leerTextoBtn = document.getElementById('leer-texto');
         const textoEscribirArea = document.getElementById('texto-escribir');
@@ -501,7 +510,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         cargarHistorialEscribir();
     }
 
-    // --- LÓGICA DE LA PÁGINA DE ESCUCHA (escuchar.html) ---
+    // --- PÁGINA ESCUCHAR ---
     if (document.getElementById('empezar-escuchar')) {
         const empezarEscucharBtn = document.getElementById('empezar-escuchar');
         const historialListaEscuchar = document.getElementById('historial-lista-escuchar');
@@ -554,7 +563,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 empezarEscucharBtn.classList.remove('pulsing');
             };
             recognition.onerror = (event) => {
-                console.error('Error en el reconocimiento de voz: ', event.error);
+                console.error('Error en reconocimiento: ', event.error);
                 if (textoEscuchadoElem) textoEscuchadoElem.textContent = `Error: ${event.error}`;
                 empezarEscucharBtn.classList.remove('pulsing');
             };
@@ -564,11 +573,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// --- REGISTRO DEL SERVICE WORKER ---
+// --- SERVICE WORKER ---
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./service-worker.js')
-            .then(reg => console.log('Service Worker registrado.', reg))
-            .catch(err => console.error('Error en registro de Service Worker:', err));
+            .catch(err => console.error('Error en SW:', err));
     });
 }
