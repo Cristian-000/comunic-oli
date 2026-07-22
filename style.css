@@ -29,7 +29,6 @@
   margin: 0;
   padding: 0;
   -webkit-tap-highlight-color: transparent;
-  /* Evita que los niños seleccionen texto o imágenes por accidente al mantener presionado */
   user-select: none; 
   -webkit-user-select: none;
 }
@@ -118,7 +117,6 @@ footer {
   object-fit: contain;
 }
 
-/* Clases Fitzgerald aplicadas también a los pictogramas de la tira */
 .pictograma-frase-contenido.pronombre { background-color: var(--fitz-amarillo-bg); border-color: var(--fitz-amarillo-border); }
 .pictograma-frase-contenido.verbo { background-color: var(--fitz-verde-bg); border-color: var(--fitz-verde-border); }
 .pictograma-frase-contenido.sustantivo { background-color: var(--fitz-naranja-bg); border-color: var(--fitz-naranja-border); }
@@ -126,7 +124,6 @@ footer {
 .pictograma-frase-contenido.interjeccion, .pictograma-frase-contenido.frase { background-color: var(--fitz-rosa-bg); border-color: var(--fitz-rosa-border); }
 .pictograma-frase-contenido.adverbio, .pictograma-frase-contenido.conjuncion, .pictograma-frase-contenido.preposicion, .pictograma-frase-contenido.letra { background-color: var(--fitz-gris-bg); border-color: var(--fitz-gris-border); }
 
-/* Botón de borrar pictograma ajustado para motricidad fina */
 .btn-borrar-pictograma {
   position: absolute;
   top: -8px;
@@ -175,7 +172,7 @@ footer {
 }
 
 /* ========================================= */
-/* CONTROLES DE LA TIRA (Botones Grandes Accesibles) */
+/* CONTROLES DE LA TIRA */
 /* ========================================= */
 #tira-frase-controles {
   display: flex;
@@ -212,11 +209,10 @@ footer {
   font-size: 1.1rem;
 }
 
-/* Colores específicos para los botones grandes */
 #hablar-frase-btn { background-color: var(--color-primario); }
-#share-frase-btn { background-color: #10B981; } /* Verde para compartir/whatsapp */
-#borrar-ultimo-btn { background-color: #F59E0B; } /* Naranja para advertencia menor */
-#borrar-frase-btn { background-color: var(--color-borrar); } /* Rojo para borrar todo */
+#share-frase-btn { background-color: #10B981; }
+#borrar-ultimo-btn { background-color: #F59E0B; }
+#borrar-frase-btn { background-color: var(--color-borrar); }
 
 /* ========================================= */
 /* NAVBAR & GRID DE PICTOGRAMAS */
@@ -268,7 +264,6 @@ footer {
   word-break: break-word;
 }
 
-/* Feedback táctil intenso para niños */
 .pictograma-button:active {
   transform: scale(0.92);
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -460,7 +455,7 @@ footer {
   background-color: #fee2e2;
 }
 
-/* SortableJS visual feedback */
+/* SortableJS */
 .sortable-ghost {
   opacity: 0.3;
   background: #cce5ff;
@@ -472,4 +467,44 @@ footer {
   opacity: 1 !important;
   transform: scale(1.05);
   box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+}
+
+/* ========================================= */
+/* SPINNER DE CARGA (NUEVO) */
+/* ========================================= */
+#loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+}
+
+.spinner {
+  border: 8px solid #E5E7EB;
+  border-top: 8px solid var(--color-primario);
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+#loading-overlay p {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-primario);
+  letter-spacing: 1px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
