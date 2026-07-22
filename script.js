@@ -7,17 +7,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isPlayingSequence = false;
     let datosGlobales = null;
 
-    // --- VOCABULARIO NÚCLEO ---
+    // --- VOCABULARIO NÚCLEO (Las 10 más importantes para CAA infantil) ---
     const vocabularioNucleo = [
-        { texto: "Hola", tipo: "interjeccion", hablar: "Hola" },
-        { texto: "Si", tipo: "adverbio", hablar: "Si" },
-        { texto: "No", tipo: "adverbio", hablar: "No" },
         { texto: "Yo", tipo: "pronombre", hablar: "Yo" },
         { texto: "Quiero", tipo: "verbo", hablar: "Quiero" },
-        { texto: "Ser", tipo: "verbo", hablar: "Ser" },
-        { texto: "Ir", tipo: "verbo", hablar: "Ir" },
-        { texto: "Gusta", tipo: "verbo", hablar: "Me gusta" },
-        { texto: "Gracias", tipo: "interjeccion", hablar: "Gracias" },
+        { texto: "Ayuda", tipo: "sustantivo", hablar: "Ayuda" },
+        { texto: "Más", tipo: "adverbio", hablar: "Más" },
+        { texto: "Si", tipo: "adverbio", hablar: "Si" },
+        { texto: "No", tipo: "adverbio", hablar: "No" },
+        { texto: "Hola", tipo: "interjeccion", hablar: "Hola" },
+        { texto: "Terminar", tipo: "verbo", hablar: "Terminar" },
+        { texto: "Jugar", tipo: "verbo", hablar: "Jugar" },
+        { texto: "Gusta", tipo: "verbo", hablar: "Me gusta" }
     ];
 
     // --- INICIALIZACIÓN DE LA BASE DE DATOS ---
@@ -28,12 +29,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             request.onsuccess = e => resolve(e.target.result);
             request.onupgradeneeded = e => {
                 const dbInstance = e.target.result;
-                if (!dbInstance.objectStoreNames.contains('audios')) {
-                    dbInstance.createObjectStore('audios');
-                }
-                if (!dbInstance.objectStoreNames.contains('pictogramas')) {
-                    dbInstance.createObjectStore('pictogramas');
-                }
+                if (!dbInstance.objectStoreNames.contains('audios')) dbInstance.createObjectStore('audios');
+                if (!dbInstance.objectStoreNames.contains('pictogramas')) dbInstance.createObjectStore('pictogramas');
             };
         });
     }
@@ -94,7 +91,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             return URL.createObjectURL(imagenBlob);
         } catch (error) {
-            console.error(`Error procesando pictograma para "${texto}":`, error);
             return 'imagenes/placeholder.png';
         }
     }
@@ -116,16 +112,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             await promisifyRequest(db.transaction('audios', 'readwrite').objectStore('audios').put(audioBlob, texto));
             return audioBlob;
         } catch (error) {
-            console.error(`Error al obtener audio para "${texto}":`, error);
             return null;
         }
     }
 
     function reproducirAudio(blob) {
         return new Promise((resolve, reject) => {
-            if (isPlayingSequence) { 
-                if (audioPlayer && !audioPlayer.paused) audioPlayer.pause();
-            }
+            if (isPlayingSequence) { if (audioPlayer && !audioPlayer.paused) audioPlayer.pause(); }
             if (!blob) return reject("Blob de audio nulo.");
             const url = URL.createObjectURL(blob);
             audioPlayer = new Audio(url);
@@ -136,9 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function hablarTextoIndividual(texto) {
-        if (isPlayingSequence) return;
-        if (!texto || texto.trim() === '') return;
-        
+        if (isPlayingSequence || !texto || texto.trim() === '') return;
         if ('speechSynthesis' in window) {
             const utterance = new SpeechSynthesisUtterance(texto);
             utterance.lang = 'es-ES';
@@ -146,13 +137,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.speechSynthesis.speak(utterance);
             return;
         }
-
         try {
             const audioBlob = await obtenerAudio(texto);
             if (audioBlob) await reproducirAudio(audioBlob);
-        } catch (error) {
-            console.error("Error en reproducción:", error);
-        }
+        } catch (error) {}
     }
 
     async function hablarFraseSecuencial() {
@@ -186,30 +174,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (btnHablar) btnHablar.classList.remove('pulsing');
     }
 
-    // --- MOTOR PREDICTIVO INTELIGENTE ---
+    // --- NUEVO MOTOR PREDICTIVO (SOLO ILUMINA, NO OCULTA) ---
     async function actualizarSugerenciasPredictivas() {
         const categoriasGrid = document.getElementById('categorias-grid');
-        const nucleoGrid = document.getElementById('nucleo-grid');
-        const imagenesGrid = document.getElementById('imagenes-grid');
-        const tituloCategoria = document.getElementById('titulo-categoria');
-        const backButton = document.getElementById('back-button');
+        if (!categoriasGrid) return;
 
-        if (imagenesGrid) imagenesGrid.classList.add('hidden');
-        if (nucleoGrid) nucleoGrid.classList.remove('hidden');
-        if (categoriasGrid) categoriasGrid.classList.remove('hidden');
-        if (backButton) backButton.classList.add('hidden');
-
+        // Si no hay frase, limpiamos todas las sugerencias luminosas
         if (fraseActual.length === 0) {
-            tituloCategoria.textContent = 'Categorías';
-            cargarCategoriasPerifericas();
+            Array.from(categoriasGrid.children).forEach(btn => btn.classList.remove('highlight-sugerencia'));
             return;
         }
 
         const ultimoPicto = fraseActual[fraseActual.length - 1];
-        tituloCategoria.textContent = 'Sugerencias para ti';
-
         let categoriasSugeridas = [];
 
+        // Reglas Lógicas
         if (ultimoPicto.tipo === 'pronombre') {
             categoriasSugeridas = ['Acciones', 'Quiero', 'Me siento', 'Preguntas'];
         } else if (['Quiero', 'Comer', 'Beber'].includes(ultimoPicto.texto) || ultimoPicto.tipo === 'verbo') {
@@ -220,31 +199,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             categoriasSugeridas = ['Social', 'Personas'];
         } else if (ultimoPicto.texto === 'Ayuda') {
             categoriasSugeridas = ['Acciones', 'Me duele', 'Cuerpo', 'Personas'];
-        } else {
-            tituloCategoria.textContent = 'Categorías';
-            cargarCategoriasPerifericas();
-            return;
         }
 
-        const data = await cargarDatosGlobales();
-        if (data && data.categorias && categoriasGrid) {
-            categoriasGrid.innerHTML = '';
-            const categoriasFiltradas = data.categorias.filter(c => categoriasSugeridas.includes(c.nombre));
-            
-            if (categoriasFiltradas.length === 0) {
-                cargarCategoriasPerifericas();
-                return;
+        // Iteramos sobre las categorías existentes y encendemos solo las sugeridas
+        Array.from(categoriasGrid.children).forEach(btn => {
+            const spanText = btn.querySelector('span')?.textContent;
+            if (spanText && categoriasSugeridas.includes(spanText)) {
+                btn.classList.add('highlight-sugerencia');
+            } else {
+                btn.classList.remove('highlight-sugerencia');
             }
-
-            // CARGA EN PARALELO OPTIMIZADA
-            const promesasBotones = categoriasFiltradas.map(async (categoria) => {
-                const btn = await crearBotonPictograma(categoria);
-                btn.addEventListener('click', () => mostrarImagenes(categoria));
-                return btn;
-            });
-            const botones = await Promise.all(promesasBotones);
-            botones.forEach(btn => categoriasGrid.appendChild(btn));
-        }
+        });
     }
 
     // --- LÓGICA DE LA TIRA ---
@@ -262,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const tiraFraseDiv = document.getElementById('tira-frase');
         const tiraFraseTexto = document.getElementById('tira-frase-texto');
 
-        if (!tiraFraseDiv || !tiraFraseTexto || !tiraFraseContainer || !tiraFraseTextoContainer || !tiraFraseControles) return;
+        if (!tiraFraseDiv || !tiraFraseTexto || !tiraFraseContainer) return;
 
         tiraFraseDiv.innerHTML = '';
 
@@ -345,10 +310,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!nucleoGrid) return;
         nucleoGrid.innerHTML = '';
         
-        // CARGA EN PARALELO OPTIMIZADA
         const promesasBotones = vocabularioNucleo.map(async (palabra) => {
             const btn = await crearBotonPictograma(palabra);
-            btn.classList.add('nucleo');
             btn.addEventListener('click', () => agregarAPipa(palabra));
             return btn;
         });
@@ -358,46 +321,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function cargarCategoriasPerifericas() {
-        try {
-            const data = await cargarDatosGlobales();
-            const categoriasGrid = document.getElementById('categorias-grid');
-            if (!categoriasGrid || !data) return;
-            categoriasGrid.innerHTML = '';
-            
-            // CARGA EN PARALELO OPTIMIZADA
-            const promesasBotones = data.categorias.map(async (categoria) => {
-                const btn = await crearBotonPictograma(categoria);
-                btn.addEventListener('click', () => mostrarImagenes(categoria));
-                return btn;
-            });
+        const data = await cargarDatosGlobales();
+        const categoriasGrid = document.getElementById('categorias-grid');
+        if (!categoriasGrid || !data) return;
+        categoriasGrid.innerHTML = '';
+        
+        const promesasBotones = data.categorias.map(async (categoria) => {
+            const btn = await crearBotonPictograma(categoria);
+            btn.addEventListener('click', () => mostrarImagenes(categoria));
+            return btn;
+        });
 
-            const botones = await Promise.all(promesasBotones);
-            botones.forEach(btn => categoriasGrid.appendChild(btn));
-        } catch (error) {
-            console.error("Error al cargar categorías:", error);
-        }
+        const botones = await Promise.all(promesasBotones);
+        botones.forEach(btn => categoriasGrid.appendChild(btn));
     }
 
-    // --- FUNCIÓN DE CARGA DE IMÁGENES CON SPINNER Y PROMISE.ALL ---
+    // --- FUNCIÓN DE CARGA DE IMÁGENES (AL ENTRAR A UNA CATEGORÍA) ---
     async function mostrarImagenes(categoria) {
         const loadingOverlay = document.getElementById('loading-overlay');
         const imagenesGrid = document.getElementById('imagenes-grid');
         const categoriasGrid = document.getElementById('categorias-grid');
-        const nucleoGrid = document.getElementById('nucleo-grid');
+        const seccionNucleo = document.getElementById('seccion-nucleo');
         const tituloCategoria = document.getElementById('titulo-categoria');
         const backButton = document.getElementById('back-button');
 
-        if (!imagenesGrid || !categoriasGrid || !nucleoGrid || !tituloCategoria || !backButton) return;
-
-        // 1. Mostrar el Spinner
         if (loadingOverlay) loadingOverlay.classList.remove('hidden');
-        
-        // Pequeña pausa para asegurar que el navegador dibuje el spinner en pantalla
-        await new Promise(resolve => setTimeout(resolve, 30));
+        await new Promise(resolve => setTimeout(resolve, 30)); // Pausa para render del spinner
 
         imagenesGrid.innerHTML = '';
 
-        // 2. Procesar TODO el array en paralelo (Extremadamente rápido)
         const promesasElementos = categoria.imagenes.map(async (imagen) => {
             if (imagen.separador) {
                 const separador = document.createElement('hr');
@@ -413,17 +365,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const elementos = await Promise.all(promesasElementos);
         elementos.forEach(el => imagenesGrid.appendChild(el));
 
+        // Ocultamos núcleo y categorías, mostramos imágenes y botón volver
         categoriasGrid.classList.add('hidden');
-        nucleoGrid.classList.add('hidden');
+        seccionNucleo.classList.add('hidden');
         imagenesGrid.classList.remove('hidden');
-        tituloCategoria.textContent = categoria.nombre;
+        tituloCategoria.innerHTML = `<i class="fas fa-folder-open" style="color: #3B82F6;"></i> ${categoria.nombre}`;
         backButton.classList.remove('hidden');
 
-        // 3. Ocultar el Spinner al finalizar
         if (loadingOverlay) loadingOverlay.classList.add('hidden');
     }
 
-    // --- INICIALIZACIÓN (ROUTER) ---
+    // --- INICIALIZACIÓN PRINCIPAL ---
     if (document.getElementById('nucleo-grid')) {
         await cargarDatosGlobales(); 
         cargarNucleo();
@@ -451,7 +403,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
+        // LÓGICA DEL BOTÓN VOLVER
         document.getElementById('back-button')?.addEventListener('click', () => {
+            document.getElementById('seccion-nucleo').classList.remove('hidden');
+            document.getElementById('categorias-grid').classList.remove('hidden');
+            document.getElementById('imagenes-grid').classList.add('hidden');
+            document.getElementById('back-button').classList.add('hidden');
+            document.getElementById('titulo-categoria').innerHTML = '<i class="fas fa-folder-open" style="color: #3B82F6;"></i> Categorías';
             actualizarSugerenciasPredictivas(); 
         });
 
@@ -463,120 +421,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const textoFinal = textoCompleto.charAt(0).toUpperCase() + textoCompleto.slice(1);
                 try {
                     await navigator.share({ title: 'Frase desde Mi Comunicador', text: textoFinal });
-                } catch (error) {
-                    console.error('Error al compartir:', error);
-                }
+                } catch (error) {}
             });
         } else if (shareFraseBtn) {
             shareFraseBtn.style.display = 'none';
         }
-    }
-
-    // --- PÁGINA ESCRIBIR ---
-    if (document.getElementById('texto-escribir')) {
-        const leerTextoBtn = document.getElementById('leer-texto');
-        const textoEscribirArea = document.getElementById('texto-escribir');
-        const historialLista = document.getElementById('historial-lista');
-
-        function cargarHistorialEscribir() {
-            if (!historialLista) return;
-            historialLista.innerHTML = '';
-            const historial = JSON.parse(localStorage.getItem('historialEscribir')) || [];
-            historial.reverse().forEach(texto => {
-                const li = document.createElement('li');
-                li.textContent = texto;
-                li.addEventListener('click', () => hablarTextoIndividual(texto));
-                historialLista.appendChild(li);
-            });
-        }
-
-        function agregarAlHistorialEscribir(texto) {
-            if (texto.trim() === "") return;
-            let historial = JSON.parse(localStorage.getItem('historialEscribir')) || [];
-            if (historial[historial.length - 1] !== texto) {
-                historial.push(texto);
-                localStorage.setItem('historialEscribir', JSON.stringify(historial));
-            }
-            cargarHistorialEscribir();
-        }
-
-        if (leerTextoBtn) {
-            leerTextoBtn.addEventListener('click', () => {
-                const texto = textoEscribirArea.value;
-                hablarTextoIndividual(texto);
-                agregarAlHistorialEscribir(texto);
-            });
-        }
-        cargarHistorialEscribir();
-    }
-
-    // --- PÁGINA ESCUCHAR ---
-    if (document.getElementById('empezar-escuchar')) {
-        const empezarEscucharBtn = document.getElementById('empezar-escuchar');
-        const historialListaEscuchar = document.getElementById('historial-lista-escuchar');
-        const textoEscuchadoElem = document.getElementById('texto-escuchado');
-
-        function cargarHistorialEscuchar() {
-            if (!historialListaEscuchar) return;
-            historialListaEscuchar.innerHTML = '';
-            const historialEscuchar = JSON.parse(localStorage.getItem('historialEscuchar')) || [];
-            historialEscuchar.reverse().forEach(texto => {
-                const li = document.createElement('li');
-                li.textContent = texto;
-                li.addEventListener('click', () => hablarTextoIndividual(texto));
-                historialListaEscuchar.appendChild(li);
-            });
-        }
-
-        function agregarAlHistorialEscuchar(texto) {
-            if (texto.trim() === "") return;
-            let historialEscuchar = JSON.parse(localStorage.getItem('historialEscuchar')) || [];
-            if (historialEscuchar[historialEscuchar.length - 1] !== texto) {
-                historialEscuchar.push(texto);
-                localStorage.setItem('historialEscuchar', JSON.stringify(historialEscuchar));
-            }
-            cargarHistorialEscuchar();
-        }
-
-        function empezarEscuchar() {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                alert('Tu navegador no soporta la API de reconocimiento de voz.');
-                return;
-            }
-            const recognition = new SpeechRecognition();
-            recognition.lang = 'es-ES';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
-            empezarEscucharBtn.classList.add('pulsing');
-            if (textoEscuchadoElem) textoEscuchadoElem.textContent = 'Escuchando...';
-            recognition.start();
-
-            recognition.onresult = (event) => {
-                const texto = event.results[0][0].transcript;
-                if (textoEscuchadoElem) textoEscuchadoElem.textContent = `"${texto}"`;
-                agregarAlHistorialEscuchar(texto);
-                hablarTextoIndividual(texto);
-            };
-            recognition.onspeechend = () => {
-                recognition.stop();
-                empezarEscucharBtn.classList.remove('pulsing');
-            };
-            recognition.onerror = (event) => {
-                console.error('Error en reconocimiento: ', event.error);
-                if (textoEscuchadoElem) textoEscuchadoElem.textContent = `Error: ${event.error}`;
-                empezarEscucharBtn.classList.remove('pulsing');
-            };
-        }
-        if (empezarEscucharBtn) empezarEscucharBtn.addEventListener('click', empezarEscuchar);
-        cargarHistorialEscuchar();
     }
 });
 
 // --- SERVICE WORKER ---
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-            .catch(err => console.error('Error en SW:', err));
+        navigator.serviceWorker.register('./service-worker.js').catch(err => console.error('Error en SW:', err));
     });
 }
