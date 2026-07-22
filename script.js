@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // --- VARIABLES GLOBALES ---
     let db;
     let fraseActual = [];
     let audioPlayer;
@@ -7,7 +6,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isPlayingSequence = false;
     let datosGlobales = null;
 
-    // --- VOCABULARIO NÚCLEO (Las 10 más importantes para CAA infantil) ---
     const vocabularioNucleo = [
         { texto: "Yo", tipo: "pronombre", hablar: "Yo" },
         { texto: "Quiero", tipo: "verbo", hablar: "Quiero" },
@@ -21,7 +19,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         { texto: "Gusta", tipo: "verbo", hablar: "Me gusta" }
     ];
 
-    // --- INICIALIZACIÓN DE LA BASE DE DATOS ---
     async function initDB() {
         return new Promise((resolve, reject) => {
             const request = window.indexedDB.open('comunicador-db-v4', 1);
@@ -45,7 +42,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         db = await initDB();
     } catch (error) {
-        console.error("No se pudo inicializar la base de datos.", error);
         db = null;
     }
 
@@ -61,7 +57,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         return datosGlobales;
     }
 
-    // --- FUNCIONES DE API ARASAAC Y CACHÉ ---
     async function obtenerYCachearPictograma(texto) {
         if (!texto || texto.trim() === '') return 'imagenes/placeholder.png';
         if (!db) return 'imagenes/placeholder.png';
@@ -95,7 +90,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- FUNCIONES DE AUDIO ---
     async function obtenerAudio(texto) {
         if (!texto || texto.trim() === '') return null;
         try {
@@ -174,12 +168,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (btnHablar) btnHablar.classList.remove('pulsing');
     }
 
-    // --- NUEVO MOTOR PREDICTIVO (SOLO ILUMINA, NO OCULTA) ---
     async function actualizarSugerenciasPredictivas() {
         const categoriasGrid = document.getElementById('categorias-grid');
         if (!categoriasGrid) return;
 
-        // Si no hay frase, limpiamos todas las sugerencias luminosas
         if (fraseActual.length === 0) {
             Array.from(categoriasGrid.children).forEach(btn => btn.classList.remove('highlight-sugerencia'));
             return;
@@ -188,7 +180,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const ultimoPicto = fraseActual[fraseActual.length - 1];
         let categoriasSugeridas = [];
 
-        // Reglas Lógicas
         if (ultimoPicto.tipo === 'pronombre') {
             categoriasSugeridas = ['Acciones', 'Quiero', 'Me siento', 'Preguntas'];
         } else if (['Quiero', 'Comer', 'Beber'].includes(ultimoPicto.texto) || ultimoPicto.tipo === 'verbo') {
@@ -201,7 +192,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             categoriasSugeridas = ['Acciones', 'Me duele', 'Cuerpo', 'Personas'];
         }
 
-        // Iteramos sobre las categorías existentes y encendemos solo las sugeridas
         Array.from(categoriasGrid.children).forEach(btn => {
             const spanText = btn.querySelector('span')?.textContent;
             if (spanText && categoriasSugeridas.includes(spanText)) {
@@ -212,7 +202,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- LÓGICA DE LA TIRA ---
     function agregarAPipa(pictograma) {
         fraseActual.push(pictograma);
         renderizarTiraFrase();
@@ -222,7 +211,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function renderizarTiraFrase() {
         const tiraFraseContainer = document.getElementById('tira-frase-container');
-        const tiraFraseTextoContainer = document.getElementById('tira-frase-container-text');
+        const tiraFraseContainerText = document.getElementById('tira-frase-container-text');
         const tiraFraseControles = document.getElementById('tira-frase-controles');
         const tiraFraseDiv = document.getElementById('tira-frase');
         const tiraFraseTexto = document.getElementById('tira-frase-texto');
@@ -237,7 +226,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const pictogramaContenido = document.createElement('div');
             pictogramaContenido.className = 'pictograma-frase-contenido';
-            if (pictograma.tipo) pictogramaContenido.classList.add(pictograma.tipo);
 
             const img = document.createElement('img');
             obtenerYCachearPictograma(pictograma.texto).then(src => img.src = src);
@@ -245,7 +233,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const btnBorrar = document.createElement('button');
             btnBorrar.className = 'btn-borrar-pictograma';
             btnBorrar.innerHTML = '&times;';
-            btnBorrar.setAttribute('aria-label', `Borrar ${pictograma.texto}`);
             btnBorrar.onclick = (e) => {
                 e.stopPropagation();
                 fraseActual.splice(index, 1);
@@ -265,11 +252,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (fraseActual.length === 0) {
             tiraFraseContainer.classList.add('hidden');
-            tiraFraseTextoContainer.classList.add('hidden');
+            tiraFraseContainerText.classList.add('hidden');
             tiraFraseControles.classList.add('hidden');
         } else {
             tiraFraseContainer.classList.remove('hidden');
-            tiraFraseTextoContainer.classList.remove('hidden');
+            tiraFraseContainerText.classList.remove('hidden');
             tiraFraseControles.classList.remove('hidden');
         }
     }
@@ -294,7 +281,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function crearBotonPictograma(item) {
         const pictoButton = document.createElement('button');
         pictoButton.className = 'pictograma-button';
-        if (item.tipo) pictoButton.classList.add(item.tipo);
 
         const img = document.createElement('img');
         img.src = await obtenerYCachearPictograma(item.texto || item.nombre);
@@ -336,7 +322,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         botones.forEach(btn => categoriasGrid.appendChild(btn));
     }
 
-    // --- FUNCIÓN DE CARGA DE IMÁGENES (AL ENTRAR A UNA CATEGORÍA) ---
     async function mostrarImagenes(categoria) {
         const loadingOverlay = document.getElementById('loading-overlay');
         const imagenesGrid = document.getElementById('imagenes-grid');
@@ -346,7 +331,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const backButton = document.getElementById('back-button');
 
         if (loadingOverlay) loadingOverlay.classList.remove('hidden');
-        await new Promise(resolve => setTimeout(resolve, 30)); // Pausa para render del spinner
+        await new Promise(resolve => setTimeout(resolve, 30));
 
         imagenesGrid.innerHTML = '';
 
@@ -365,17 +350,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         const elementos = await Promise.all(promesasElementos);
         elementos.forEach(el => imagenesGrid.appendChild(el));
 
-        // Ocultamos núcleo y categorías, mostramos imágenes y botón volver
         categoriasGrid.classList.add('hidden');
         seccionNucleo.classList.add('hidden');
         imagenesGrid.classList.remove('hidden');
-        tituloCategoria.innerHTML = `<i class="fas fa-folder-open" style="color: #3B82F6;"></i> ${categoria.nombre}`;
+        tituloCategoria.textContent = categoria.nombre;
         backButton.classList.remove('hidden');
 
         if (loadingOverlay) loadingOverlay.classList.add('hidden');
     }
 
-    // --- INICIALIZACIÓN PRINCIPAL ---
     if (document.getElementById('nucleo-grid')) {
         await cargarDatosGlobales(); 
         cargarNucleo();
@@ -403,13 +386,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         }
 
-        // LÓGICA DEL BOTÓN VOLVER
         document.getElementById('back-button')?.addEventListener('click', () => {
             document.getElementById('seccion-nucleo').classList.remove('hidden');
             document.getElementById('categorias-grid').classList.remove('hidden');
             document.getElementById('imagenes-grid').classList.add('hidden');
             document.getElementById('back-button').classList.add('hidden');
-            document.getElementById('titulo-categoria').innerHTML = '<i class="fas fa-folder-open" style="color: #3B82F6;"></i> Categorías';
+            document.getElementById('titulo-categoria').textContent = 'Categorías';
             actualizarSugerenciasPredictivas(); 
         });
 
@@ -429,9 +411,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// --- SERVICE WORKER ---
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js').catch(err => console.error('Error en SW:', err));
+        navigator.serviceWorker.register('./service-worker.js').catch(err => {});
     });
 }
