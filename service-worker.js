@@ -1,99 +1,70 @@
-// service-worker.js
+// Aumenta la versión cada vez que hagas cambios en CSS, JS o HTML
+const CACHE_NAME = 'comunicador-cache-v11'; 
 
-// Nombre y versión de la caché. Cámbialo si haces actualizaciones importantes.
-const CACHE_NAME = 'comunicador-cache-v10';
-console.log(CACHE_NAME);
-
-// Lista de archivos esenciales para que la aplicación funcione offline.
-// ¡IMPORTANTE! Asegúrate de que estas rutas coincidan con la estructura de tu proyecto.
 const urlsToCache = [
-    '/', // La página principal
-    'index.html',
-    'escribir.html',
-    'escuchar.html',
-    'matematicas.html',
-    'descripcion.html',
-    'palabras.html',
-    'pronunciacion.html',
-     'matematicas.css',
-    'descripcion.css',
-    'palabras.css',
-    'pronunciacion.css',
-     'matematicas.js',
-    'descripcion.js',
-    'palabras.js',
-    'pronunciacion.js',
-    "usuario.html",
-    'style.css',
-    'script.js',
-    'datos.json', 
-    'manifest.json'
-   
+    './', 
+    './index.html',
+    './escribir.html',
+    './escuchar.html',
+    './matematicas.html',
+    './descripcion.html',
+    './palabras.html',
+    './pronunciacion.html',
+    './usuario.html',
+    './matematicas.css',
+    './descripcion.css',
+    './palabras.css',
+    './pronunciacion.css',
+    './style.css',
+    './styleUsuario.css',
+    './matematicas.js',
+    './descripcion.js',
+    './palabras.js',
+    './pronunciacion.js',
+    './usuario.js',
+    './script.js',
+    './datos.json', 
+    './manifest.json',
+    './imagenes/placeholder.png' // Importante cachear el placeholder
 ];
 
-// Evento 'install': Se dispara cuando el Service Worker se instala por primera vez.
-// Aquí es donde guardamos nuestros archivos en la caché.
 self.addEventListener('install', event => {
-    console.log('Service Worker: Instalando...');
+    self.skipWaiting(); // Obliga al SW a activarse inmediatamente
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                console.log('Service Worker: Abriendo caché y guardando archivos principales.');
                 return cache.addAll(urlsToCache);
             })
-            .then(() => {
-                // Forzar al nuevo Service Worker a activarse inmediatamente.
-                return self.skipWaiting();
-            })
-            .catch(err => {
-                console.error('Service Worker: Falló el cacheo de archivos en la instalación.', err);
-            })
+            .catch(err => console.error('Error cacheando archivos en instalación:', err))
     );
 });
 
-// Evento 'activate': Se dispara cuando el Service Worker se activa.
-// Aquí limpiamos las cachés antiguas que ya no se usan.
 self.addEventListener('activate', event => {
-    console.log('Service Worker: Activando...');
-    const cacheWhitelist = [CACHE_NAME];
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
                 cacheNames.map(cacheName => {
-                    // Si la caché no está en nuestra "lista blanca", la borramos.
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
-                        console.log(`Service Worker: Borrando caché antigua: ${cacheName}`);
+                    // Borra cualquier caché que no sea la versión actual
+                    if (cacheName !== CACHE_NAME) {
                         return caches.delete(cacheName);
                     }
                 })
             );
-        })
-        // Tomar control de la página inmediatamente.
-        .then(() => self.clients.claim())
+        }).then(() => self.clients.claim())
     );
 });
 
-// Evento 'fetch': Se dispara cada vez que la aplicación hace una petición de red (imágenes, scripts, etc.).
-// Aquí decidimos si servimos el archivo desde la caché o desde la red.
 self.addEventListener('fetch', event => {
-    // Usamos una estrategia "Cache First" (Primero la Caché).
+    // Ignorar peticiones a APIs externas (como ARASAAC) para no ensuciar la caché estática
+    if (event.request.url.includes('api.arasaac.org') || event.request.url.includes('corsproxy.io')) {
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request)
             .then(response => {
-                // Si encontramos una respuesta en la caché, la devolvemos.
-                if (response) {
-                    // console.log(`Service Worker: Sirviendo desde caché: ${event.request.url}`);
-                    return response;
-                }
-
-                // Si no, vamos a la red a buscarlo.
-                // console.log(`Service Worker: Sirviendo desde red: ${event.request.url}`);
-                return fetch(event.request);
-            })
-            .catch(err => {
-                // Si tanto la caché como la red fallan (offline y no está en caché),
-                // podrías devolver una página de fallback si quisieras.
-                console.error(`Service Worker: Error en fetch para ${event.request.url}`, err);
+                // Devuelve de caché si existe, si no, busca en la red
+                return response || fetch(event.request);
             })
     );
 });
