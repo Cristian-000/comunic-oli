@@ -5,12 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const formToggleBtn = document.getElementById('form-toggle');
     const deleteBtn = document.getElementById('delete-button');
     const saveBtn = document.getElementById('modal-save-button');
+    const cancelEditBtn = document.getElementById('cancel-edit-button'); // Botón nuevo de cancelar
     
     // Elementos de la Ficha (Vista)
     const fotoUsuarioImg = document.getElementById('foto-usuario-img');
     const nombreCompletoUsuario = document.getElementById('nombre-completo-usuario');
     const institucionUsuario = document.getElementById('institucion-usuario');
     const direccionUsuario = document.getElementById('direccion-usuario');
+    // Elementos Médicos (Vista)
+    const diagnosticoUsuario = document.getElementById('diagnostico-usuario');
+    const alergiasUsuario = document.getElementById('alergias-usuario');
+    const sangreUsuario = document.getElementById('sangre-usuario');
     const adultosContainer = document.getElementById('adultos-container');
 
     // Campos del Formulario (Edición)
@@ -18,17 +23,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const apellidoInput = document.getElementById('apellido');
     const institutoInput = document.getElementById('instituto');
     const direccionInput = document.getElementById('direccion');
+    // Campos Médicos (Edición)
+    const diagnosticoInput = document.getElementById('diagnostico');
+    const alergiasInput = document.getElementById('alergias');
+    const sangreInput = document.getElementById('sangre');
     const fotoUsuarioInput = document.getElementById('foto-usuario');
     const cantAdultosInput = document.getElementById('cant-adultos');
     const seccionAdultos = document.getElementById('seccion-adultos');
 
     let tempFotoBase64 = null;
 
-    // --- Funciones Principales ---
+    // --- Control Parental ---
+    function controlParental() {
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        const respuesta = prompt(`Control parental. Solo adultos pueden editar.\n¿Cuánto es ${num1} + ${num2}?`);
+        
+        if (respuesta && parseInt(respuesta, 10) === (num1 + num2)) {
+            return true;
+        } else {
+            alert('Respuesta incorrecta. Edición bloqueada.');
+            return false;
+        }
+    }
 
-    /**
-     * Carga los datos desde localStorage y actualiza la UI.
-     */
+    // --- Funciones Principales ---
     function cargarDatosGuardados() {
         const usuario = JSON.parse(localStorage.getItem('comunicador_usuario')) || {};
         const adultos = JSON.parse(localStorage.getItem('comunicador_adultos')) || [];
@@ -36,22 +55,26 @@ document.addEventListener('DOMContentLoaded', function() {
         if (Object.keys(usuario).length === 0) {
             fichaContainer.classList.add('d-none');
             formulario.classList.remove('d-none');
+            cancelEditBtn.classList.add('d-none'); // No puede cancelar si no hay datos
         } else {
             fichaContainer.classList.remove('d-none');
             formulario.classList.add('d-none');
+            cancelEditBtn.classList.remove('d-none');
             mostrarFicha(usuario, adultos);
             rellenarFormulario(usuario, adultos);
         }
     }
 
-    /**
-     * Muestra los datos del usuario y adultos en la ficha de visualización.
-     */
     function mostrarFicha(usuario, adultos) {
         fotoUsuarioImg.src = usuario.foto || 'imagenes/placeholder.png';
         nombreCompletoUsuario.textContent = `${usuario.nombre || ''} ${usuario.apellido || ''}`.trim();
         institucionUsuario.textContent = usuario.institucion || 'No especificada';
         direccionUsuario.textContent = usuario.direccion || 'No especificada';
+        
+        // Médicos
+        diagnosticoUsuario.textContent = usuario.diagnostico || 'No especificado';
+        alergiasUsuario.textContent = usuario.alergias || 'Ninguna';
+        sangreUsuario.textContent = usuario.sangre || 'No especificado';
 
         adultosContainer.innerHTML = '<h4>Adultos Responsables</h4>';
         if (adultos.length > 0) {
@@ -73,21 +96,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    /**
-     * Rellena el formulario de edición con los datos guardados.
-     */
     function rellenarFormulario(usuario, adultos) {
         nombreInput.value = usuario.nombre || '';
         apellidoInput.value = usuario.apellido || '';
         institutoInput.value = usuario.institucion || '';
         direccionInput.value = usuario.direccion || '';
+        
+        diagnosticoInput.value = usuario.diagnostico || '';
+        alergiasInput.value = usuario.alergias || '';
+        sangreInput.value = usuario.sangre || '';
+
         cantAdultosInput.value = adultos.length;
         generarCamposAdultos(adultos.length, adultos);
     }
 
-    /**
-     * Genera dinámicamente los campos para los adultos responsables en el formulario.
-     */
     function generarCamposAdultos(cantidad, adultosData = []) {
         seccionAdultos.innerHTML = '';
         for (let i = 0; i < cantidad; i++) {
@@ -105,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <input type="text" class="form-control apellido-adulto" value="${adulto.apellido || ''}">
                 </div>
                 <div class="form-group">
-                    <label>Relación con el usuario:</label>
+                    <label>Relación:</label>
                     <select class="form-control relacion-adulto">
                         <option value="Padre/Madre" ${adulto.relacion === 'Padre/Madre' ? 'selected' : ''}>Padre/Madre</option>
                         <option value="Tutor/a Legal" ${adulto.relacion === 'Tutor/a Legal' ? 'selected' : ''}>Tutor/a Legal</option>
@@ -129,15 +151,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    /**
-     * Guarda todos los datos del formulario en localStorage.
-     */
     function guardarDatos() {
         const usuario = {
             nombre: nombreInput.value.trim(),
             apellido: apellidoInput.value.trim(),
             institucion: institutoInput.value.trim(),
             direccion: direccionInput.value.trim(),
+            diagnostico: diagnosticoInput.value.trim(),
+            alergias: alergiasInput.value.trim(),
+            sangre: sangreInput.value,
             foto: tempFotoBase64 || JSON.parse(localStorage.getItem('comunicador_usuario'))?.foto || null
         };
 
@@ -160,23 +182,28 @@ document.addEventListener('DOMContentLoaded', function() {
         location.reload();
     }
 
-    /**
-     * Borra todos los datos del usuario y adultos.
-     */
     function borrarDatos() {
-        if (confirm('¿Estás seguro de que deseas borrar toda la información del usuario? Esta acción no se puede deshacer.')) {
-            localStorage.removeItem('comunicador_usuario');
-            localStorage.removeItem('comunicador_adultos');
-            alert('Ficha borrada correctamente.');
-            location.reload();
+        if (controlParental()) {
+            if (confirm('¿Estás seguro de que deseas borrar toda la información del usuario? Esta acción no se puede deshacer.')) {
+                localStorage.removeItem('comunicador_usuario');
+                localStorage.removeItem('comunicador_adultos');
+                alert('Ficha borrada correctamente.');
+                location.reload();
+            }
         }
     }
 
     // --- Event Listeners ---
-
     formToggleBtn.addEventListener('click', () => {
-        fichaContainer.classList.add('d-none');
-        formulario.classList.remove('d-none');
+        if (controlParental()) {
+            fichaContainer.classList.add('d-none');
+            formulario.classList.remove('d-none');
+        }
+    });
+
+    cancelEditBtn.addEventListener('click', () => {
+        fichaContainer.classList.remove('d-none');
+        formulario.classList.add('d-none');
     });
 
     cantAdultosInput.addEventListener('change', () => {
@@ -190,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const reader = new FileReader();
         reader.onload = (e) => {
             tempFotoBase64 = e.target.result;
-            document.getElementById('foto-usuario-img').src = tempFotoBase64;
         };
         reader.readAsDataURL(file);
     });
