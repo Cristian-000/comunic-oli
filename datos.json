@@ -95,3 +95,354 @@
     },
     {
       "nombre": "Personas",
+      "texto": "Personas",
+      "imagenes": [
+        { "texto": "Yo", "tipo": "pronombre", "id_arasaac": 15383 }, 
+        { "texto": "Tú", "tipo": "pronombre", "id_arasaac": 15385 },
+        { "texto": "Él", "tipo": "pronombre", "id_arasaac": 15386 }, 
+        { "texto": "Ella", "tipo": "pronombre", "id_arasaac": 15387 },
+        { "texto": "Nosotros", "tipo": "pronombre", "id_arasaac": 15388 }, 
+        { "texto": "ellos", "tipo": "pronombre", "id_arasaac": 15392 },
+        { "separador": true },
+        { "texto": "Mamá", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2269 }, 
+        { "texto": "Papá", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2268 },
+        { "texto": "Hermano", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2271 }, 
+        { "texto": "Hermana", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2272 },
+        { "texto": "Bebé", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2270 }, 
+        { "texto": "Abuelo", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2273 },
+        { "texto": "Abuela", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2274 }, 
+        { "texto": "Familia", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2267 },
+        { "texto": "Tío", "tipo": "sustantivo", "genero": "m" }, 
+        { "texto": "Tía", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Primo", "tipo": "sustantivo", "genero": "m" }, 
+        { "texto": "Prima", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Amigo", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2275 }, 
+        { "texto": "Amiga", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2276 },
+        { "separador": true },
+        { "texto": "Maestra", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2490 }, 
+        { "texto": "Maestro", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2490 },
+        { "texto": "Doctor", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2491 }, 
+        { "texto": "Doctora", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2491 },
+        { "texto": "Policía", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2493 }, 
+        { "texto": "Bombero", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2492 }
+      ]
+    },
+    {
+      "nombre": "Acciones",
+      "texto": "Acciones",
+      "imagenes": [
+        { "texto": "Comer", "tipo": "verbo", "id_arasaac": 7695 }, { "texto": "Beber", "tipo": "verbo", "id_arasaac": 2291 },
+        { "texto": "Jugar", "tipo": "verbo", "id_arasaac": 7856 }, { "texto": "Dormir", "tipo": "verbo", "id_arasaac": 6876 },
+        { "texto": "Correr", "tipo": "verbo", "id_arasaac": 2440 }, { "texto": "Saltar", "tipo": "verbo", "id_arasaac": 2441 },
+        { "texto": "Caminar", "tipo": "verbo", "id_arasaac": 2442 }, { "texto": "Nadar", "tipo": "verbo", "id_arasaac": 2443 },
+        { "texto": "Mirar", "tipo": "verbo", "id_arasaac": 2525 }, { "texto": "Escuchar", "tipo": "verbo", "id_arasaac": 2524 },
+        { "texto": "Leer", "tipo": "verbo", "id_arasaac": 2472 }, { "texto": "Escribir", "tipo": "verbo", "id_arasaac": 2473 },
+        { "texto": "Dibujar", "tipo": "verbo", "id_arasaac": 2474 }, { "texto": "Pintar", "tipo": "verbo", "id_arasaac": 2475 },
+        { "texto": "Cortar", "tipo": "verbo", "id_arasaac": 2476 }, { "texto": "Pegar", "tipo": "verbo", "id_arasaac": 2477 },
+        { "texto": "Cantar", "tipo": "verbo", "id_arasaac": 2478 }, { "texto": "Bailar", "tipo": "verbo", "id_arasaac": 2479 },
+        { "texto": "Hablar", "tipo": "verbo", "id_arasaac": 2471 }, { "texto": "Reír", "tipo": "verbo", "id_arasaac": 2481 },
+        { "texto": "Llorar", "tipo": "verbo", "id_arasaac": 2482 }, { "texto": "Ayudar", "tipo": "verbo", "id_arasaac": 2483 },
+        { "texto": "Dar", "tipo": "verbo", "id_arasaac": 2484 }, { "texto": "Recibir", "tipo": "verbo" },
+        { "texto": "Poner", "tipo": "verbo", "id_arasaac": 2486 }, { "texto": "Quitar", "tipo": "verbo", "id_arasaac": 2487 },
+        { "texto": "Abrir", "tipo": "verbo", "id_arasaac": 2488 }, { "texto": "Cerrar", "tipo": "verbo", "id_arasaac": 2489 },
+        { "texto": "Subir", "tipo": "verbo", "id_arasaac": 2500 }, { "texto": "Bajar", "tipo": "verbo", "id_arasaac": 2501 },
+        { "texto": "Lavar", "tipo": "verbo", "id_arasaac": 2502 }, { "texto": "Limpiar", "tipo": "verbo", "id_arasaac": 2503 },
+        { "texto": "Ordenar", "tipo": "verbo" }, { "texto": "Romper", "tipo": "verbo" },
+        { "texto": "Arreglar", "tipo": "verbo" }, { "texto": "Esperar", "tipo": "verbo" },
+        { "texto": "Pensar", "tipo": "verbo" }, { "texto": "Buscar", "tipo": "verbo" },
+        { "texto": "Encontrar", "tipo": "verbo" }, { "texto": "Necesitar", "tipo": "verbo" }
+      ]
+    },
+    {
+      "nombre": "Adjetivos",
+      "texto": "Adjetivos",
+      "imagenes": [
+        { "texto": "Grande", "tipo": "adjetivo", "id_arasaac": 2831 }, { "texto": "Pequeño", "tipo": "adjetivo", "id_arasaac": 2832 },
+        { "texto": "Largo", "tipo": "adjetivo", "id_arasaac": 2833 }, { "texto": "Corto", "tipo": "adjetivo", "id_arasaac": 2834 },
+        { "texto": "Alto", "tipo": "adjetivo", "id_arasaac": 2835 }, { "texto": "Bajo", "tipo": "adjetivo", "id_arasaac": 2836 },
+        { "texto": "Gordo", "tipo": "adjetivo", "id_arasaac": 2837 }, { "texto": "Flaco", "tipo": "adjetivo", "id_arasaac": 2838 },
+        { "texto": "Rápido", "tipo": "adjetivo", "id_arasaac": 2839 }, { "texto": "Lento", "tipo": "adjetivo", "id_arasaac": 2840 },
+        { "texto": "Caliente", "tipo": "adjetivo", "id_arasaac": 2841 }, { "texto": "Frío", "tipo": "adjetivo", "id_arasaac": 2842 },
+        { "texto": "Mojado", "tipo": "adjetivo", "id_arasaac": 2843 }, { "texto": "Seco", "tipo": "adjetivo", "id_arasaac": 2844 },
+        { "texto": "Duro", "tipo": "adjetivo", "id_arasaac": 2845 }, { "texto": "Blando", "tipo": "adjetivo", "id_arasaac": 2846 },
+        { "texto": "Limpio", "tipo": "adjetivo", "id_arasaac": 2847 }, { "texto": "Sucio", "tipo": "adjetivo", "id_arasaac": 2848 },
+        { "texto": "Bonito", "tipo": "adjetivo" }, { "texto": "Feo", "tipo": "adjetivo" },
+        { "texto": "Mucho", "tipo": "adjetivo" }, { "texto": "Poco", "tipo": "adjetivo" },
+        { "texto": "Fuerte", "tipo": "adjetivo" }, { "texto": "Débil", "tipo": "adjetivo" },
+        { "texto": "Nuevo", "tipo": "adjetivo" }, { "texto": "Viejo", "tipo": "adjetivo" },
+        { "texto": "Lleno", "tipo": "adjetivo", "id_arasaac": 2865 }, { "texto": "Vacío", "tipo": "adjetivo", "id_arasaac": 2866 }
+      ]
+    },
+    {
+      "nombre": "Comida",
+      "texto": "Comida",
+      "imagenes": [
+        { "texto": "Desayuno", "tipo": "sustantivo", "genero": "m" }, { "texto": "Almuerzo", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Merienda", "tipo": "sustantivo", "genero": "f" }, { "texto": "Cena", "tipo": "sustantivo", "genero": "f" },
+        { "separador": true },
+        { "texto": "Manzana", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2337 }, { "texto": "Banana", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2338 },
+        { "texto": "Naranja", "tipo": "sustantivo", "genero": "f" }, { "texto": "Uva", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Frutilla", "tipo": "sustantivo", "genero": "f" }, { "texto": "Pera", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Sandía", "tipo": "sustantivo", "genero": "f" }, { "texto": "Durazno", "tipo": "sustantivo", "genero": "m" },
+        { "separador": true },
+        { "texto": "Zanahoria", "tipo": "sustantivo", "genero": "f" }, { "texto": "Tomate", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Lechuga", "tipo": "sustantivo", "genero": "f" }, { "texto": "Papa", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Brócoli", "tipo": "sustantivo", "genero": "m" }, { "texto": "Choclo", "tipo": "sustantivo", "genero": "m" },
+        { "separador": true },
+        { "texto": "Pan", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2309 }, { "texto": "Galletitas", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Yogur", "tipo": "sustantivo", "genero": "m" }, { "texto": "Queso", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Huevo", "tipo": "sustantivo", "genero": "m" }, { "texto": "Cereal", "tipo": "sustantivo", "genero": "m" },
+        { "separador": true },
+        { "texto": "Pollo", "tipo": "sustantivo", "genero": "m" }, { "texto": "Carne", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Pescado", "tipo": "sustantivo", "genero": "m" }, { "texto": "Pasta", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Arroz", "tipo": "sustantivo", "genero": "m" }, { "texto": "Sopa", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Ensalada", "tipo": "sustantivo", "genero": "f" }, { "texto": "Pizza", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Papas fritas", "tipo": "frase" }, { "texto": "Hamburguesa", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Sándwich", "tipo": "sustantivo", "genero": "m" },
+        { "separador": true },
+        { "texto": "Torta", "tipo": "sustantivo", "genero": "f" }, { "texto": "Helado", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Chocolate", "tipo": "sustantivo", "genero": "m" }, { "texto": "Caramelo", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Postre", "tipo": "sustantivo", "genero": "m" }
+      ]
+    },
+    {
+      "nombre": "Bebidas",
+      "texto": "Bebidas",
+      "imagenes": [
+        { "texto": "Agua", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2307 },
+        { "texto": "Jugo", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Leche", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2308 },
+        { "texto": "Refresco", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Yogur", "tipo": "sustantivo", "genero": "m", "hablar": "Yogur para beber" },
+        { "texto": "Té", "tipo": "sustantivo", "genero": "m" }
+      ]
+    },
+    {
+      "nombre": "Mi Casa",
+      "texto": "Mi Casa",
+      "imagenes": [
+        { "texto": "Casa", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2277 }, { "texto": "Apartamento", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Dormitorio", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Cocina", "tipo": "sustantivo", "genero": "f" }, { "texto": "Baño", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Sala", "tipo": "sustantivo", "genero": "f" }, { "texto": "Comedor", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Jardín", "tipo": "sustantivo", "genero": "m" }, { "texto": "Balcón", "tipo": "sustantivo", "genero": "m" },
+        { "separador": true },
+        { "texto": "Cama", "tipo": "sustantivo", "genero": "f" }, { "texto": "Mesa", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Silla", "tipo": "sustantivo", "genero": "f" }, { "texto": "Sofá", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Armario", "tipo": "sustantivo", "genero": "m" }, { "texto": "Televisión", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Lámpara", "tipo": "sustantivo", "genero": "f" }, { "texto": "Puerta", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Ventana", "tipo": "sustantivo", "genero": "f" }, { "texto": "Ducha", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Inodoro", "tipo": "sustantivo", "genero": "m" }, { "texto": "Timbre", "tipo": "sustantivo", "genero": "m" }
+      ]
+    },
+    {
+      "nombre": "Ropa",
+      "texto": "Ropa",
+      "imagenes": [
+        { "texto": "Camisa", "tipo": "sustantivo", "genero": "f" }, { "texto": "Pantalón", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Pantalón corto", "tipo": "sustantivo", "genero": "m" }, { "texto": "Vestido", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Falda", "tipo": "sustantivo", "genero": "f" }, { "texto": "Zapatos", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Zapatillas", "tipo": "sustantivo", "genero": "f" }, { "texto": "Sandalias", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Botas", "tipo": "sustantivo", "genero": "f" }, { "texto": "Medias", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Abrigo", "tipo": "sustantivo", "genero": "m" }, { "texto": "Gorro", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Bufanda", "tipo": "sustantivo", "genero": "f" }, { "texto": "Guantes", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Pijama", "tipo": "sustantivo", "genero": "m" }
+      ]
+    },
+    {
+      "nombre": "Cuerpo",
+      "texto": "Cuerpo",
+      "imagenes": [
+        { "texto": "Cabeza", "tipo": "sustantivo", "genero": "f" }, { "texto": "Ojo", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Nariz", "tipo": "sustantivo", "genero": "f" }, { "texto": "Boca", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Oreja", "tipo": "sustantivo", "genero": "f" }, { "texto": "Pelo", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Diente", "tipo": "sustantivo", "genero": "m" }, { "texto": "Cuello", "tipo": "sustantivo", "genero": "m" },
+        { "separador": true },
+        { "texto": "Mano", "tipo": "sustantivo", "genero": "f" }, { "texto": "Dedo", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Brazo", "tipo": "sustantivo", "genero": "m" }, { "texto": "Codo", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Pie", "tipo": "sustantivo", "genero": "m" }, { "texto": "Pierna", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Rodilla", "tipo": "sustantivo", "genero": "f" }, { "texto": "Panza", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Espalda", "tipo": "sustantivo", "genero": "f" }
+      ]
+    },
+    {
+      "nombre": "Lugares",
+      "texto": "Lugares",
+      "imagenes": [
+        { "texto": "Casa", "tipo": "sustantivo", "genero": "f", "id_arasaac": 2277 }, { "texto": "Escuela", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Parque", "tipo": "sustantivo", "genero": "m" }, { "texto": "Playa", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Plaza", "tipo": "sustantivo", "genero": "f" }, { "texto": "Piscina", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Montaña", "tipo": "sustantivo", "genero": "f" }, { "texto": "Campo", "tipo": "sustantivo", "genero": "m" },
+        { "separador": true },
+        { "texto": "Supermercado", "tipo": "sustantivo", "genero": "m" }, { "texto": "Tienda", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Hospital", "tipo": "sustantivo", "genero": "m" }, { "texto": "Farmacia", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Cine", "tipo": "sustantivo", "genero": "m" }, { "texto": "Restaurante", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Biblioteca", "tipo": "sustantivo", "genero": "f" }, { "texto": "Zoológico", "tipo": "sustantivo", "genero": "m" }
+      ]
+    },
+    {
+        "nombre": "Escuela",
+        "texto": "Escuela",
+        "imagenes": [
+            { "texto": "Clase", "tipo": "sustantivo", "genero": "f" }, { "texto": "Recreo", "tipo": "sustantivo", "genero": "m" },
+            { "texto": "Tarea", "tipo": "sustantivo", "genero": "f", "hablar": "Hacer la tarea" }, { "texto": "Prueba", "tipo": "sustantivo", "genero": "f" },
+            { "separador": true },
+            { "texto": "Mochila", "tipo": "sustantivo", "genero": "f" }, { "texto": "Libro", "tipo": "sustantivo", "genero": "m" },
+            { "texto": "Cuaderno", "tipo": "sustantivo", "genero": "m" }, { "texto": "Lápiz", "tipo": "sustantivo", "genero": "m" },
+            { "texto": "Goma", "tipo": "sustantivo", "genero": "f", "hablar": "Goma de borrar" }, { "texto": "Tijera", "tipo": "sustantivo", "genero": "f" },
+            { "texto": "Pizarra", "tipo": "sustantivo", "genero": "f" }, { "texto": "Aprender", "tipo": "verbo" }
+        ]
+    },
+    {
+        "nombre": "Juguetes y Pasatiempos",
+        "texto": "Jugar y hacer",
+        "imagenes": [
+            { "texto": "Pelota", "tipo": "sustantivo", "genero": "f" }, { "texto": "Muñeca", "tipo": "sustantivo", "genero": "f" },
+            { "texto": "Auto", "tipo": "sustantivo", "genero": "m", "hablar": "Auto de juguete" }, { "texto": "Bloques", "tipo": "sustantivo", "genero": "m" },
+            { "texto": "Puzzle", "tipo": "sustantivo", "genero": "m" }, { "texto": "Cuento", "tipo": "sustantivo", "genero": "m" },
+            { "texto": "Bicicleta", "tipo": "sustantivo", "genero": "f" }, { "texto": "Dinosaurio", "tipo": "sustantivo", "genero": "m" },
+            { "separador": true },
+            { "texto": "Música", "tipo": "sustantivo", "genero": "f", "hablar": "Escuchar música" }, { "texto": "Televisión", "tipo": "sustantivo", "genero": "f", "hablar": "Mirar televisión" },
+            { "texto": "Pasear", "tipo": "sustantivo", "genero": "m", "hablar": "Pasear" }, { "texto": "Celular", "tipo": "sustantivo", "genero": "m", "hablar": "Usar el celular" },
+            { "texto": "Videojuegos", "tipo": "sustantivo", "genero": "m", "hablar": "Jugar videojuegos" }, { "texto": "Pintar", "tipo": "verbo", "id_arasaac": 2475 },
+            { "texto": "Bailar", "tipo": "verbo", "id_arasaac": 2479 }, { "texto": "Hacer deporte", "tipo": "frase" }
+        ]
+    },
+    {
+      "nombre": "Animales",
+      "texto": "Animales",
+      "imagenes": [
+        { "texto": "Perro", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2415 }, { "texto": "Gato", "tipo": "sustantivo", "genero": "m", "id_arasaac": 2414 },
+        { "texto": "Pájaro", "tipo": "sustantivo", "genero": "m" }, { "texto": "Pez", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Hámster", "tipo": "sustantivo", "genero": "m" }, { "texto": "Conejo", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Tortuga", "tipo": "sustantivo", "genero": "f" }, { "separador": true },
+        { "texto": "Vaca", "tipo": "sustantivo", "genero": "f" }, { "texto": "Caballo", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Cerdo", "tipo": "sustantivo", "genero": "m" }, { "texto": "Oveja", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Gallina", "tipo": "sustantivo", "genero": "f" }, { "texto": "Pato", "tipo": "sustantivo", "genero": "m" },
+        { "separador": true },
+        { "texto": "León", "tipo": "sustantivo", "genero": "m" }, { "texto": "Elefante", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Jirafa", "tipo": "sustantivo", "genero": "f" }, { "texto": "Mono", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Tigre", "tipo": "sustantivo", "genero": "m" }, { "texto": "Oso", "tipo": "sustantivo", "genero": "m" },
+        { "texto": "Serpiente", "tipo": "sustantivo", "genero": "f" }, { "texto": "Cebra", "tipo": "sustantivo", "genero": "f" }
+      ]
+    },
+    {
+      "nombre": "Tiempo y Clima",
+      "texto": "Tiempo y Clima",
+      "imagenes": [
+        { "texto": "Hoy", "tipo": "adverbio" }, { "texto": "Mañana", "tipo": "adverbio" },
+        { "texto": "Ayer", "tipo": "adverbio" }, { "texto": "Ahora", "tipo": "adverbio" },
+        { "texto": "Después", "tipo": "adverbio" }, { "texto": "Antes", "tipo": "adverbio" },
+        { "texto": "Tarde", "tipo": "adverbio" }, { "texto": "Temprano", "tipo": "adverbio" },
+        { "texto": "Día", "tipo": "sustantivo", "genero": "m" }, { "texto": "Noche", "tipo": "sustantivo", "genero": "f" },
+        { "texto": "Semana", "tipo": "sustantivo", "genero": "f" }, { "texto": "Hora", "tipo": "sustantivo", "genero": "f" },
+        { "separador": true },
+        { "texto": "Sol", "tipo": "sustantivo", "genero": "m", "hablar": "Hace sol", "id_arasaac": 2772 },
+        { "texto": "Lluvia", "tipo": "sustantivo", "genero": "f", "hablar": "Está lloviendo" },
+        { "texto": "Nube", "tipo": "sustantivo", "genero": "f", "hablar": "Está nublado" },
+        { "texto": "Viento", "tipo": "sustantivo", "genero": "m", "hablar": "Hace viento" },
+        { "texto": "Nieve", "tipo": "sustantivo", "genero": "f", "hablar": "Está nevando" },
+        { "texto": "Tormenta", "tipo": "sustantivo", "genero": "f", "hablar": "Hay tormenta" },
+        { "texto": "Calor", "tipo": "sustantivo", "genero": "m", "hablar": "Hace calor" },
+        { "texto": "Frío", "tipo": "sustantivo", "genero": "m", "hablar": "Hace frío" }
+      ]
+    },
+    {
+        "nombre": "Conceptos",
+        "texto": "Conceptos",
+        "imagenes": [
+            { "texto": "Arriba", "tipo": "adverbio" }, { "texto": "Abajo", "tipo": "adverbio" },
+            { "texto": "Dentro", "tipo": "adverbio" }, { "texto": "Fuera", "tipo": "adverbio" },
+            { "texto": "Cerca", "tipo": "adverbio" }, { "texto": "Lejos", "tipo": "adverbio" },
+            { "separador": true },
+            { "texto": "Todo", "tipo": "pronombre" }, { "texto": "Nada", "tipo": "pronombre" },
+            { "texto": "Igual", "tipo": "adjetivo" }, { "texto": "Diferente", "tipo": "adjetivo" },
+            { "texto": "Fácil", "tipo": "adjetivo" }, { "texto": "Difícil", "tipo": "adjetivo" }
+        ]
+    },
+    {
+        "nombre": "conectores",
+        "texto": "y",
+        "imagenes": [
+            { "texto": "Y", "tipo": "conjuncion" },
+            { "texto": "Con", "tipo": "preposicion" },
+            { "texto": "Sin", "tipo": "preposicion" },
+            { "texto": "Para", "tipo": "preposicion" },
+            { "texto": "A", "tipo": "preposicion" },
+            { "texto": "En", "tipo": "preposicion" },
+            { "texto": "De", "tipo": "preposicion" },
+            { "texto": "Pero", "tipo": "conjuncion" },
+            { "texto": "Porque", "tipo": "conjuncion" }
+        ]
+    },
+    {
+        "nombre": "Colores",
+        "texto": "Colores",
+        "imagenes": [
+            { "texto": "Rojo", "tipo": "adjetivo", "id_arasaac": 2788 }, { "texto": "Azul", "tipo": "adjetivo", "id_arasaac": 2789 },
+            { "texto": "Amarillo", "tipo": "adjetivo", "id_arasaac": 2790 }, { "texto": "Verde", "tipo": "adjetivo", "id_arasaac": 2791 },
+            { "texto": "Naranja", "tipo": "adjetivo", "id_arasaac": 2792 }, { "texto": "Violeta", "tipo": "adjetivo" },
+            { "texto": "Rosa", "tipo": "adjetivo", "id_arasaac": 2793 }, { "texto": "Marrón", "tipo": "adjetivo" },
+            { "texto": "Negro", "tipo": "adjetivo" }, { "texto": "Blanco", "tipo": "adjetivo" },
+            { "texto": "Gris", "tipo": "adjetivo" }, { "texto": "Celeste", "tipo": "adjetivo" }
+        ]
+    },
+    {
+      "nombre": "Letras",
+      "texto": "Letras",
+      "imagenes": [
+        { "texto": "A", "tipo": "letra" }, { "texto": "E", "tipo": "letra" },
+        { "texto": "I", "tipo": "letra" }, { "texto": "O", "tipo": "letra" },
+        { "texto": "U", "tipo": "letra" }, { "separador": true },
+        { "texto": "A", "tipo": "letra" }, { "texto": "B", "tipo": "letra" },
+        { "texto": "C", "tipo": "letra" }, { "texto": "D", "tipo": "letra" },
+        { "texto": "E", "tipo": "letra" }, { "texto": "F", "tipo": "letra" },
+        { "texto": "G", "tipo": "letra" }, { "texto": "H", "tipo": "letra" },
+        { "texto": "I", "tipo": "letra" }, { "texto": "J", "tipo": "letra" },
+        { "texto": "K", "tipo": "letra" }, { "texto": "L", "tipo": "letra" },
+        { "texto": "M", "tipo": "letra" }, { "texto": "N", "tipo": "letra" },
+        { "texto": "Ñ", "tipo": "letra" }, { "texto": "O", "tipo": "letra" },
+        { "texto": "P", "tipo": "letra" }, { "texto": "Q", "tipo": "letra" },
+        { "texto": "R", "tipo": "letra" }, { "texto": "S", "tipo": "letra" },
+        { "texto": "T", "tipo": "letra" }, { "texto": "U", "tipo": "letra" },
+        { "texto": "V", "tipo": "letra" }, { "texto": "W", "tipo": "letra" },
+        { "texto": "X", "tipo": "letra" }, { "texto": "Y", "tipo": "letra" },
+        { "texto": "Z", "tipo": "letra" }
+      ]
+    }, 
+    {
+      "nombre": "Numeros",
+      "texto": "Numeros",
+      "imagenes": [
+        { "texto": "0", "tipo": "letra" }, { "texto": "1", "tipo": "letra" },
+        { "texto": "2", "tipo": "letra" }, { "texto": "3", "tipo": "letra" },
+        { "texto": "4", "tipo": "letra" }, { "texto": "5", "tipo": "letra" },
+        { "texto": "6", "tipo": "letra" }, { "texto": "7", "tipo": "letra" },
+        { "texto": "8", "tipo": "letra" }, { "texto": "9", "tipo": "letra" },
+        { "texto": "10", "tipo": "letra" }, { "separador": true },
+        { "texto": "20", "tipo": "letra" }, { "texto": "30", "tipo": "letra" },
+        { "texto": "40", "tipo": "letra" }, { "texto": "50", "tipo": "letra" },
+        { "texto": "60", "tipo": "letra" }, { "texto": "70", "tipo": "letra" },
+        { "texto": "80", "tipo": "letra" }, { "texto": "90", "tipo": "letra" },
+        { "texto": "100", "tipo": "letra" }, { "separador": true },
+        { "texto": "1000", "tipo": "letra" }
+      ]
+    },  
+    {
+      "nombre": "Me duele",
+      "texto": "Dolor",
+      "imagenes": [
+        { "texto": "Cabeza", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la cabeza" },
+        { "texto": "Garganta", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la garganta" },
+        { "texto": "Panza", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la panza" },
+        { "texto": "Oído", "tipo": "sustantivo", "genero": "m", "hablar": "Me duele el oído" },
+        { "texto": "Muela", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele una muela" },
+        { "texto": "Espalda", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la espalda" },
+        { "texto": "Pierna", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la pierna" },
+        { "texto": "Brazo", "tipo": "sustantivo", "genero": "m", "hablar": "Me duele el brazo" },
+        { "texto": "Rodilla", "tipo": "sustantivo", "genero": "f", "hablar": "Me duele la rodilla" },
+        { "texto": "Pie", "tipo": "sustantivo", "genero": "m", "hablar": "Me duele el pie" }
+      ]
+    }
+  ]
+}
