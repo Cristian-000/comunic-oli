@@ -1,5 +1,5 @@
 // Aumenta la versión cada vez que hagas cambios en CSS, JS o HTML
-const CACHE_NAME = 'comunicador-cache-v12'; 
+const CACHE_NAME = 'comunicador-cache-v13'; 
 
 const urlsToCache = [
     './', 
