@@ -321,4 +321,100 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         const promesasBotones = data.categorias.map(async (categoria) => {
             categoria.categoria_tipo = 'sustantivo'; 
-            const btn = await crearBotonPictograma
+            const btn = await crearBotonPictograma(categoria);
+            btn.addEventListener('click', () => mostrarImagenes(categoria));
+            return btn;
+        });
+
+        const botones = await Promise.all(promesasBotones);
+        botones.forEach(btn => categoriasGrid.appendChild(btn));
+    }
+
+    async function mostrarImagenes(categoria) {
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const imagenesGrid = document.getElementById('imagenes-grid');
+        const categoriasGrid = document.getElementById('categorias-grid');
+        const seccionNucleo = document.getElementById('seccion-nucleo');
+        const tituloCategoria = document.getElementById('titulo-categoria');
+        const backButton = document.getElementById('back-button');
+
+        if (loadingOverlay) loadingOverlay.classList.remove('hidden');
+        await new Promise(resolve => setTimeout(resolve, 30));
+
+        imagenesGrid.innerHTML = '';
+
+        const promesasElementos = categoria.imagenes.map(async (imagen) => {
+            if (imagen.separador) {
+                const separador = document.createElement('hr');
+                separador.className = 'separador';
+                return separador;
+            } else {
+                const imgButton = await crearBotonPictograma(imagen);
+                imgButton.addEventListener('click', () => agregarAPipa(imagen));
+                return imgButton;
+            }
+        });
+
+        const elementos = await Promise.all(promesasElementos);
+        elementos.forEach(el => imagenesGrid.appendChild(el));
+
+        categoriasGrid.classList.add('hidden');
+        seccionNucleo.classList.add('hidden');
+        imagenesGrid.classList.remove('hidden');
+        tituloCategoria.textContent = categoria.nombre;
+        backButton.classList.remove('hidden');
+
+        if (loadingOverlay) loadingOverlay.classList.add('hidden');
+    }
+
+    if (document.getElementById('nucleo-grid')) {
+        await cargarDatosGlobales(); 
+        cargarNucleo();
+        cargarCategoriasPerifericas();
+        inicializarDragAndDrop();
+        renderizarTiraFrase();
+        
+        document.getElementById('hablar-frase-btn')?.addEventListener('click', hablarFraseSecuencial);
+        
+        document.getElementById('borrar-frase-btn')?.addEventListener('click', () => {
+            fraseActual = [];
+            renderizarTiraFrase();
+            actualizarSugerenciasPredictivas();
+        });
+
+        const btnBorrarUltimo = document.getElementById('borrar-ultimo-btn');
+        if (btnBorrarUltimo) {
+            btnBorrarUltimo.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (fraseActual.length > 0) {
+                    fraseActual.pop();
+                    renderizarTiraFrase();
+                    actualizarSugerenciasPredictivas();
+                }
+            });
+        }
+
+        document.getElementById('back-button')?.addEventListener('click', () => {
+            document.getElementById('seccion-nucleo').classList.remove('hidden');
+            document.getElementById('categorias-grid').classList.remove('hidden');
+            document.getElementById('imagenes-grid').classList.add('hidden');
+            document.getElementById('back-button').classList.add('hidden');
+            document.getElementById('titulo-categoria').textContent = 'Categorías';
+            actualizarSugerenciasPredictivas(); 
+        });
+
+        const shareFraseBtn = document.getElementById('share-frase-btn');
+        if (navigator.share && shareFraseBtn) {
+            shareFraseBtn.addEventListener('click', async () => {
+                if (fraseActual.length === 0) return;
+                const textoCompleto = fraseActual.map(p => p.hablar || p.texto || p.nombre).join(' ');
+                const textoFinal = textoCompleto.charAt(0).toUpperCase() + textoCompleto.slice(1);
+                try {
+                    await navigator.share({ title: 'Frase desde Mi Comunicador', text: textoFinal });
+                } catch (error) {}
+            });
+        } else if (shareFraseBtn) {
+            shareFraseBtn.style.display = 'none';
+        }
+    }
+});
