@@ -20,20 +20,28 @@
     </header>
 
     <main class="container mt-4 mb-5">
+        <!-- VISTA DE FICHA -->
         <div id="ficha-container" class="user-card text-center p-4">
             <img id="foto-usuario-img" src="imagenes/placeholder.png" alt="Foto del usuario" class="user-photo mb-3"/>
             <h1 id="nombre-completo-usuario" class="mb-3"></h1>
             <div class="user-details text-left">
+                <h5 class="mt-3 border-bottom pb-2">Datos Escolares</h5>
                 <p><strong>Institución:</strong> <span id="institucion-usuario"></span></p>
                 <p><strong>Dirección:</strong> <span id="direccion-usuario"></span></p>
+                
+                <h5 class="mt-4 border-bottom pb-2 text-danger">Información Médica Importante</h5>
+                <p><strong>Diagnóstico / Condición:</strong> <span id="diagnostico-usuario">No especificado</span></p>
+                <p><strong>Alergias:</strong> <span id="alergias-usuario">Ninguna</span></p>
+                <p><strong>Grupo Sanguíneo:</strong> <span id="sangre-usuario">No especificado</span></p>
             </div>
             <div id="adultos-container" class="mt-4"></div>
             <div class="btn-group mt-4">
-                <button id="form-toggle" class="btn btn-primary btn-lg">Modificar Ficha</button>
-                <button id="delete-button" class="btn btn-danger btn-lg">Borrar Ficha</button>
+                <button id="form-toggle" class="btn btn-primary btn-lg"><i class="fas fa-edit"></i> Modificar Ficha</button>
+                <button id="delete-button" class="btn btn-danger btn-lg"><i class="fas fa-trash"></i> Borrar Ficha</button>
             </div>
         </div>
 
+        <!-- FORMULARIO DE EDICIÓN -->
         <form id="formulario" class="d-none mt-4 form-card p-4">
             <h3 class="mb-4">Datos del Usuario</h3>
             <div class="form-row">
@@ -58,6 +66,29 @@
                 <label for="foto-usuario">Foto de Usuario:</label>
                 <input type="file" id="foto-usuario" class="form-control-file" accept="image/*">
             </div>
+
+            <!-- SECCIÓN MÉDICA EN FORMULARIO -->
+            <hr class="mt-4">
+            <h4 class="text-danger">Información Médica (Opcional)</h4>
+            <div class="form-group">
+                <label for="diagnostico">Diagnóstico o Condición (Ej: TEA, Apraxia):</label>
+                <input type="text" id="diagnostico" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="alergias">Alergias Conocidas:</label>
+                <input type="text" id="alergias" class="form-control" placeholder="Ej: Maní, Penicilina, Ninguna">
+            </div>
+            <div class="form-group">
+                <label for="sangre">Grupo Sanguíneo:</label>
+                <select id="sangre" class="form-control">
+                    <option value="">No especificado</option>
+                    <option value="O+">O+</option><option value="O-">O-</option>
+                    <option value="A+">A+</option><option value="A-">A-</option>
+                    <option value="B+">B+</option><option value="B-">B-</option>
+                    <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                </select>
+            </div>
+            
             <hr>
             <h4 class="mt-4">Adultos Responsables</h4>
             <div class="form-group">
@@ -65,7 +96,9 @@
                 <input type="number" id="cant-adultos" class="form-control" min="0" value="0">
             </div>
             <div id="seccion-adultos" class="mt-3"></div>
-            <button type="button" id="modal-save-button" class="btn btn-success btn-block btn-lg mt-4">Guardar Cambios</button>
+            
+            <button type="button" id="modal-save-button" class="btn btn-success btn-block btn-lg mt-4"><i class="fas fa-save"></i> Guardar Cambios</button>
+            <button type="button" id="cancel-edit-button" class="btn btn-secondary btn-block btn-lg mt-2"><i class="fas fa-times"></i> Cancelar</button>
         </form>
     </main>
 </body>
