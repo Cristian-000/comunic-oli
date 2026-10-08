@@ -1,3 +1,8 @@
+// --- APLICAR AJUSTE DE GRILLA GUARDADO ---
+const tamanoGuardado = localStorage.getItem('comunicador_tamano_grilla') || 'mediano';
+const diccionarioTamanos = { 'pequeno': '80px', 'mediano': '110px', 'grande': '160px' };
+document.documentElement.style.setProperty('--tamano-grilla', diccionarioTamanos[tamanoGuardado]);
+// -----------------------------------------
 document.addEventListener('DOMContentLoaded', async () => {
     let db;
     let fraseActual = [];
