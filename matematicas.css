@@ -158,3 +158,64 @@
     cursor: pointer;
     font-weight: 600;
 }
+/* ========================================= */
+/* MEJORAS VISUALES: AGRUPACIÓN Y NÚMEROS    */
+/* ========================================= */
+
+.grupo-pictograma-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 8px;
+    min-width: 80px;
+}
+
+.imagenes-grid-mini {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    max-width: 160px; /* Evita que desborde la pantalla si son muchos */
+}
+
+.problema-pictograma {
+    object-fit: contain;
+    /* El JS ahora controla el width y height para achicarlos si son muchos */
+}
+
+.numero-apoyo {
+    margin-top: 6px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--color-texto-secundario);
+    background: white;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#problema-container {
+    padding: 15px;
+    gap: 8px;
+}
+
+#nuevo-problema-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 1rem;
+    box-shadow: var(--sombra);
+    transition: transform 0.1s;
+}
+
+#nuevo-problema-btn:active {
+    transform: scale(0.95);
+}
