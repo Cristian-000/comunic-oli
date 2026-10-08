@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+        // --- CONTROL DEL BOTÓN ATRÁS DEL MÓVIL ---
+    // Añadimos un estado "falso" a la memoria del celular
+    window.history.pushState({ pagina: "minijuego" }, "", "");
+
+    // Cuando el usuario presiona el botón físico de "Atrás"
+    window.addEventListener('popstate', function(event) {
+        // En lugar de ir a donde el celular quiere, lo forzamos a ir al inicio
+        window.location.replace('index.html');
+    });
+    // ------------------------------------------
+
     const textarea = document.getElementById('texto-escribir');
     const btnLeer = document.getElementById('leer-texto');
     const listaHistorial = document.getElementById('historial-lista');
