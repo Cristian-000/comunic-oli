@@ -5,13 +5,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isPlayingSequence = false;
     let datosGlobales = null;
 
-    // Vocabulario núcleo (Restaurado al original sin IDs malos)
+    // Vocabulario núcleo original
     const vocabularioNucleo = [
         { texto: "Yo", tipo: "pronombre", hablar: "Yo" },
         { texto: "Quiero", tipo: "verbo", hablar: "Quiero" },
         { texto: "Ayuda", tipo: "sustantivo", hablar: "Ayuda" },
         { texto: "Más", tipo: "adverbio", hablar: "Más" },
-        { texto: "Si", tipo: "adverbio", hablar: "Si" },
+        { texto: "Sí", tipo: "adverbio", hablar: "Sí" }, // Mejor con tilde para ARASAAC
         { texto: "No", tipo: "adverbio", hablar: "No" },
         { texto: "Hola", tipo: "interjeccion", hablar: "Hola" },
         { texto: "Terminar", tipo: "verbo", hablar: "Terminar" },
@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     async function initDB() {
         return new Promise((resolve, reject) => {
-            const request = window.indexedDB.open('comunicador-db-v5', 1);
+            // Cambiamos a v6 para limpiar la caché de placeholders rotos del intento anterior
+            const request = window.indexedDB.open('comunicador-db-v6', 1);
             request.onerror = e => reject(e.target.error);
             request.onsuccess = e => resolve(e.target.result);
             request.onupgradeneeded = e => {
@@ -60,41 +61,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function obtenerYCachearPictograma(item) {
-        const textoBusqueda = item.texto || item.nombre;
+        let textoBusqueda = item.texto || item.nombre;
         if (!textoBusqueda || textoBusqueda.trim() === '') return 'imagenes/placeholder.png';
         if (!db) return 'imagenes/placeholder.png';
 
-        const keyAlmacenamiento = item.id_arasaac ? `id_${item.id_arasaac}` : textoBusqueda;
+        // Limpiamos signos de interrogación para mejorar la búsqueda en ARASAAC
+        textoBusqueda = textoBusqueda.replace(/[¿?]/g, '');
 
         try {
             const transaccionLectura = db.transaction('pictogramas', 'readonly');
-            const pictogramaGuardado = await promisifyRequest(transaccionLectura.objectStore('pictogramas').get(keyAlmacenamiento));
+            const pictogramaGuardado = await promisifyRequest(transaccionLectura.objectStore('pictogramas').get(textoBusqueda));
             if (pictogramaGuardado) return URL.createObjectURL(pictogramaGuardado);
 
-            let urlImagen = "";
-
-            if (item.id_arasaac) {
-                urlImagen = `https://api.arasaac.org/api/pictograms/${item.id_arasaac}?download=false`;
-            } else {
-                // Búsqueda dinámica original
-                const textoCodificado = encodeURIComponent(textoBusqueda);
-                const urlBusqueda = `https://api.arasaac.org/api/pictograms/es/search/${textoCodificado}`;
-                const responseBusqueda = await fetch(urlBusqueda);
-                if (!responseBusqueda.ok) throw new Error('Error en búsqueda ARASAAC');
-                const resultados = await responseBusqueda.json();
-                if (resultados.length === 0) return 'imagenes/placeholder.png';
-                urlImagen = `https://api.arasaac.org/api/pictograms/${resultados[0]._id}?download=false`;
-            }
-
+            // Búsqueda dinámica 
+            const textoCodificado = encodeURIComponent(textoBusqueda);
+            const urlBusqueda = `https://api.arasaac.org/api/pictograms/es/search/${textoCodificado}`;
+            const responseBusqueda = await fetch(urlBusqueda);
+            
+            if (!responseBusqueda.ok) throw new Error('Error en búsqueda ARASAAC');
+            
+            const resultados = await responseBusqueda.json();
+            if (resultados.length === 0) return 'imagenes/placeholder.png';
+            
+            const urlImagen = `https://api.arasaac.org/api/pictograms/${resultados[0]._id}?download=false`;
             const response = await fetch(urlImagen); 
+            
             if (!response.ok) throw new Error('Error al descargar imagen');
 
             const imagenBlob = await response.blob();
             const transaccionEscritura = db.transaction('pictogramas', 'readwrite');
-            await promisifyRequest(transaccionEscritura.objectStore('pictogramas').put(imagenBlob, keyAlmacenamiento));
+            await promisifyRequest(transaccionEscritura.objectStore('pictogramas').put(imagenBlob, textoBusqueda));
 
             return URL.createObjectURL(imagenBlob);
         } catch (error) {
+            console.warn(`No se encontró imagen para: ${textoBusqueda}`);
             return 'imagenes/placeholder.png';
         }
     }
@@ -144,15 +144,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 pictogramaDivs[index].classList.add('leyendo-activo');
             }
 
-            utterance.onend = () => {
-                index++;
-                leerSiguiente();
-            };
-
-            utterance.onerror = () => {
-                index++;
-                leerSiguiente();
-            };
+            utterance.onend = () => { index++; leerSiguiente(); };
+            utterance.onerror = () => { index++; leerSiguiente(); };
 
             window.speechSynthesis.speak(utterance);
         }
@@ -206,10 +199,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const t = tipo.toLowerCase();
         if (t === 'pronombre' || t === 'persona') return 'fitz-pronombre';
         if (t === 'verbo' || t === 'accion') return 'fitz-verbo';
-        if (t === 'sustantivo') return 'fitz-sustantivo';
+        if (t === 'sustantivo' || t === 'letra') return 'fitz-sustantivo';
         if (t === 'adjetivo') return 'fitz-adjetivo';
         if (t === 'adverbio') return 'fitz-adverbio';
-        if (t === 'interjeccion' || t === 'frase' || t === 'social') return 'fitz-social';
+        if (t === 'interjeccion' || t === 'frase' || t === 'social' || t === 'conjuncion' || t === 'preposicion') return 'fitz-social';
         return 'fitz-default';
     }
 
@@ -288,7 +281,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         pictoButton.className = `pictograma-button ${claseFitzgerald}`;
 
         const img = document.createElement('img');
-        img.src = await obtenerYCachearPictograma(item);
+        img.src = 'imagenes/placeholder.png'; // Cargamos placeholder inicial
+        
+        // Empezamos a buscar la imagen real
+        obtenerYCachearPictograma(item).then(src => {
+            img.src = src;
+        });
         
         const span = document.createElement('span');
         span.textContent = item.texto || item.nombre;
@@ -298,36 +296,33 @@ document.addEventListener('DOMContentLoaded', async () => {
         return pictoButton;
     }
 
+    // CARGA SECUENCIAL PARA NO SATURAR ARASAAC
     async function cargarNucleo() {
         const nucleoGrid = document.getElementById('nucleo-grid');
         if (!nucleoGrid) return;
         nucleoGrid.innerHTML = '';
         
-        const promesasBotones = vocabularioNucleo.map(async (palabra) => {
+        // En lugar de disparar todos a la vez, los procesamos uno por uno en fila
+        for (const palabra of vocabularioNucleo) {
             const btn = await crearBotonPictograma(palabra);
             btn.addEventListener('click', () => agregarAPipa(palabra));
-            return btn;
-        });
-        
-        const botones = await Promise.all(promesasBotones);
-        botones.forEach(btn => nucleoGrid.appendChild(btn));
+            nucleoGrid.appendChild(btn);
+        }
     }
 
+    // CARGA SECUENCIAL PARA LAS CATEGORÍAS
     async function cargarCategoriasPerifericas() {
         const data = await cargarDatosGlobales();
         const categoriasGrid = document.getElementById('categorias-grid');
         if (!categoriasGrid || !data) return;
         categoriasGrid.innerHTML = '';
         
-        const promesasBotones = data.categorias.map(async (categoria) => {
+        for (const categoria of data.categorias) {
             categoria.categoria_tipo = 'sustantivo'; 
             const btn = await crearBotonPictograma(categoria);
             btn.addEventListener('click', () => mostrarImagenes(categoria));
-            return btn;
-        });
-
-        const botones = await Promise.all(promesasBotones);
-        botones.forEach(btn => categoriasGrid.appendChild(btn));
+            categoriasGrid.appendChild(btn);
+        }
     }
 
     async function mostrarImagenes(categoria) {
@@ -343,20 +338,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         imagenesGrid.innerHTML = '';
 
-        const promesasElementos = categoria.imagenes.map(async (imagen) => {
+        // CARGA SECUENCIAL PARA LAS IMÁGENES INTERNAS
+        for (const imagen of categoria.imagenes) {
             if (imagen.separador) {
                 const separador = document.createElement('hr');
                 separador.className = 'separador';
-                return separador;
+                imagenesGrid.appendChild(separador);
             } else {
                 const imgButton = await crearBotonPictograma(imagen);
                 imgButton.addEventListener('click', () => agregarAPipa(imagen));
-                return imgButton;
+                imagenesGrid.appendChild(imgButton);
             }
-        });
-
-        const elementos = await Promise.all(promesasElementos);
-        elementos.forEach(el => imagenesGrid.appendChild(el));
+        }
 
         categoriasGrid.classList.add('hidden');
         seccionNucleo.classList.add('hidden');
@@ -369,8 +362,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (document.getElementById('nucleo-grid')) {
         await cargarDatosGlobales(); 
-        cargarNucleo();
-        cargarCategoriasPerifericas();
+        await cargarNucleo();
+        await cargarCategoriasPerifericas();
+        
         inicializarDragAndDrop();
         renderizarTiraFrase();
         
