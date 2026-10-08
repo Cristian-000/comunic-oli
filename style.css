@@ -445,3 +445,71 @@ footer {
     margin-left: 12px;
     flex-shrink: 0;
 }
+/* ========================================= */
+/* ESTILOS PARA LA PÁGINA ESCUCHAR.HTML      */
+/* ========================================= */
+
+.mic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#empezar-escuchar {
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    font-size: 2.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+/* Animación cuando el micrófono está activo */
+#empezar-escuchar.escuchando {
+    background-color: var(--color-borrar);
+    animation: pulse-mic 1.5s infinite;
+}
+
+@keyframes pulse-mic {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(250, 56, 62, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 25px rgba(250, 56, 62, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(250, 56, 62, 0); }
+}
+
+#estado-escucha {
+    margin-top: 16px;
+    font-size: 1.1rem;
+    color: var(--color-texto-secundario);
+    font-weight: 600;
+}
+
+#texto-escuchado-container {
+    background-color: var(--color-superficie);
+    border: 3px dashed #cbd5e1;
+    border-radius: var(--radio-borde);
+    min-height: 120px;
+    padding: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+}
+
+#texto-escuchado {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-texto);
+    text-align: center;
+    margin: 0;
+    word-break: break-word;
+}
