@@ -11,6 +11,16 @@
   --color-borrar: #fa383e;
   --sombra: 0 1px 3px rgba(0, 0, 0, 0.08);
   --radio-borde: 12px;
+      --tamano-grilla: 110px; 
+}
+
+
+.grid-container {
+    display: grid;
+    /* Usa la variable para definir el ancho mínimo de las columnas */
+    grid-template-columns: repeat(auto-fill, minmax(var(--tamano-grilla), 1fr));
+    gap: 12px;
+    padding: 10px;
 }
 
 * {
@@ -212,13 +222,13 @@ main {
 /* GRIDS DE PICTOGRAMAS Y CLAVE FITZGERALD */
 /* ========================================= */
 .hidden { display: none !important; }
-
+/*
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); /* AMPLIADO PARA NIÑOS */
-  gap: 8px; 
+  grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); 
+gap: 8px; 
 }
-
+*/
 .pictograma-button {
   border-radius: var(--radio-borde);
   cursor: pointer;
