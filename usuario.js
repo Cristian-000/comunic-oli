@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-        // --- CONTROL DEL BOTÓN ATRÁS DEL MÓVIL ---
+    
+    // --- CONTROL DEL BOTÓN ATRÁS DEL MÓVIL ---
     // Añadimos un estado "falso" a la memoria del celular
     window.history.pushState({ pagina: "minijuego" }, "", "");
 
@@ -10,13 +11,60 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     // ------------------------------------------
 
-    // --- Selección de Elementos del DOM ---
+    // --- CONTROL DE TAMAÑO DE GRILLA (NUEVO) ---
+    const btnPequeno = document.getElementById('grid-pequeno');
+    const btnMediano = document.getElementById('grid-mediano');
+    const btnGrande = document.getElementById('grid-grande');
+
+    // Tamaños en píxeles
+    const tamanos = {
+        'pequeno': '80px',   
+        'mediano': '110px',  
+        'grande': '160px'    
+    };
+
+    function aplicarTamanoGrilla(tamanoId) {
+        // Aplica al instante
+        document.documentElement.style.setProperty('--tamano-grilla', tamanos[tamanoId]);
+        
+        // Guarda en memoria
+        localStorage.setItem('comunicador_tamano_grilla', tamanoId);
+        
+        // Resetea estilos de todos los botones
+        [btnPequeno, btnMediano, btnGrande].forEach(btn => {
+            if (btn) {
+                btn.style.backgroundColor = 'var(--color-fondo)';
+                btn.style.borderColor = 'var(--color-borde)';
+                btn.style.color = 'var(--color-texto)';
+            }
+        });
+
+        // Pinta el botón activo
+        const btnActivo = document.getElementById(`grid-${tamanoId}`);
+        if(btnActivo) {
+            btnActivo.style.backgroundColor = 'var(--color-primario)';
+            btnActivo.style.borderColor = 'var(--color-primario)';
+            btnActivo.style.color = 'white';
+        }
+    }
+
+    // Carga el tamaño guardado (o mediano por defecto)
+    const tamanoGuardado = localStorage.getItem('comunicador_tamano_grilla') || 'mediano';
+    aplicarTamanoGrilla(tamanoGuardado);
+
+    // Eventos de la grilla
+    if(btnPequeno) btnPequeno.addEventListener('click', () => aplicarTamanoGrilla('pequeno'));
+    if(btnMediano) btnMediano.addEventListener('click', () => aplicarTamanoGrilla('mediano'));
+    if(btnGrande) btnGrande.addEventListener('click', () => aplicarTamanoGrilla('grande'));
+    // ------------------------------------------
+
+    // --- Selección de Elementos del DOM (Ficha Usuario) ---
     const fichaContainer = document.getElementById('ficha-container');
     const formulario = document.getElementById('formulario');
     const formToggleBtn = document.getElementById('form-toggle');
     const deleteBtn = document.getElementById('delete-button');
     const saveBtn = document.getElementById('modal-save-button');
-    const cancelEditBtn = document.getElementById('cancel-edit-button'); // Botón nuevo de cancelar
+    const cancelEditBtn = document.getElementById('cancel-edit-button'); 
     
     // Elementos de la Ficha (Vista)
     const fotoUsuarioImg = document.getElementById('foto-usuario-img');
@@ -66,11 +114,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (Object.keys(usuario).length === 0) {
             fichaContainer.classList.add('d-none');
             formulario.classList.remove('d-none');
-            cancelEditBtn.classList.add('d-none'); // No puede cancelar si no hay datos
+            if (cancelEditBtn) cancelEditBtn.classList.add('d-none'); // No puede cancelar si no hay datos
         } else {
             fichaContainer.classList.remove('d-none');
             formulario.classList.add('d-none');
-            cancelEditBtn.classList.remove('d-none');
+            if (cancelEditBtn) cancelEditBtn.classList.remove('d-none');
             mostrarFicha(usuario, adultos);
             rellenarFormulario(usuario, adultos);
         }
@@ -205,35 +253,43 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- Event Listeners ---
-    formToggleBtn.addEventListener('click', () => {
-        if (controlParental()) {
-            fichaContainer.classList.add('d-none');
-            formulario.classList.remove('d-none');
-        }
-    });
+    if (formToggleBtn) {
+        formToggleBtn.addEventListener('click', () => {
+            if (controlParental()) {
+                fichaContainer.classList.add('d-none');
+                formulario.classList.remove('d-none');
+            }
+        });
+    }
 
-    cancelEditBtn.addEventListener('click', () => {
-        fichaContainer.classList.remove('d-none');
-        formulario.classList.add('d-none');
-    });
+    if (cancelEditBtn) {
+        cancelEditBtn.addEventListener('click', () => {
+            fichaContainer.classList.remove('d-none');
+            formulario.classList.add('d-none');
+        });
+    }
 
-    cantAdultosInput.addEventListener('change', () => {
-        const cantidad = parseInt(cantAdultosInput.value, 10) || 0;
-        generarCamposAdultos(cantidad);
-    });
+    if (cantAdultosInput) {
+        cantAdultosInput.addEventListener('change', () => {
+            const cantidad = parseInt(cantAdultosInput.value, 10) || 0;
+            generarCamposAdultos(cantidad);
+        });
+    }
 
-    fotoUsuarioInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            tempFotoBase64 = e.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
+    if (fotoUsuarioInput) {
+        fotoUsuarioInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                tempFotoBase64 = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
 
-    saveBtn.addEventListener('click', guardarDatos);
-    deleteBtn.addEventListener('click', borrarDatos);
+    if (saveBtn) saveBtn.addEventListener('click', guardarDatos);
+    if (deleteBtn) deleteBtn.addEventListener('click', borrarDatos);
 
     // --- Carga Inicial ---
     cargarDatosGuardados();
