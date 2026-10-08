@@ -1,16 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- CONTROL DEL BOTÓN ATRÁS DEL MÓVIL ---
-    // Añadimos un estado "falso" a la memoria del celular
-    window.history.pushState({ pagina: "minijuego" }, "", "");
 
-    // Cuando el usuario presiona el botón físico de "Atrás"
+    // --- CONTROL DEL BOTÓN ATRÁS DEL MÓVIL ---
+    window.history.pushState({ pagina: "minijuego" }, "", "");
     window.addEventListener('popstate', function(event) {
-        // En lugar de ir a donde el celular quiere, lo forzamos a ir al inicio
         window.location.replace('index.html');
     });
     // ------------------------------------------
 
-    // --- ELEMENTOS DEL DOM ---
     const operacionSelector = document.getElementById('operacion-selector');
     const problemaContainer = document.getElementById('problema-container');
     const opcionesContainer = document.getElementById('opciones-container');
@@ -19,37 +15,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioCorrecto = document.getElementById('audio-correcto');
     const audioIncorrecto = document.getElementById('audio-incorrecto');
     
-    // --- ESTADO DEL JUEGO ---
     let operacionActual = 'suma'; 
     let respuestaCorrecta = 0;
     let problemaActivo = true;
+    const cacheMates = {};
 
-    // Lista de ítems con sus IDs fijos de ARASAAC para carga INSTANTÁNEA (cero demoras)
-    const ITEMS_PARA_CONTAR = [
-        { nombre: "manzanas", id: 2337 },
-        { nombre: "pelotas", id: 2884 },
-        { nombre: "coches", id: 2420 },
-        { nombre: "gatos", id: 2414 },
-        { nombre: "perros", id: 2415 },
-        { nombre: "flores", id: 2623 },
-        { nombre: "casas", id: 2277 },
-        { nombre: "soles", id: 2772 },
-        { nombre: "estrellas", id: 2816 }
-    ];
+    const ITEMS_PARA_CONTAR = ["manzana", "pelota", "coche", "gato", "perro", "flor", "casa", "sol", "estrella"];
 
-    // --- MOTOR NATIVO DE VOZ ---
     function hablarTexto(texto) {
         if (!texto || texto.trim() === '') return;
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(texto);
             utterance.lang = 'es-ES';
-            utterance.rate = 0.85; // Velocidad amigable
+            utterance.rate = 0.85; 
             window.speechSynthesis.speak(utterance);
         }
     }
 
-    // --- FUNCIONES DE GENERACIÓN DE PROBLEMAS ---
+    // BÚSQUEDA AUTOMÁTICA Y SEGURA
+    async function obtenerUrlPictogramaSeguro(palabra) {
+        if (cacheMates[palabra]) return cacheMates[palabra];
+        try {
+            const url = `https://api.arasaac.org/api/pictograms/es/search/${encodeURIComponent(palabra)}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data && data.length > 0) {
+                const pictoUrl = `https://api.arasaac.org/api/pictograms/${data[0]._id}?download=false`;
+                cacheMates[palabra] = pictoUrl;
+                return pictoUrl;
+            }
+            return 'imagenes/placeholder.png';
+        } catch (error) {
+            return 'imagenes/placeholder.png';
+        }
+    }
+
     function generarSuma() {
         const num1 = Math.floor(Math.random() * 5) + 1;
         const num2 = Math.floor(Math.random() * 5) + 1;
@@ -75,16 +76,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return { num1, num2, respuesta, textoOp: "dividido" };
     }
 
-    function generarNuevoProblema() {
+    async function generarNuevoProblema() {
         problemaActivo = true;
         opcionesContainer.innerHTML = '';
         feedbackContainer.textContent = '';
         feedbackContainer.className = '';
-        problemaContainer.innerHTML = ''; 
+        problemaContainer.innerHTML = '<p>Cargando...</p>'; 
 
-        // Elegir un ítem aleatorio de nuestra lista predefinida
         const itemAleatorio = ITEMS_PARA_CONTAR[Math.floor(Math.random() * ITEMS_PARA_CONTAR.length)];
-        const urlPictograma = `https://api.arasaac.org/api/pictograms/${itemAleatorio.id}?download=false`;
+        const urlPictograma = await obtenerUrlPictogramaSeguro(itemAleatorio);
+
+        problemaContainer.innerHTML = ''; 
 
         let problema;
         let simbolo;
@@ -111,17 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         respuestaCorrecta = problema.respuesta;
         
-        // Renderizar el problema en pantalla
-        mostrarProblemaVisual(problema.num1, problema.num2, simbolo, urlPictograma, itemAleatorio.nombre);
+        mostrarProblemaVisual(problema.num1, problema.num2, simbolo, urlPictograma, itemAleatorio);
         generarOpciones(respuestaCorrecta);
 
-        // Leer el problema en voz alta
         hablarTexto(`¿Cuánto es ${problema.num1} ${problema.textoOp} ${problema.num2}?`);
     }
-    
-    // --- FUNCIONES DE RENDERIZADO VISUAL ---
 
-    // Crea un grupo que contiene las imágenes Y el número debajo
     function crearGrupoVisual(cantidad, urlImg, nombre) {
         const grupo = document.createElement('div');
         grupo.className = 'grupo-pictograma-container';
@@ -129,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const imgsContainer = document.createElement('div');
         imgsContainer.className = 'imagenes-grid-mini';
         
-        // Ajustamos el tamaño de las imágenes si son muchas para que no desborde
         const tamañoImg = cantidad > 10 ? '30px' : '45px';
 
         for (let i = 0; i < cantidad; i++) {
@@ -172,10 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         while (opciones.length < 3) {
             let opcionIncorrecta = Math.floor(Math.random() * maxRespuesta);
             if (opciones.includes(opcionIncorrecta)) continue;
-            
-            // Si es resta, no queremos opciones negativas y evitamos respuestas absurdas
-            if (operacionActual === 'resta' && opcionIncorrecta > num1) continue; 
-            
+            // Evitar resultados negativos en la interfaz de resta (aunque las restas ya no los generan)
             opciones.push(opcionIncorrecta);
         }
         
@@ -190,14 +183,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA DE RESPUESTA ---
     function verificarRespuesta(evento) {
         const botonSeleccionado = evento.target.closest('.opcion-btn');
         if (!botonSeleccionado || !problemaActivo) return;
 
         const respuestaUsuario = parseInt(botonSeleccionado.dataset.valor);
-        
-        // Leer el número que el niño tocó
         hablarTexto(respuestaUsuario.toString());
 
         if (respuestaUsuario === respuestaCorrecta) {
@@ -208,12 +198,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if(audioCorrecto) audioCorrecto.play();
             
-            // Lanzar confeti!
             if (typeof confetti === 'function') {
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
             }
 
-            // Cambiar la interrogante por el número correcto
             const simbolos = problemaContainer.querySelectorAll('.problema-simbolo');
             if(simbolos.length > 0) simbolos[simbolos.length - 1].textContent = respuestaCorrecta;
 
@@ -232,12 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- EVENT LISTENERS ---
     operacionSelector.addEventListener('click', (e) => {
         const botonSeleccionado = e.target.closest('.op-btn');
         if (!botonSeleccionado || botonSeleccionado.classList.contains('active')) return;
 
-        // Leer la operación seleccionada
         hablarTexto(botonSeleccionado.dataset.hablar);
 
         operacionActual = botonSeleccionado.dataset.op;
@@ -254,6 +240,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     opcionesContainer.addEventListener('click', verificarRespuesta);
 
-    // --- INICIAR EL JUEGO ---
     generarNuevoProblema();
 });
