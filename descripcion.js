@@ -1,16 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- CONTROL DEL BOTÓN ATRÁS DEL MÓVIL ---
-    // Añadimos un estado "falso" a la memoria del celular
-    window.history.pushState({ pagina: "minijuego" }, "", "");
 
-    // Cuando el usuario presiona el botón físico de "Atrás"
+    // --- CONTROL DEL BOTÓN ATRÁS DEL MÓVIL ---
+    window.history.pushState({ pagina: "minijuego" }, "", "");
     window.addEventListener('popstate', function(event) {
-        // En lugar de ir a donde el celular quiere, lo forzamos a ir al inicio
         window.location.replace('index.html');
     });
     // ------------------------------------------
 
-    // --- ELEMENTOS DEL DOM ---
     const pictogramaImg = document.getElementById('pictograma-img');
     const opcionesContainer = document.getElementById('opciones-container');
     const feedbackEl = document.getElementById('feedback-descripcion');
@@ -20,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioCorrecto = document.getElementById('audio-correcto');
     const audioIncorrecto = document.getElementById('audio-incorrecto');
 
-    // --- MOTOR NATIVO DE VOZ (Offline) ---
     function hablarTextoIndividual(texto) {
         if (!texto || texto.trim() === '') return;
         if ('speechSynthesis' in window) {
@@ -32,50 +27,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- LISTA DE PALABRAS (Con IDs fijos de ARASAAC para carga instantánea) ---
+    // Volvemos a la lista solo de palabras
     const LISTA_PALABRAS = [
-        { palabra: "SOL", id: 2772 },
-        { palabra: "CASA", id: 2277 },
-        { palabra: "GATO", id: 2414 },
-        { palabra: "AGUA", id: 2311 },
-        { palabra: "PERRO", id: 2415 },
-        { palabra: "MESA", id: 3266 },
-        { palabra: "MANO", id: 2289 },
-        { palabra: "PELOTA", id: 2884 },
-        { palabra: "COCHE", id: 2420 },
-        { palabra: "ÁRBOL", id: 2626 },
-        { palabra: "FLOR", id: 2623 },
-        { palabra: "NIÑO", id: 2261 }, 
-        { palabra: "LIBRO", id: 3173 },
-        { palabra: "LUNA", id: 2771 },
-        { palabra: "TREN", id: 2424 },
-        { palabra: "OSO", id: 2397 },
-        { palabra: "PEZ", id: 2410 },
-        { palabra: "PATO", id: 2411 },
-        { palabra: "UVA", id: 2344 },
-        { palabra: "LECHE", id: 2309 },
-        { palabra: "PIE", id: 2292 },
-        { palabra: "BOCA", id: 2285 },
-        { palabra: "OJO", id: 2284 },
-        { palabra: "CAMA", id: 3262 },
-        { palabra: "SILLA", id: 3267 },
-        { palabra: "PAN", id: 2331 },
-        { palabra: "GRANDE", id: 4945 },
-        { palabra: "ROJO", id: 2795 },
-        { palabra: "AZUL", id: 2796 },
-        { palabra: "DORMIR", id: 2603 },
-        { palabra: "COMER", id: 2596 },
-        { palabra: "JUGAR", id: 2589 },
-        { palabra: "CORRER", id: 2588 },
-        { palabra: "FELIZ", id: 2854 },
-        { palabra: "TRISTE", id: 2857 }
+        "SOL", "CASA", "GATO", "AGUA", "PERRO", "MESA", "MANO", "PELOTA",
+        "COCHE", "ÁRBOL", "FLOR", "NIÑO", "LIBRO", "LUNA", "TREN", "OSO",
+        "PEZ", "PATO", "UVA", "LECHE", "PIE", "BOCA", "OJO", "CAMA", "SILLA",
+        "PAN", "GRANDE", "ROJO", "AZUL", "DORMIR", "COMER", "JUGAR", "CORRER",
+        "FELIZ", "TRISTE"
     ];
 
-    // --- ESTADO DEL JUEGO ---
     let palabraActual = null;
     let palabrasUsadas = [];
+    const cachePictogramas = {}; // Memoria para que carguen rápido después de la 1ra vez
 
-    // --- FUNCIONES AUXILIARES ---
+    // BUSCADOR AUTOMÁTICO (El método seguro)
+    async function obtenerUrlPictogramaSeguro(palabra) {
+        if (cachePictogramas[palabra]) return cachePictogramas[palabra];
+        try {
+            const url = `https://api.arasaac.org/api/pictograms/es/search/${encodeURIComponent(palabra.toLowerCase())}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data && data.length > 0) {
+                const pictoUrl = `https://api.arasaac.org/api/pictograms/${data[0]._id}?download=false`;
+                cachePictogramas[palabra] = pictoUrl;
+                return pictoUrl;
+            }
+            return 'imagenes/placeholder.png';
+        } catch (error) {
+            return 'imagenes/placeholder.png';
+        }
+    }
+
     function mezclarArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -84,16 +66,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return array;
     }
 
-    // --- LÓGICA DEL JUEGO DE DESCRIPCIÓN ---
-    function iniciarNuevaRonda() {
-        // Reiniciar estado
+    async function iniciarNuevaRonda() {
         feedbackEl.textContent = '';
         feedbackEl.className = 'feedback-texto';
         siguienteBtn.classList.add('hidden');
         opcionesContainer.innerHTML = '';
-        pictogramaImg.style.opacity = '0'; // Efecto de aparición
         
-        let palabrasDisponibles = LISTA_PALABRAS.filter(p => !palabrasUsadas.includes(p.palabra));
+        // Estado de carga visual
+        pictogramaImg.src = 'imagenes/placeholder.png';
+        pictogramaImg.style.opacity = '0.5';
+        
+        let palabrasDisponibles = LISTA_PALABRAS.filter(p => !palabrasUsadas.includes(p));
         if (palabrasDisponibles.length === 0) {
             palabrasUsadas = [];
             palabrasDisponibles = LISTA_PALABRAS;
@@ -101,22 +84,21 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const indiceCorrecto = Math.floor(Math.random() * palabrasDisponibles.length);
         palabraActual = palabrasDisponibles[indiceCorrecto];
-        palabrasUsadas.push(palabraActual.palabra);
+        palabrasUsadas.push(palabraActual);
         
-        // Cargar pictograma instantáneo
-        pictogramaImg.src = `https://api.arasaac.org/api/pictograms/${palabraActual.id}?download=false`;
-        pictogramaImg.onload = () => { pictogramaImg.style.opacity = '1'; }; // Muestra cuando carga
+        // Buscar y mostrar imagen segura
+        const urlPicto = await obtenerUrlPictogramaSeguro(palabraActual);
+        pictogramaImg.src = urlPicto;
+        pictogramaImg.style.opacity = '1';
 
-        // Animar entrada de pregunta
         hablarTextoIndividual("¿Qué ves?");
         
-        // Crear opciones (1 correcta + 3 incorrectas)
-        let opciones = [palabraActual.palabra];
-        let palabrasIncorrectas = LISTA_PALABRAS.filter(p => p.palabra !== palabraActual.palabra);
+        let opciones = [palabraActual];
+        let palabrasIncorrectas = LISTA_PALABRAS.filter(p => p !== palabraActual);
         palabrasIncorrectas = mezclarArray(palabrasIncorrectas);
 
         for (let i = 0; i < 3 && i < palabrasIncorrectas.length; i++) {
-            opciones.push(palabrasIncorrectas[i].palabra);
+            opciones.push(palabrasIncorrectas[i]);
         }
         
         const opcionesMezcladas = mezclarArray(opciones);
@@ -131,33 +113,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function manejarClickOpcion(palabraElegida, boton) {
-        // Leer la palabra que tocó el niño
         hablarTextoIndividual(palabraElegida);
-
         opcionesContainer.querySelectorAll('.opcion-btn').forEach(btn => btn.disabled = true);
 
-        if (palabraElegida === palabraActual.palabra) {
-            // Correcto
+        if (palabraElegida === palabraActual) {
             if(audioCorrecto) audioCorrecto.play();
             feedbackEl.textContent = '¡Excelente!';
             feedbackEl.classList.add('correcto-texto');
             boton.classList.add('correcto');
 
-            // Lanzar confeti
             if (typeof confetti === 'function') {
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
             }
-
         } else {
-            // Incorrecto
             if(audioIncorrecto) audioIncorrecto.play();
             feedbackEl.textContent = 'Intenta otra vez';
             feedbackEl.classList.add('incorrecto-texto');
             boton.classList.add('incorrecto');
             
-            // Mostrar la correcta
             opcionesContainer.querySelectorAll('.opcion-btn').forEach(btn => {
-                if (btn.textContent === palabraActual.palabra) {
+                if (btn.textContent === palabraActual) {
                     btn.classList.add('correcto-sutil'); 
                 }
             });
@@ -165,15 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
         siguienteBtn.classList.remove('hidden');
     }
 
-    // --- ASIGNACIÓN DE EVENTOS ---
-    
-    pictogramaContainer.addEventListener('click', () => {
-        // Ayuda auditiva: dice la palabra de la imagen
-        hablarTextoIndividual(palabraActual.palabra);
-    });
-
+    pictogramaContainer.addEventListener('click', () => hablarTextoIndividual(palabraActual));
     siguienteBtn.addEventListener('click', iniciarNuevaRonda);
 
-    // Iniciar
     iniciarNuevaRonda();
 });
