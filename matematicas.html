@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="style.css"> 
     <link rel="stylesheet" href="matematicas.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Librería de Confeti para la recompensa -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <script defer src="matematicas.js"></script>
 </head>
 <body>
@@ -17,17 +21,24 @@
         </nav>
     </header>
 
+    <!-- Selector de operaciones -->
     <div id="operacion-selector">
-        <button class="op-btn active" data-op="suma">+</button>
-        <button class="op-btn" data-op="resta">-</button>
-        <button class="op-btn" data-op="multiplicacion">×</button>
-        <button class="op-btn" data-op="division">÷</button>
+        <button class="op-btn active" data-op="suma" data-hablar="Sumas">+</button>
+        <button class="op-btn" data-op="resta" data-hablar="Restas">-</button>
+        <button class="op-btn" data-op="multiplicacion" data-hablar="Multiplicaciones">×</button>
+        <button class="op-btn" data-op="division" data-hablar="Divisiones">÷</button>
     </div>
+
     <main id="math-main">
+        <!-- Contenedor donde aparecerá el problema visual -->
         <div id="problema-container"></div>
+        
+        <!-- Contenedor donde aparecerán los botones de opciones -->
         <div id="opciones-container"></div>
+        
         <div id="feedback-container"></div>
-        <button id="nuevo-problema-btn">Nuevo Problema</button>
+        
+        <button id="nuevo-problema-btn"><i class="fas fa-sync-alt"></i> Nuevo Problema</button>
     </main>
     
     <audio id="audio-correcto" src="sonidos/correcto.mp3" preload="auto"></audio>
