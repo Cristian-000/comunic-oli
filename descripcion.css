@@ -125,6 +125,94 @@
 .hidden {
     display: none;
 }
+/* ========================================= */
+/* MEJORAS VISUALES Y ANIMACIONES            */
+/* ========================================= */
+
+#pictograma-img {
+    max-width: 90%;
+    max-height: 90%;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.opcion-btn {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    border: 3px solid var(--color-borde); /* Borde más grueso y clickeable */
+    border-radius: var(--radio-borde);
+    padding: 1.2rem 2rem;
+    font-size: 1.4rem;
+    font-weight: 700; /* Letra más gordita y legible */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 160px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.opcion-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.opcion-btn.correcto {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #28a745;
+    transform: scale(1.05);
+}
+
+.opcion-btn.incorrecto {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #dc3545;
+    animation: shake 0.4s;
+}
+
+/* Cuando se equivoca, la correcta se ilumina un poco para enseñarle */
+.opcion-btn.correcto-sutil {
+    border-color: #28a745;
+    background-color: #e8f5e9;
+    color: #28a745;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+#feedback-descripcion {
+    font-size: 1.8rem;
+    font-weight: 800;
+    min-height: 35px;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.correcto-texto {
+    color: #28a745;
+}
+
+.incorrecto-texto {
+    color: #dc3545;
+}
+
+#siguiente-btn {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 100%;
+    max-width: 300px;
+    display: block;
+    margin: 1.5rem auto 0;
+    box-shadow: var(--sombra);
+    transition: transform 0.1s;
+}
+
+#siguiente-btn:active {
+    transform: scale(0.95);
+}
 
 /* Puedes añadir reglas para el botón de regresar si no están en style.css */
 /*
