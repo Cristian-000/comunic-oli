@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Tamaños en píxeles
     const tamanos = {
-        'pequeno': '80px',   
-        'mediano': '110px',  
+        'pequeno': '60px',   
+        'mediano': '100px',  
         'grande': '160px'    
     };
 
